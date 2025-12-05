@@ -1,0 +1,23 @@
+{% extends 'base.html' %}
+{% block title %}Home{% endblock %}
+
+{% block content %}
+
+<div class="flex flex-col items-center justify-center h-[60vh] text-content">
+    <h1 class="text-5xl font-bold mb-4">Where Devs <span class="text-blue-500">Collide.</span></h1>
+    <p class="text-xl text-gray-400 mb-8 max-w-2xl">
+        Share code, sell assets, and build your legacy.
+        The only professional network that doesn't feel like a corporate meeting.
+    </p>
+    <div class="space-x-4">
+        <button class="bg-blue-600 text-white px-8 py-3 rounded-lg font-bold hover:bg-blue-700 transition">
+            Start Huddle
+        </button>
+        <button
+            class="border border-gray-600 text-gray-300 px-8 py-3 rounded-lg font-bold hover:bg-gray-800 transition">
+            Explore Market
+        </button>
+    </div>
+</div>
+
+{% endblock content %}
