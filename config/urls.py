@@ -1,9 +1,10 @@
 from django.contrib import admin
 from django.urls import path
-from . import views
+from feed import views
+# from .views import about_view
 
 urlpatterns = [
     path("admin/", admin.site.urls),
-    path("", views.home_view, name="home"),
-    path("about/", views.about_view, name="about"),
+    path("", views.HomePageView.as_view(), name="home"),
+    path("about/", views.AboutPageView.as_view(), name="about"),
 ]

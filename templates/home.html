@@ -1,8 +1,9 @@
 {% extends 'base.html' %}
-{% block title %}Home{% endblock %}
+{% block title %}Feed{% endblock %}
 
 {% block content %}
 
+{% if not user.is_authenticated %}
 <div class="flex flex-col items-center justify-center h-[60vh] text-content">
     <h1 class="text-5xl font-bold mb-4">Where Developers <span class="text-blue-500">Collide.</span></h1>
     <p class="text-xl text-gray-400 mb-8 max-w-2xl">
@@ -20,5 +21,37 @@
         </button>
     </div>
 </div>
+
+{% else %}
+
+<div class="max-w-2xl mx-auto">
+    <div class="flex justify-between items-center mb-8">
+        <h1 class="text-3xl font-bold text-white">Your Feed</h1>
+        <a href="#" class="text-sm text-blue-400 hover:text-blue-300">+ New Post</a>
+    </div>
+
+    {% for post in posts %}
+    <div class="bg-gray-800 p-6 rounded-lg mb-4 border border-gray-700 hover:border-blue-500 transition shadow-lg">
+        <div class="flex justify-between items-start mb-2">
+            <div class="flex items-center gap-2">
+                <div class="w-8 h-8 rounded-full bg-blue-500 flex items-center justify-center font-bold text-sm">
+                    {{ post.author.username|slice:":1"|upper }}
+                </div>
+                <span class="font-bold text-gray-200">@{{ post.author.username }}</span>
+            </div>
+            <span class="text-xs text-gray-500">{{ post.created_at|date:"M d, Y - D - h:i:s A" }}</span>
+        </div>
+        <p class="text-gray-300 leading-relaxed mt-2">
+            {{ post.body }}
+        </p>
+    </div>
+    {% empty %}
+    <div class="text-center text-gray-500 mt-10">
+        <p>It's quiet here... too quiet.</p>
+    </div>
+    {% endfor %}
+</div>
+{% endif %}
+
 
 {% endblock content %}
