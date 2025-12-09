@@ -10,7 +10,7 @@ class PostForm(forms.ModelForm):
             "body": forms.Textarea(
                 attrs={
                     "class": "w-full bg-gray-700 text-white rounded-lg p-4 border border-gray-600 focus:border-blue-500",
-                    "placeholder": "What's on your mind?",
+                    "placeholder": "What's on your mind, developer?",
                     "rows": 3,
                 }
             )

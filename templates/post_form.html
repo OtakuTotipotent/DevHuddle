@@ -1,16 +1,23 @@
-{% extends "base.html" %} {% block title %} New Post {% endblock %} {% block
-content %}
+{% extends "base.html" %}
+
+{% block title %}New Post{% endblock %}
+
+{% block content %}
 
 <div class="max-w-xl mx-auto mt-10">
     <div class="bg-gray-800 p-8 rounded-lg shadow-lg border border-gray-700">
         <h2 class="text-2xl font-bold mb-6 text-white">Create a Huddle</h2>
+
         <form method="post">
             {% csrf_token %}
 
-            <div class="mb-4">{{ form.body }} {{ form.body.errors }}</div>
+            <div class="mb-4 text-white">
+                {{ form.body }}
+                {{ form.body.errors}}
+            </div>
 
             <button type="submit"
-                class="w-full bg-blue-600 hover:bg-blue-700 text-white font-bold py-3 rounded-lg transition">
+                class="w-full bg-blue-600 hover:bg-blue-700 text-white font-bold py-3 rounded-lg transition mt-4 cursor-pointer">
                 Post Update
             </button>
 
@@ -21,4 +28,4 @@ content %}
     </div>
 </div>
 
-{% endblock content}
+{% endblock content %}
