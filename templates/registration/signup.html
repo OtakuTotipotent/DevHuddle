@@ -4,7 +4,7 @@
 
 {% block content %}
 
-<div class="max-w-md mx-auto mt-20">
+<div class="max-w-md mx-auto mt-10">
     <div class="bg-gray-800 p-8 rounded-lg shadow-lg border border-gray-700">
 
         <h2 class="text-3xl font-bold mb-6 text-white text-center">
@@ -14,12 +14,30 @@
         <form method="post">
             {% csrf_token %}
 
-            <div class="text-gray-300 space-y-4">
-                {{ form.as_p }}
+            {% for field in form %}
+
+            <div class="mb-4">
+                <label class="block text-gray-400 text-sm font-bold mb-2">
+                    {{ field.label }}
+                </label>
+
+                {{ field}} {% if field.help_text %}
+                <p class="text-xs text-gray-500 mt-1">
+                    {{ field.help_text|safe }}
+                </p>
+                {% endif %}
+
+                {% if field.errors %}
+                <p class="text-red-400 text-xs mt-1">
+                    {{ field.errors|striptags }}
+                </p>
+                {% endif %}
             </div>
 
+            {% endfor %}
+
             <button type="submit"
-                class="w-full bg-green-600 hover:bg-green-700 text-white font-bold py-3 rounded transition mt-6">
+                class="w-full bg-blue-600 hover:bg-blue-700 text-white font-bold py-2 rounded transition mt-4">
                 Create Account
             </button>
         </form>
