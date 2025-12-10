@@ -1,7 +1,8 @@
 from django.contrib import admin
 from django.urls import path, include
-from users.views import SignUpView
-# from .views import about_view
+from users.views import SignUpView, ProfileUpdateView
+from django.conf import settings
+from django.conf.urls.static import static
 
 urlpatterns = [
     path("admin/", admin.site.urls),
@@ -14,4 +15,9 @@ urlpatterns = [
     #
     # Application URLs
     path("", include("feed.urls")),
+    path("profile/edit/", ProfileUpdateView.as_view(), name="profile_edit"),
 ]
+
+# ONLY FOR DEVELOPMENT PURPOSES
+if settings.DEBUG:
+    urlpatterns += static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)
