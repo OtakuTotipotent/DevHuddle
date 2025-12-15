@@ -11,6 +11,7 @@ class HomePageView(ListView):
     template_name = "home.html"
     context_object_name = "posts"
     ordering = ["-created_at"]
+    paginate_by = 5
 
 
 class AboutPageView(TemplateView):

@@ -29,3 +29,14 @@
 </div>
 
 {% endblock content %}
+
+{% block scripts %}
+<script>
+    document.addEventListener('DOMContentLoaded', function () {
+        const bodyField = document.querySelector('[name="body"]');
+        if (bodyField) {
+            bodyField.focus();
+        }
+    });
+</script>
+{% endblock scripts %}
