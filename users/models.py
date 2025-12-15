@@ -16,6 +16,27 @@ class CustomUser(AbstractUser):
     bio = models.TextField(
         blank=True, null=True, help_text="Tell the world about your stack."
     )
+    github_url = models.URLField(
+        blank=True, null=True, help_text="Link to your github profile"
+    )
+    linkedin_url = models.URLField(
+        blank=True, null=True, help_text="Link to your linkedin profile"
+    )
+    twitter_url = models.URLField(
+        blank=True, null=True, help_text="Link to your X (formerly twitter) profile"
+    )
+    stackoverflow_url = models.URLField(
+        blank=True, null=True, help_text="Link to your StackOverflow profile"
+    )
+    portfolio_url = models.URLField(
+        blank=True, null=True, help_text="Your Portfolio website link"
+    )
+    fiver_url = models.URLField(
+        blank=True, null=True, help_text="Your Fiver profile link"
+    )
+    upwork_url = models.URLField(
+        blank=True, null=True, help_text="Your Upwork profile link"
+    )
 
     avatar = models.ImageField(
         blank=True,
