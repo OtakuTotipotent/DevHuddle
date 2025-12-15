@@ -1,12 +1,18 @@
 from django.db import models
 from django.conf import settings
+from users.validators import validate_file_size, validate_image_extension
 
 
 # Create your models here.
 class Post(models.Model):
     author = models.ForeignKey(settings.AUTH_USER_MODEL, on_delete=models.CASCADE)
-
     body = models.TextField(max_length=500)
+    image = models.ImageField(
+        upload_to="posts/",
+        blank=True,
+        null=True,
+        validators=[validate_file_size, validate_image_extension],
+    )
     created_at = models.DateTimeField(auto_now_add=True)
 
     def __str__(self):

@@ -46,6 +46,11 @@
             <span class="text-xs text-gray-500">{{ post.created_at|date:"M d, Y - D - h:i:s A" }}</span>
         </div>
         <p class="text-gray-300 leading-relaxed mt-2">{{ post.body }}</p>
+        {% if post.image %}
+        <div class="mt-4 rounded-lg overflow-hidden border border-gray-700">
+            <img src="{{ post.image.url }}" alt="Post Image" class="w-full h-auto object-cover max-h-[500px]">
+        </div>
+        {% endif %}
     </div>
     {% empty %}
     <div class="text-center text-gray-500 mt-10">

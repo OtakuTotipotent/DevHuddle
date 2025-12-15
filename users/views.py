@@ -1,7 +1,7 @@
 from django.views.generic import CreateView, UpdateView, DeleteView
 from django.contrib.auth.mixins import LoginRequiredMixin
 from django.urls import reverse_lazy
-from .forms import CustomUserCreationForm
+from .forms import CustomUserCreationForm, CustomUserChangeForm
 from .models import CustomUser
 
 
@@ -13,19 +13,7 @@ class SignUpView(CreateView):
 
 class ProfileUpdateView(LoginRequiredMixin, UpdateView):
     model = CustomUser
-    fields = [
-        "first_name",
-        "last_name",
-        "bio",
-        "avatar",
-        "github_url",
-        "linkedin_url",
-        "twitter_url",
-        "stackoverflow_url",
-        "portfolio_url",
-        "fiver_url",
-        "upwork_url",
-    ]
+    form_class = CustomUserChangeForm
     template_name = "registration/edit_profile.html"
     success_url = reverse_lazy("home")
 
