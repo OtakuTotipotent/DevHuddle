@@ -44,6 +44,31 @@
                 <span class="font-bold text-gray-200">@{{ post.author.username }}</span>
             </div>
             <span class="text-xs text-gray-500">{{ post.created_at|date:"M d, Y - D - h:i:s A" }}</span>
+            <div class="relative ml-auto">
+                {% if post.author == user %}
+                <div class="group relative">
+                    <button
+                        class="text-gray-400 hover:text-white focus:outline-none p-1 rounded-full hover:bg-gray-700 transition">
+                        <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                d="M12 5v.01M12 12v.01M12 19v.01M12 6a1 1 0 110-2 1 1 0 010 2zm0 7a1 1 0 110-2 1 1 0 010 2zm0 7a1 1 0 110-2 1 1 0 010 2z">
+                            </path>
+                        </svg>
+                    </button>
+                    <div
+                        class="absolute right-0 w-40 mt-2 py-1 bg-gray-800 rounded-md shadow-xl z-10 opacity-0 group-hover:opacity-100 transition-opacity duration-200 pointer-events-none group-hover:pointer-events-auto">
+                        <a href="{% url 'post_edit' pk=post.pk %}"
+                            class="block px-4 py-2 text-sm text-gray-300 hover:bg-gray-700 hover:text-white">
+                            Edit Post
+                        </a>
+                        <a href="{% url 'post_delete' pk=post.pk %}"
+                            class="block px-4 py-2 text-sm text-red-400 hover:bg-red-900/20 hover:text-red-300">
+                            Delete Post
+                        </a>
+                    </div>
+                </div>
+                {% endif %}
+            </div>
         </div>
         <p class="text-gray-300 leading-relaxed mt-2">{{ post.body }}</p>
         {% if post.image %}
