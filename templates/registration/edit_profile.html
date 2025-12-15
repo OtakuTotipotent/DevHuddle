@@ -64,7 +64,7 @@
             const file = event.target.files[0];
             if (!file) return;
 
-            const maxSizeMB = 2;
+            const maxSizeMB = 5;
             if (file.size > maxSizeMB * 1024 * 1024) {
                 alert(`File is too big! Max size allowed is ${maxSizeMB}MB.`);
                 this.value = "";

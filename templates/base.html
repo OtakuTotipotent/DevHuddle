@@ -24,31 +24,71 @@
         </div>
 
         <div>
-
             {% if user.is_authenticated %}
 
-            <div class="flex items-center gap-4">
+            <div class="relative ml-4">
+                <button onclick="toggleProfileMenu()"
+                    class="group relative flex items-center focus:outline-none cursor-pointer">
+                    {% if user.avatar %}
+                    <img src="{{ user.avatar.url }}"
+                        class="w-10 h-10 rounded-full object-cover border-2 border-transparent group-hover:border-blue-500 transition-all duration-300">
+                    {% else %}
+                    <div
+                        class="w-10 h-10 rounded-full bg-blue-600 flex items-center justify-center font-bold text-white border-2 border-transparent group-hover:border-blue-400">
+                        {{ user.username|slice:":1"|upper }}
+                    </div>
+                    {% endif %}
 
-                {% if user.avatar %}
-                <img src="{{ user.avatar.url }}" alt="👤"
-                    class="w-10 h-10 rounded-full object-cover border-2 border-blue-500">
-                {% else %}
-                <div class="w-10 h-10 rounded-full bg-blue-600 flex items-center justify-center font-bold text-white">
-                    {{ user.username|slice:":1"|upper }}
+                    <div
+                        class="absolute inset-0 flex items-center justify-center bg-black/50 rounded-full opacity-0 group-hover:opacity-100 transition-opacity duration-200">
+                        <svg class="w-4 h-4 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                d="M15.232 5.232l3.536 3.536m-2.036-5.036a2.5 2.5 0 113.536 3.536L6.5 21.036H3v-3.572L16.732 3.732z">
+                            </path>
+                        </svg>
+                    </div>
+
+                    <span
+                        class="absolute -bottom-8 left-1/2 -translate-x-1/2 bg-gray-800 text-white text-xs px-2 py-1 rounded opacity-0 group-hover:opacity-100 transition-opacity duration-300 whitespace-nowrap pointer-events-none">
+                        @{{ user.username }}
+                    </span>
+                </button>
+
+                <div id="profile-dropdown"
+                    class="hidden absolute right-0 mt-3 w-72 bg-gray-800 rounded-xl shadow-2xl border border-gray-700 z-50 overflow-hidden transform origin-top-right transition-all duration-200">
+
+                    <div class="p-4 border-b border-gray-700 bg-gray-800/50">
+                        <h3 class="text-white font-bold text-lg">{{ user.first_name }} {{ user.last_name }}</h3>
+                        <p class="text-gray-400 text-xs">@{{ user.username }}</p>
+                        <p class="text-gray-500 text-xs mt-1 truncate">{{ user.email }}</p>
+                    </div>
+
+                    <div class="grid grid-cols-2 gap-px bg-gray-700">
+                        <div class="bg-gray-800 p-3 text-center hover:bg-gray-750 transition">
+                            <span class="block text-xl font-bold text-blue-500">00</span> <span
+                                class="text-xs text-gray-400 uppercase tracking-wider">Posts</span>
+                        </div>
+                        <div class="bg-gray-800 p-3 text-center hover:bg-gray-750 transition">
+                            <span class="block text-xl font-bold text-blue-500">{{ user.date_joined|date:"M Y" }}</span>
+                            <span class="text-xs text-gray-400 uppercase tracking-wider">Joined</span>
+                        </div>
+                    </div>
+
+                    <div class="p-2">
+                        <a href="{% url 'profile_edit' %}"
+                            class="block w-full text-left px-4 py-2 text-sm text-gray-300 hover:bg-gray-700 hover:text-white rounded-md transition">
+                            ✏️ Edit Profile
+                        </a>
+
+                        <form action="{% url 'logout' %}" method="post" class="block">
+                            {% csrf_token %}
+                            <button type="submit"
+                                class="w-full text-left px-4 py-2 text-sm text-red-400 hover:bg-red-900/20 hover:text-red-300 rounded-md transition cursor-pointer">
+                                🚪 Sign Out
+                            </button>
+                        </form>
+                    </div>
                 </div>
-                {% endif %}
-
-                <span class="font-mono text-gray-300">@{{ user.username }}</span>
-
-                <a href="{% url 'profile_edit' %}" class="text-xs text-gray-500 hover:text-white">Edit</a>
-
-                <form action="{% url 'logout' %}" method="post">
-                    {% csrf_token %}
-                    <button type="submit"
-                        class="bg-red-600 px-2 py-1 rounded hover:bg-red-700 text-white text-sm font-bold transition cursor-pointer">
-                        Logout
-                    </button>
-                </form>
 
             </div>
 
@@ -63,7 +103,6 @@
             </div>
 
             {% endif %}
-
         </div>
     </nav>
 
@@ -78,6 +117,25 @@
         Caffeine by <a href="http://github.com/OtakuTotipotent" target="_blank" rel="noopener noreferrer"
             class="text-gray-400 hover:text-blue-600">&nbsp;OtakuTotipotent</a>.
     </footer>
+
+    <script>
+        function toggleProfileMenu() {
+            const menu = document.getElementById('profile-dropdown');
+            menu.classList.toggle('hidden');
+        }
+
+        // Close menu when clicking outside
+        document.addEventListener('click', function (event) {
+            const menu = document.getElementById('profile-dropdown');
+            const button = event.target.closest('button'); // Checks if click was inside the button
+            const dropdown = event.target.closest('#profile-dropdown'); // Checks if click was inside the menu
+
+            // If we clicked ANYWHERE except the button or the menu, hide the menu
+            if (!button && !dropdown && !menu.classList.contains('hidden')) {
+                menu.classList.add('hidden');
+            }
+        });
+    </script>
 
     {% block scripts %}
     {% endblock scripts %}
