@@ -32,7 +32,7 @@
                 <button onclick="toggleProfileMenu()"
                     class="group relative flex items-center focus:outline-none cursor-pointer">
                     {% if user.avatar %}
-                    <img src="{{ user.avatar.url }}"
+                    <img src="{{ user.avatar.url }}?v={% now 'U' %}" alt="User's profile picture."
                         class="w-10 h-10 rounded-full object-cover border-2 border-transparent group-hover:border-blue-500 transition-all duration-300">
                     {% else %}
                     <div
