@@ -29,47 +29,66 @@
 {% else %}
 
 <div class="max-w-2xl mx-auto">
+    <!-- CREATE POST -->
     <div class="flex justify-between items-center mb-8">
         <h1 class="text-3xl font-bold text-white">Your Feed</h1>
         <a href="{% url 'post_new' %}" class="text-sm text-blue-400 hover:text-blue-300 transition">+ New Post</a>
     </div>
 
+    <!-- POSTS -->
     {% for post in posts %}
     <div class="bg-gray-800 p-6 rounded-lg mb-4 border border-gray-700 hover:border-blue-500 transition shadow-lg">
-        <div class="flex justify-between items-start mb-2">
-            <div class="flex items-center gap-2">
-                <div class="w-8 h-8 rounded-full bg-blue-500 flex items-center justify-center font-bold text-sm">
+        <div class="flex items-center justify-between mb-4">
+
+            <!-- AUTHOR'S INFO -->
+            <div class="flex items-center gap-3">
+                {% if post.author.avatar %}
+                <img src="{{ post.author.avatar.url }}"
+                    class="w-10 h-10 rounded-full object-cover border border-gray-600">
+
+                {% else %}
+                <!-- PROFILE ICON LETTER -->
+                <div
+                    class="w-10 h-10 rounded-full bg-blue-600 flex items-center justify-center font-bold text-white text-sm">
                     {{ post.author.username|slice:":1"|upper }}
                 </div>
-                <span class="font-bold text-gray-200">@{{ post.author.username }}</span>
-            </div>
-            <span class="text-xs text-gray-500">{{ post.created_at|date:"M d, Y - D - h:i:s A" }}</span>
-            <div class="relative ml-auto">
-                {% if post.author == user %}
-                <div class="group relative">
-                    <button
-                        class="text-gray-400 hover:text-white focus:outline-none p-1 rounded-full hover:bg-gray-700 transition">
-                        <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
-                                d="M12 5v.01M12 12v.01M12 19v.01M12 6a1 1 0 110-2 1 1 0 010 2zm0 7a1 1 0 110-2 1 1 0 010 2zm0 7a1 1 0 110-2 1 1 0 010 2z">
-                            </path>
-                        </svg>
-                    </button>
-                    <div
-                        class="absolute right-0 w-40 mt-2 py-1 bg-gray-800 rounded-md shadow-xl z-10 opacity-0 group-hover:opacity-100 transition-opacity duration-200 pointer-events-none group-hover:pointer-events-auto">
-                        <a href="{% url 'post_edit' pk=post.pk %}"
-                            class="block px-4 py-2 text-sm text-gray-300 hover:bg-gray-700 hover:text-white">
-                            Edit Post
-                        </a>
-                        <a href="{% url 'post_delete' pk=post.pk %}"
-                            class="block px-4 py-2 text-sm text-red-400 hover:bg-red-900/20 hover:text-red-300">
-                            Delete Post
-                        </a>
-                    </div>
-                </div>
                 {% endif %}
+
+                <div class="leading-tight">
+                    <span class="block font-bold text-gray-200">@{{ post.author.username }}</span>
+                    <span class="block text-xs text-gray-500">{{ post.created_at|date:"M d • H:i" }}</span>
+                </div>
             </div>
+
+            <!-- EDIT/DELETE LOGIC -->
+            {% if post.author == user %}
+            <div class="relative">
+                <button onclick="togglePostMenu('{{ post.pk }}')"
+                    class="text-gray-400 hover:text-white p-2 hover:bg-gray-700/50 rounded-full transition">
+                    <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                            d="M5 12h.01M12 12h.01M19 12h.01M6 12a1 1 0 11-2 0 1 1 0 012 0zm7 0a1 1 0 11-2 0 1 1 0 012 0zm7 0a1 1 0 11-2 0 1 1 0 012 0z">
+                        </path>
+                    </svg>
+                </button>
+
+                <div id="post-menu-{{ post.pk }}"
+                    class="hidden absolute right-0 mt-2 w-48 bg-gray-800 rounded-lg shadow-xl border border-gray-700 z-20 overflow-hidden">
+                    <a href="{% url 'post_edit' pk=post.pk %}"
+                        class="block px-4 py-3 text-sm text-gray-300 hover:bg-gray-700 hover:text-white transition">
+                        ✏️ Edit Post
+                    </a>
+                    <a href="{% url 'post_delete' pk=post.pk %}"
+                        class="block px-4 py-3 text-sm text-red-400 hover:bg-red-900/20 hover:text-red-300 transition">
+                        🗑️ Delete Post
+                    </a>
+                </div>
+            </div>
+            {% endif %}
+
         </div>
+
+        <!-- POST BODY -->
         <p class="text-gray-300 leading-relaxed mt-2">{{ post.body }}</p>
         {% if post.image %}
         <div class="mt-4 rounded-lg overflow-hidden border border-gray-700">
@@ -77,12 +96,15 @@
         </div>
         {% endif %}
     </div>
+
+    <!-- FRESH FEED / EMPTY FEED PAGES -->
     {% empty %}
     <div class="text-center text-gray-500 mt-10">
         <p>It's quiet here... too quiet.</p>
     </div>
     {% endfor %}
 
+    <!-- PAGINATION -->
     {% if is_paginated %}
     <div class="flex justify-center items-center space-x-4 mt-8 mb-12">
 
@@ -118,3 +140,30 @@
 </div>
 
 {% endif %} {% endblock content %}
+
+<!-- SCRIPTS -->
+{% block scripts %}
+<script>
+    // 1. Toggle specific menu
+    function togglePostMenu(postId) {
+        const menu = document.getElementById(`post-menu-${postId}`);
+        // Close all other open menus first (optional polish)
+        document.querySelectorAll('[id^="post-menu-"]').forEach(el => {
+            if (el !== menu) el.classList.add('hidden');
+        });
+        menu.classList.toggle('hidden');
+    }
+
+    // 2. Close when clicking outside
+    document.addEventListener('click', function (event) {
+        const isButton = event.target.closest('button');
+        const isMenu = event.target.closest('[id^="post-menu-"]');
+
+        if (!isButton && !isMenu) {
+            document.querySelectorAll('[id^="post-menu-"]').forEach(menu => {
+                menu.classList.add('hidden');
+            });
+        }
+    });
+</script>
+{% endblock %}
