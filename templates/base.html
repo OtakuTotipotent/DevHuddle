@@ -15,92 +15,87 @@
 
 <body class="bg-gray-900 text-gray-100 font-sans antialiased">
 
-    <nav class="p-4 border-b border-gray-800 bg-gray-900 sticky top-0 z-50">
+    <nav class="p-2 border-b border-gray-800 bg-gray-900 sticky top-0 z-50">
         <div class="container mx-auto flex justify-between items-center relative">
 
-            <a href="/" class="text-2xl font-bold text-blue-500">DevHuddle_</a>
+            <a href="/" class="md:text-2xl text-lg font-bold text-blue-500">DevHuddle_</a>
 
-            <!-- Navigation Links -->
-            <div class="hidden md:flex items-center gap-x-8">
-                <a href="{% url 'about' %}" class="text-gray-300 hover:text-blue-500 transition">About</a>
+            <div class="flex md:gap-6 gap-4 items-center">
+                <!-- Navigation Links -->
+                <div class="hidden md:flex items-center gap-8">
+                    <a href="{% url 'about' %}" class="text-gray-300 hover:text-white transition">About</a>
 
-                <!-- USER PROFILE ICON -->
+                    <!-- USER PROFILE ICON -->
+                    {% if not user.is_authenticated %}
+                    <div class="flex items-center gap-4 border-l border-gray-700 pl-4 font-medium">
+                        <a href="{% url 'login' %}" class="text-blue-500 hover:text-blue-600 transition">
+                            Login
+                        </a>
+                        <a href="{% url 'signup' %}" class="text-blue-500 hover:text-blue-600 transition">
+                            Join Now
+                        </a>
+                    </div>
+                    {% endif %}
+                </div>
+
+                <!-- AVATAR & PROFILE MENU -->
                 {% if user.is_authenticated %}
                 {% include 'includes/desktop_profile_dropdown.html' %}
-                {% else %}
-                <div class="flex items-center gap-4">
-                    <a href="{% url 'login' %}" class="text-gray-300 hover:text-white transition">Login</a>
-                    <a href="{% url 'signup' %}"
-                        class="bg-blue-600 px-4 py-2 rounded text-white font-bold hover:bg-blue-700 transition">
-                        Join Now
-                    </a>
-                </div>
                 {% endif %}
-            </div>
 
-            <!-- MOBILE MENU BUTTONS | HAMBURGER -->
-            <div class="md:hidden flex items-center z-50">
-                <button onclick="toggleMobileMenu()"
-                    class="text-gray-300 hover:text-white focus:outline-none p-2 cursor-pointer">
+                <!-- MOBILE MENU BUTTONS | HAMBURGER -->
+                <div class="md:hidden flex items-center z-50">
+                    <button onclick="toggleMobileMenu()"
+                        class="text-blue-500 hover:text-blue-400 focus:outline-none cursor-pointer">
 
-                    <svg id="mobile-icon-open" class="w-8 h-8 block" fill="none" stroke="currentColor"
-                        viewBox="0 0 24 24">
-                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
-                            d="M4 6h16M4 12h16m-7 6h7"></path>
-                    </svg>
+                        <svg id="mobile-icon-open" class="w-8 h-8 block" fill="none" stroke="currentColor"
+                            viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                d="M4 6h16M4 12h16m-7 6h7"></path>
+                        </svg>
 
-                    <svg id="mobile-icon-close" class="w-8 h-8 hidden" fill="none" stroke="currentColor"
-                        viewBox="0 0 24 24">
-                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12">
-                        </path>
-                    </svg>
+                        <svg id="mobile-icon-close" class="w-8 h-8 hidden" fill="none" stroke="currentColor"
+                            viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                d="M6 18L18 6M6 6l12 12">
+                            </path>
+                        </svg>
 
-                </button>
-            </div>
-
-            <!-- MOBILE MENU DROPDOWN -->
-            <div id="mobile-menu"
-                class="hidden absolute top-14 right-0 w-64 bg-gray-800 rounded-xl shadow-2xl border border-gray-700 z-40 flex-col overflow-hidden animate-fade-in-down">
-
-                <div class="flex flex-col p-2">
-                    <a href="/"
-                        class="block px-4 py-3 text-gray-300 hover:bg-gray-700 hover:text-white rounded-lg transition font-bold"
-                        onclick="toggleMobileMenu()">Home</a>
-                    <a href="{% url 'about' %}"
-                        class="block px-4 py-3 text-gray-300 hover:bg-gray-700 hover:text-white rounded-lg transition font-bold"
-                        onclick="toggleMobileMenu()">About</a>
+                    </button>
                 </div>
 
-                <div class="h-px bg-gray-700 mx-2"></div>
+                <!-- MOBILE MENU DROPDOWN -->
+                <div id="mobile-menu"
+                    class="hidden p-1 absolute top-12 right-0 w-40 bg-gray-800 rounded-xl shadow-2xl border border-gray-700 z-50 flex-col overflow-hidden animate-fade-in-down">
 
-                <div class="p-2">
-                    {% if user.is_authenticated %}
-                    <a href="{% url 'profile_edit' %}"
-                        class="block px-4 py-3 text-sm text-green-400 hover:bg-gray-700 hover:text-green-300 rounded-lg transition">
-                        Edit Profile 🙅
-                    </a>
+                    <a href="/"
+                        class="block px-3 py-1 text-gray-300 hover:bg-gray-700 hover:text-white rounded-lg transition"
+                        onclick="toggleMobileMenu()">Home</a>
 
-                    <form action="{% url 'logout' %}" method="post" class="block w-full">
-                        {% csrf_token %}
-                        <button type="submit"
-                            class="w-full text-left px-4 py-3 text-sm text-red-400 hover:bg-red-900/20 hover:text-red-300 rounded-lg transition">
-                            Sign Out 📤
-                        </button>
-                    </form>
-                    {% else %}
-                    <a href="{% url 'login' %}"
-                        class="block px-4 py-3 text-gray-300 hover:bg-gray-700 hover:text-white rounded-lg transition">Login</a>
-                    <a href="{% url 'signup' %}"
-                        class="block px-4 py-3 text-blue-400 hover:bg-gray-700 hover:text-blue-300 rounded-lg transition font-bold">Join
-                        Now</a>
-                    {% endif %}
+                    <div class="mx-1 my-1 h-px bg-gray-600"></div>
+
+                    <a href="{% url 'about' %}"
+                        class="block px-3 py-1 text-gray-300 hover:bg-gray-700 hover:text-white rounded-lg transition"
+                        onclick="toggleMobileMenu()">About</a>
+
+                    <div class="mx-1 my-1 h-px bg-gray-600"></div>
+
+                    <a href="#"
+                        class="block px-3 py-1 text-gray-300 hover:bg-gray-700 hover:text-white rounded-lg transition"
+                        onclick="toggleMobileMenu()">Users</a>
+
+                    <div class="mx-1 my-1 h-px bg-gray-600"></div>
+
+                    <a href="#"
+                        class="block px-3 py-1 text-gray-300 hover:bg-gray-700 hover:text-white rounded-lg transition"
+                        onclick="toggleMobileMenu()">Help</a>
                 </div>
             </div>
 
         </div>
     </nav>
 
-    <main class="container mx-auto p-4 min-h-screen">
+    <main class="container mx-auto p-2 min-h-screen">
         {% block content %}
         {% endblock content %}
     </main>
