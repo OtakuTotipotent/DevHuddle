@@ -95,16 +95,16 @@
         </div>
     </nav>
 
-    <main class="container mx-auto p-2 min-h-screen">
+    <main class="container mx-auto p-3 min-h-[80vh]">
         {% block content %}
         {% endblock content %}
     </main>
 
-    <footer class="p-4 text-center text-gray-500 text-sm border-t border-gray-800 mt-10">
+    <footer class="p-2 text-center text-gray-500 text-sm border-t border-gray-800 mt-10">
         &copy; 2025 DevHuddle Inc. Built with <span class="text-sky-500">Python</span>/<span
             class="text-yellow-500">Django</span> &
         Caffeine by <a href="http://github.com/OtakuTotipotent" target="_blank" rel="noopener noreferrer"
-            class="text-gray-400 hover:text-blue-600">&nbsp;OtakuTotipotent</a>.
+            class="text-gray-300 hover:text-blue-400">&nbsp;OtakuTotipotent</a>.
     </footer>
 
     <script>
@@ -119,8 +119,7 @@
             const openIcon = document.getElementById('mobile-icon-open');
             const closeIcon = document.getElementById('mobile-icon-close');
 
-            // 1. Toggles the Menu Visibility
-            menu.classList.toggle('hidden');
+            menu.classList.toggle('hidden'); // 1. Toggles the Menu Visibility
             menu.classList.toggle('flex'); // Ensure flex layout activates when visible
 
             // 2. Swap the Icons
