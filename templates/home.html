@@ -34,16 +34,32 @@
 
 <div class="max-w-2xl mx-auto">
     <!-- CREATE POST -->
-    <div class="flex justify-between items-center mb-8">
-        <h1 class="text-3xl font-bold text-white">Your Feed</h1>
-        <a href="{% url 'post_new' %}" class="text-sm text-blue-400 hover:text-blue-300 transition">+ New Post</a>
+    <div class="flex flex-wrap justify-start gap-3 items-center mb-8 mt-3">
+        <a href="#" class="text-sm text-purple-400 hover:text-purple-500 bg-gray-800 px-2 py-1 rounded-full transition">
+            AI playground >
+        </a>
+        <a href="#" class="text-sm text-green-600 hover:text-green-400 bg-gray-800 px-2 py-1 rounded-full transition">
+            Find work ?
+        </a>
+        <a href="#" class="text-sm text-yellow-500 hover:text-yellow-300 bg-gray-800 px-2 py-1 rounded-full transition">
+            Go premium &infin;
+        </a>
+        <a href="#" class="text-sm text-orange-600 hover:text-orange-500 bg-gray-800 px-2 py-1 rounded-full transition">
+            Post offer $
+        </a>
+        <a href="#" class="text-sm text-gray-300 hover:text-gray-100 bg-gray-800 px-2 py-1 rounded-full transition">
+            Announce job *
+        </a>
+        <a href="{% url 'post_new' %}"
+            class="text-sm text-gray-300 hover:text-blue-100 bg-blue-600 px-2 py-1 rounded-full transition">
+            New Post +
+        </a>
     </div>
 
     <!-- POSTS -->
     {% for post in posts %}
-    <div class="bg-gray-800 p-6 rounded-lg mb-4 border border-gray-700 hover:border-blue-500 transition shadow-lg">
-        <div class="flex items-center justify-between mb-4">
-
+    <div class="bg-gray-800 p-3 rounded-lg mb-4 border border-gray-700 hover:border-gray-600 transition shadow-lg">
+        <div class="flex items-center justify-between mb-2">
             <!-- AUTHOR'S INFO -->
             <div class="flex items-center gap-3">
                 {% if post.author.avatar %}
@@ -53,14 +69,14 @@
                 {% else %}
                 <!-- PROFILE ICON LETTER -->
                 <div
-                    class="w-10 h-10 rounded-full bg-blue-600 flex items-center justify-center font-bold text-white text-sm">
+                    class="w-10 h-10 rounded-full bg-blue-600 flex items-center justify-center font-bold text-gray-300 text-sm">
                     {{ post.author.username|slice:":1"|upper }}
                 </div>
                 {% endif %}
 
                 <div class="leading-tight">
-                    <span class="block font-bold text-gray-200">@{{ post.author.username }}</span>
-                    <span class="block text-xs text-gray-500">{{ post.created_at|date:"M d • H:i" }}</span>
+                    <span class="block font-semibold text-gray-200">@{{ post.author.username }}</span>
+                    <span class="block text-xs text-gray-500">{{ post.created_at|date:"d M Y • h:i:s A" }}</span>
                 </div>
             </div>
 
@@ -77,15 +93,53 @@
                 </button>
 
                 <div id="post-menu-{{ post.pk }}"
-                    class="hidden absolute right-0 mt-2 w-48 bg-gray-800 rounded-lg shadow-xl border border-gray-700 z-20 overflow-hidden">
+                    class="hidden absolute right-0 mt-2 w-36 bg-gray-800 rounded-lg shadow-xl border border-gray-700 z-20 overflow-hidden">
                     <a href="{% url 'post_edit' pk=post.pk %}"
-                        class="block px-4 py-3 text-sm text-gray-300 hover:bg-gray-700 hover:text-white transition">
-                        ✏️ Edit Post
+                        class="block px-4 py-2 text-sm text-gray-300 hover:bg-gray-700 hover:text-white transition">
+                        Edit Post
                     </a>
+                    <div class="h-px bg-gray-700 mx-2 my-1"></div>
                     <a href="{% url 'post_delete' pk=post.pk %}"
-                        class="block px-4 py-3 text-sm text-red-400 hover:bg-red-900/20 hover:text-red-300 transition">
-                        🗑️ Delete Post
+                        class="block px-4 py-2 text-sm text-red-400 hover:bg-red-900/20 hover:text-red-300 transition">
+                        Delete Post
                     </a>
+                </div>
+            </div>
+
+            {% else %}
+            <div class="flex gap-2 items-center">
+                <span class="text-xl cursor-pointer hover:pb-1">❤️‍🔥</span>
+                <span class="text-xl cursor-pointer hover:pb-1">💬</span>
+
+                <div class="relative">
+                    <button onclick="togglePostMenu('{{ post.pk }}')"
+                        class="text-gray-400 hover:text-white p-2 hover:bg-gray-700/50 rounded-full transition cursor-pointer">
+                        <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                d="M5 12h.01M12 12h.01M19 12h.01M6 12a1 1 0 11-2 0 1 1 0 012 0zm7 0a1 1 0 11-2 0 1 1 0 012 0zm7 0a1 1 0 11-2 0 1 1 0 012 0z">
+                            </path>
+                        </svg>
+                    </button>
+                    <div id="post-menu-{{ post.pk }}"
+                        class="hidden absolute right-0 mt-2 w-40 bg-gray-800 rounded-lg shadow-xl border border-gray-700 z-20 overflow-hidden">
+                        <a href="#"
+                            class="border-b border-gray-700 block px-4 py-2 text-sm text-gray-300 hover:bg-gray-700 hover:text-blue-500 transition">Boost
+                            it ⚡</a>
+                        <a href="#"
+                            class="border-b border-gray-700 block px-4 py-2 text-sm text-gray-300 hover:bg-gray-700 hover:text-blue-500 transition">Learn
+                            by AI</a>
+                        <a href="#"
+                            class="border-b border-gray-700 block px-4 py-2 text-sm text-gray-300 hover:bg-gray-700 hover:text-blue-500 transition">Check
+                            Profile</a>
+                        <a href="#"
+                            class="border-b border-gray-700 block px-4 py-2 text-sm text-gray-300 hover:bg-gray-700 hover:text-blue-500 transition">See
+                            Comments</a>
+                        <a href="#"
+                            class="border-b border-gray-700 block px-4 py-2 text-sm text-gray-300 hover:bg-gray-700 hover:text-blue-500 transition">Report
+                            this</a>
+                        <a href="#"
+                            class="border-b border-gray-700 block px-4 py-2 text-sm text-gray-300 hover:bg-gray-700 hover:text-blue-500 transition">Bookmark</a>
+                    </div>
                 </div>
             </div>
             {% endif %}
@@ -93,9 +147,9 @@
         </div>
 
         <!-- POST BODY -->
-        <p class="text-gray-300 leading-relaxed mt-2">{{ post.body }}</p>
+        <p class="text-gray-300 leading-relaxed mt-1">{{ post.body }}</p>
         {% if post.image %}
-        <div class="mt-4 rounded-lg overflow-hidden border border-gray-700">
+        <div class="mt-3 rounded-lg overflow-hidden border border-gray-700">
             <img src="{{ post.image.url }}" alt="Post Image" class="w-full h-auto object-cover max-h-[500px]">
         </div>
         {% endif %}
@@ -110,15 +164,15 @@
 
     <!-- PAGINATION -->
     {% if is_paginated %}
-    <div class="flex justify-center items-center space-x-4 mt-8 mb-12">
+    <div class="flex justify-center items-center space-x-4 mt-8">
 
         {% if page_obj.has_previous %}
         <a href="?page={{ page_obj.previous_page_number }}"
-            class="px-4 py-2 bg-gray-800 border border-gray-600 rounded-lg text-gray-300 hover:bg-blue-600 hover:text-white hover:border-blue-500 transition shadow-md cursor-pointer">
+            class="px-2 py-1 bg-gray-800 border border-gray-600 rounded-lg text-gray-300 hover:bg-blue-600 hover:text-white hover:border-blue-500 transition shadow-md cursor-pointer">
             &larr; Previous
         </a>
         {% else %}
-        <span class="px-4 py-2 bg-gray-800/50 border border-gray-700 rounded-lg text-gray-600 cursor-not-allowed">
+        <span class="px-2 py-1 bg-gray-800/50 border border-gray-700 rounded-lg text-gray-600 cursor-not-allowed">
             &larr; Previous
         </span>
         {% endif %}
@@ -129,11 +183,11 @@
 
         {% if page_obj.has_next %}
         <a href="?page={{ page_obj.next_page_number }}"
-            class="px-4 py-2 bg-gray-800 border border-gray-600 rounded-lg text-gray-300 hover:bg-blue-600 hover:text-white hover:border-blue-500 transition shadow-md cursor-pointer">
+            class="px-2 py-1 bg-gray-800 border border-gray-600 rounded-lg text-gray-300 hover:bg-blue-600 hover:text-white hover:border-blue-500 transition shadow-md cursor-pointer">
             Next &rarr;
         </a>
         {% else %}
-        <span class="px-4 py-2 bg-gray-800/50 border border-gray-700 rounded-lg text-gray-600 cursor-not-allowed">
+        <span class="px-2 py-1 bg-gray-800/50 border border-gray-700 rounded-lg text-gray-600 cursor-not-allowed">
             Next &rarr;
         </span>
         {% endif %}
