@@ -136,7 +136,11 @@
                 </button>
 
                 <!-- COMMENT BUTTON -->
-                <span class="text-xl cursor-pointer hover:pb-1">💬</span>
+                <a href="{% url 'post_detail' post.pk %}"
+                    class="flex items-center gap-1 text-gray-400 hover:text-blue-400 transition cursor-pointer hover:pb-1">
+                    <span class="text-xl">💬</span>
+                    <span class="text-sm font-bold">{{ post.comments.count }}</span>
+                </a>
 
                 <!-- POST REACTION OPTIONS -->
                 <div class="relative">
