@@ -6,12 +6,34 @@ from django.views.generic import (
     DeleteView,
 )
 from django.contrib.auth.mixins import LoginRequiredMixin, UserPassesTestMixin
+from django.contrib.auth.decorators import login_required
+from django.shortcuts import get_object_or_404
+from django.http import JsonResponse
 from django.urls import reverse_lazy
 from .models import Post
 from .forms import PostForm
 
 
-# Create your views here.
+# FUNCTION-BASED VIEWS
+
+
+@login_required
+def like_post(request, pk):
+    post = get_object_or_404(Post, pk=pk)
+
+    if request.user in post.likes.all():
+        post.likes.remove(request.user)
+        liked = False
+    else:
+        post.likes.add(request.user)
+        liked = True
+
+    return JsonResponse({"liked": liked, "count": post.likes.count()})
+
+
+# CLASS-BASED VIEWS
+
+
 class HomePageView(ListView):
     model = Post
     template_name = "home.html"
