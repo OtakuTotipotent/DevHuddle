@@ -33,7 +33,7 @@
 {% else %}
 
 <div class="max-w-2xl mx-auto">
-    <!-- CREATE POST -->
+    <!-- FEED BUTTONS -->
     <div class="flex flex-wrap justify-start gap-3 items-center mb-8 mt-3">
         <a href="#" class="text-sm text-purple-400 hover:text-purple-500 bg-gray-800 px-2 py-1 rounded-full transition">
             AI playground >
@@ -51,14 +51,14 @@
             Announce job *
         </a>
         <a href="{% url 'post_new' %}"
-            class="text-sm text-gray-300 hover:text-blue-100 bg-blue-600 px-2 py-1 rounded-full transition">
+            class="text-sm text-gray-300 bg-blue-600 px-2 py-1 border-2 border-blue-600 rounded-full hover:bg-transparent hover:text-blue-600 transition">
             New Post +
         </a>
     </div>
 
     <!-- POSTS -->
     {% for post in posts %}
-    <div class="bg-gray-800 p-3 rounded-lg mb-4 border border-gray-700 hover:border-gray-600 transition shadow-lg">
+    <div class="bg-gray-800 p-3 rounded-lg mb-4 border border-gray-600 transition shadow-lg">
         <div class="flex items-center justify-between mb-2">
             <!-- AUTHOR'S INFO & LOGO -->
             <div class="flex items-center gap-3">
@@ -153,24 +153,25 @@
                         </svg>
                     </button>
                     <div id="post-menu-{{ post.pk }}"
-                        class="hidden absolute right-0 mt-2 w-40 bg-gray-800 rounded-lg shadow-xl border border-gray-700 z-20 overflow-hidden">
+                        class="hidden absolute right-0 mt-2 w-36 bg-gray-800 rounded-lg shadow-xl border border-gray-700 z-20 overflow-hidden">
                         <a href="#"
-                            class="border-b border-gray-700 block px-4 py-2 text-sm text-gray-300 hover:bg-gray-700 hover:text-blue-500 transition">Boost
+                            class="border-b border-gray-700 block px-4 py-2 text-sm text-gray-300 hover:bg-gray-700 transition">Boost
                             it ⚡</a>
                         <a href="#"
-                            class="border-b border-gray-700 block px-4 py-2 text-sm text-gray-300 hover:bg-gray-700 hover:text-blue-500 transition">Learn
+                            class="border-b border-gray-700 block px-4 py-2 text-sm text-gray-300 hover:bg-gray-700 transition">Learn
                             by AI</a>
                         <a href="#"
-                            class="border-b border-gray-700 block px-4 py-2 text-sm text-gray-300 hover:bg-gray-700 hover:text-blue-500 transition">Check
+                            class="border-b border-gray-700 block px-4 py-2 text-sm text-gray-300 hover:bg-gray-700 transition">Check
                             Profile</a>
                         <a href="#"
-                            class="border-b border-gray-700 block px-4 py-2 text-sm text-gray-300 hover:bg-gray-700 hover:text-blue-500 transition">See
+                            class="border-b border-gray-700 block px-4 py-2 text-sm text-gray-300 hover:bg-gray-700 transition">See
                             Comments</a>
                         <a href="#"
-                            class="border-b border-gray-700 block px-4 py-2 text-sm text-gray-300 hover:bg-gray-700 hover:text-blue-500 transition">Report
-                            this</a>
+                            class="border-b border-gray-700 block px-4 py-2 text-sm text-gray-300 hover:bg-gray-700 transition">
+                            Report this</a>
                         <a href="#"
-                            class="border-b border-gray-700 block px-4 py-2 text-sm text-gray-300 hover:bg-gray-700 hover:text-blue-500 transition">Bookmark</a>
+                            class="border-b border-gray-700 block px-4 py-2 text-sm text-gray-300 hover:bg-gray-700 transition">
+                            Bookmark</a>
                     </div>
                 </div>
             </div>
