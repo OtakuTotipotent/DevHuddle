@@ -1,0 +1,226 @@
+{% extends 'base.html' %}
+
+{% block title %}{{ profile_user.username }}'s Profile{% endblock %}
+
+{% block content %}
+<div class="max-w-4xl mx-auto mt-6">
+
+    <!-- User Info -->
+    <div class="bg-gray-800 rounded-xl shadow-lg border border-gray-700 overflow-hidden mb-8">
+        <div class="h-32 bg-gradient-to-r from-blue-900 to-gray-900">
+        </div>
+
+        <div class="px-5 pb-8">
+            <!-- Avatar -->
+            <div class="relative -mt-12 mb-3 md:px-8">
+                {% if profile_user.avatar %}
+                <img src="{{ profile_user.avatar.url }}"
+                    class="w-32 h-32 rounded-full border-4 border-gray-800 object-cover">
+                {% else %}
+                <div
+                    class="w-32 h-32 rounded-full border-4 border-gray-800 bg-blue-600 flex items-center justify-center text-4xl font-bold text-white">
+                    {{ profile_user.username|slice:":1"|upper }}
+                </div>
+                {% endif %}
+            </div>
+
+            <!-- Info & Links -->
+            <h1 class="text-2xl text-white">{{ profile_user.first_name }} {{ profile_user.last_name }}
+            </h1>
+
+            <p class="text-gray-400 font-mono mb-2">@{{ profile_user.username }}</p>
+
+            {% if profile_user.bio %}
+            <p class="text-blue-400 max-w-2xl mb-1">{{ profile_user.bio }}</p>
+            {% endif %}
+
+            <!-- Links -->
+            <div class="flex flex-wrap gap-x-4 gap-y-1 text-gray-400 mb-4">
+                {% if profile_user.portfolio_url %}
+                <a href="{{ profile_user.portfolio_url }}" target="_blank" class="hover:text-purple-300 transition"
+                    title="Portfolio">
+                    Portfolio
+                </a>
+                {% endif %}
+                {% if profile_user.github_url %}
+                <a href="{{ profile_user.github_url }}" target="_blank" class="hover:text-white transition"
+                    title="GitHub">
+                    GitHub
+                </a>
+                {% endif %}
+                {% if profile_user.twitter_url %}
+                <a href="{{ profile_user.twitter_url }}" target="_blank" class="hover:text-cyan-200 transition"
+                    title="X (Twitter)">
+                    X (Twitter)
+                </a>
+                {% endif %}
+                {% if profile_user.linkedin_url %}
+                <a href="{{ profile_user.linkedin_url }}" target="_blank" class="hover:text-blue-300 transition"
+                    title="LinkedIn">
+                    LinkedIn
+                </a>
+                {% endif %}
+                {% if profile_user.stackoverflow_url %}
+                <a href="{{ profile_user.stackoverflow_url }}" target="_blank" class="hover:text-orange-300 transition"
+                    title="Stack Overflow">
+                    StackOverflow
+                </a>
+                {% endif %}
+                {% if profile_user.upwork_url %}
+                <a href="{{ profile_user.upwork_url }}" target="_blank" class="hover:text-green-300 transition"
+                    title="Upwork">
+                    Upwork
+                </a>
+                {% endif %}
+                {% if profile_user.fiver_url %}
+                <a href="{{ profile_user.fiver_url }}" target="_blank" class="hover:text-green-300 transition"
+                    title="Fiverr">
+                    Fiverr
+                </a>
+                {% endif %}
+            </div>
+
+            <!-- Buttons & Actions -->
+            <div class="flex flex-wrap gap-2 mb-2 justify-start">
+                {% if user == profile_user %}
+                <!-- SELF Profile -->
+                <a href="{% url 'profile_edit' %}"
+                    class="border border-red-400 hover:opacity-80 text-red-400 text-sm px-2 py-[2px] rounded-full transition">
+                    Edit Profile
+                </a>
+                <button
+                    class="border border-yellow-400 hover:opacity-80 cursor-pointer text-yellow-400 text-sm px-2 pb-[2px] rounded-full transition">
+                    Boost
+                </button>
+                <button
+                    class="border border-green-400 hover:opacity-80 cursor-pointer text-green-400 text-sm px-2 pb-[2px] rounded-full transition">
+                    Go Premium
+                </button>
+                <button
+                    class="border border-cyan-400 hover:opacity-80 cursor-pointer text-cyan-400 text-sm px-2 pb-[2px] rounded-full transition">
+                    Clients
+                </button>
+                <button
+                    class="border border-indigo-400 hover:opacity-80 cursor-pointer text-indigo-400 text-sm px-2 pb-[2px] rounded-full transition">
+                    Projects
+                </button>
+                <button
+                    class="border border-orange-400 hover:opacity-80 cursor-pointer text-orange-400 text-sm px-2 pb-[2px] rounded-full transition">
+                    AI Profile helper
+                </button>
+
+                {% else %}
+                <!-- OTHERS Profile -->
+                <button
+                    class="hover:opacity-80 cursor-pointer bg-blue-500 text-gray-200 text-sm px-3 py-[3px] rounded-full transition">
+                    Send DM
+                </button>
+                <button
+                    class="border border-green-400 hover:opacity-80 cursor-pointer text-green-400 text-sm px-2 pb-[2px] rounded-full transition">
+                    Connect
+                </button>
+                <button
+                    class="border border-purple-400 hover:opacity-80 cursor-pointer text-purple-400 text-sm px-2 pb-[2px] rounded-full transition">
+                    Hire
+                </button>
+                <button
+                    class="border border-indigo-400 hover:opacity-80 cursor-pointer text-indigo-400 text-sm px-2 pb-[2px] rounded-full transition">
+                    Projects
+                </button>
+                <button
+                    class="border border-blue-400 hover:opacity-80 cursor-pointer text-blue-400 text-sm px-2 pb-[2px] rounded-full transition">
+                    Follow
+                </button>
+                <button
+                    class="border border-red-400 hover:opacity-80 cursor-pointer text-red-400 text-sm px-2 pb-[2px] rounded-full transition">
+                    Block
+                </button>
+                <button
+                    class="border border-yellow-400 hover:opacity-80 cursor-pointer text-yellow-400 text-sm px-2 pb-[2px] rounded-full transition">
+                    Boost
+                </button>
+                <button
+                    class="border border-orange-400 hover:opacity-80 cursor-pointer text-orange-400 text-sm px-2 pb-[2px] rounded-full transition">
+                    AI Profile Checker
+                </button>
+                {% endif %}
+            </div>
+
+            <!-- Stats -->
+            <div class="flex flex-wrap justify-center gap-8 mt-4 border-t border-gray-700 pt-6 text-white">
+                <!-- Posts: Total posts count -->
+                <div class="text-center">
+                    <span class="block text-xl font-bold">{{ profile_user.post_set.count }}</span>
+                    <span class="text-xs text-gray-400 uppercase tracking-wide">Posts</span>
+                </div>
+                <!-- Followers: one sided connection -->
+                <div class="text-center">
+                    <span class="block text-xl font-bold">0</span>
+                    <span class="text-xs text-gray-400 uppercase tracking-wide">Followers</span>
+                </div>
+                <!-- Connections: two sided mutual connection (both follow each other) -->
+                <div class="text-center">
+                    <span class="block text-xl font-bold">0</span>
+                    <span class="text-xs text-gray-400 uppercase tracking-wide">Connections</span>
+                </div>
+                <!-- Ranking: on basis of likes + comments + boosts + expertise level got -->
+                <div class="text-center">
+                    <span class="block text-xl font-bold">7th</span>
+                    <span class="text-xs text-gray-400 uppercase tracking-wide">Rank</span>
+                </div>
+                <!-- Projects: if any | Open source or finished projects -->
+                <div class="text-center">
+                    <span class="block text-xl font-bold">0</span>
+                    <span class="text-xs text-gray-400 uppercase tracking-wide">Projects</span>
+                </div>
+                <!-- Active: average time spent on DevHuddle_ -->
+                <div class="text-center">
+                    <span class="block text-xl font-bold">47%</span>
+                    <span class="text-xs text-gray-400 uppercase tracking-wide">Active</span>
+                </div>
+                <!-- Availability: YES/NO (Can someone hire them or not?) -->
+                <div class="text-center">
+                    <span class="block text-xl font-bold">Yes</span>
+                    <span class="text-xs text-gray-400 uppercase tracking-wide">Availability</span>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Posts -->
+    <div class="grid gap-6">
+        <h2 class="text-xl font-bold text-gray-400 mb-2">Recent Huddles</h2>
+
+        {% for post in profile_user.post_set.all|dictsortreversed:"created_at" %}
+        <div class="bg-gray-800 p-6 rounded-lg border border-gray-700">
+            <div class="flex justify-between items-start mb-4">
+                <div class="flex items-center gap-3">
+                    {% if post.author.avatar %}
+                    <img src="{{ post.author.avatar.url }}" class="w-8 h-8 rounded-full object-cover">
+                    {% else %}
+                    <div
+                        class="w-8 h-8 rounded-full bg-blue-600 flex items-center justify-center font-bold text-xs text-white">
+                        {{ post.author.username|slice:":1"|upper }}</div>
+                    {% endif %}
+                    <span class="text-gray-400 text-sm">{{ post.created_at|date:"M d, Y" }}</span>
+                </div>
+                <a href="{% url 'post_detail' post.pk %}" class="text-blue-500 hover:text-blue-400 text-sm">
+                    View Thread →
+                </a>
+            </div>
+
+            <p class="text-gray-200 text-lg">{{ post.body }}</p>
+            {% if post.image %}
+            <img src="{{ post.image.url }}" class="mt-3 rounded-lg max-h-64 object-cover">
+            {% endif %}
+        </div>
+
+        {% empty %}
+        <div class="text-center text-gray-500 py-10">
+            User hasn't posted anything yet.
+        </div>
+        {% endfor %}
+    </div>
+
+</div>
+{% endblock %}

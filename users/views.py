@@ -1,4 +1,4 @@
-from django.views.generic import CreateView, UpdateView, DeleteView
+from django.views.generic import CreateView, UpdateView, DeleteView, DetailView
 from django.contrib.auth.mixins import LoginRequiredMixin
 from django.urls import reverse_lazy
 from .forms import CustomUserCreationForm, CustomUserChangeForm
@@ -28,3 +28,11 @@ class ProfileDeleteView(LoginRequiredMixin, DeleteView):
 
     def get_object(self):
         return self.request.user
+
+
+class UserProfileView(DetailView):
+    model = CustomUser
+    template_name = "registration/user_profile.html"
+    context_object_name = "profile_user"
+    slug_field = "username"
+    slug_url_kwarg = "username"

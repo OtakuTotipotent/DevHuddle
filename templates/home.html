@@ -63,19 +63,26 @@
             <!-- AUTHOR'S INFO & LOGO -->
             <div class="flex items-center gap-3">
                 {% if post.author.avatar %}
-                <img src="{{ post.author.avatar.url }}"
-                    class="w-10 h-10 rounded-full object-cover border border-gray-600">
+                <a href="{% url 'user_profile' post.author.username %}" class="hover:opacity-70">
+                    <img src="{{ post.author.avatar.url }}"
+                        class="w-10 h-10 rounded-full object-cover border border-gray-600">
+                </a>
 
                 {% else %}
                 <!-- PROFILE ICON LETTER -->
-                <div
-                    class="w-10 h-10 rounded-full bg-blue-600 flex items-center justify-center font-bold text-gray-300 text-sm">
-                    {{ post.author.username|slice:":1"|upper }}
-                </div>
+                <a href="{% url 'user_profile' post.author.username %}" class="hover:opacity-70">
+                    <div
+                        class="w-10 h-10 rounded-full bg-blue-600 flex items-center justify-center font-bold text-gray-300 text-sm">
+                        {{ post.author.username|slice:":1"|upper }}
+                    </div>
+                </a>
                 {% endif %}
 
                 <div class="leading-tight">
-                    <span class="block font-semibold text-gray-200">@{{ post.author.username }}</span>
+                    <a href="{% url 'user_profile' post.author.username %}"
+                        class="block font-semibold text-gray-200 hover:text-blue-400 hover:underline transition">
+                        @{{ post.author.username }}
+                    </a>
                     <span class="block text-xs text-gray-500">{{ post.created_at|date:"d M Y • h:i:s A" }}</span>
                 </div>
             </div>
