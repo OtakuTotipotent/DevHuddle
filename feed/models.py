@@ -1,15 +1,24 @@
+import os
+import uuid
+from django.utils.timezone import now
 from django.db import models
 from django.conf import settings
 from users.validators import validate_file_size, validate_image_extension
 
 
-# Create your models here.
+def rename_post_image(instance, filename):
+    extension = filename.split(".")[-1]
+    filename = f"{instance.author.username}_{now().strftime('%Y%m%d_%H%M%S')}_{uuid.uuid4().hex[:8]}.{extension}"  # Format: username_YYYYMMDD_HHMMSS_uuid.jpg
+
+    return os.path.join("post", filename)
+
+
 class Post(models.Model):
     author = models.ForeignKey(settings.AUTH_USER_MODEL, on_delete=models.CASCADE)
     body = models.TextField(max_length=500)
 
     image = models.ImageField(
-        upload_to="posts/",
+        upload_to=rename_post_image,
         blank=True,
         null=True,
         validators=[validate_file_size, validate_image_extension],
