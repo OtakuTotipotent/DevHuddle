@@ -1,3 +1,6 @@
+from django.shortcuts import get_object_or_404
+from django.http import JsonResponse
+from django.contrib.auth.decorators import login_required
 from django.views.generic import CreateView, UpdateView, DeleteView, DetailView
 from django.contrib.auth.mixins import LoginRequiredMixin
 from django.urls import reverse_lazy
@@ -36,3 +39,27 @@ class UserProfileView(DetailView):
     context_object_name = "profile_user"
     slug_field = "username"
     slug_url_kwarg = "username"
+
+
+@login_required
+def follow_user(request, username):
+    target_user = get_object_or_404(CustomUser, username=username)
+    currentUser = request.user
+
+    if currentUser == target_user:
+        return JsonResponse({"error": "You cannot follow yourself"}, status=400)
+
+    if currentUser.following.filter(pk=target_user.pk).exists():
+        currentUser.following.remove(target_user)
+        is_following = False
+    else:
+        currentUser.following.add(target_user)
+        is_following = True
+
+    return JsonResponse(
+        {
+            "is_following": is_following,
+            "followers_count": target_user.followers.count(),
+            "following_count": target_user.following.count(),
+        }
+    )

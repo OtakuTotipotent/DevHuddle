@@ -1,5 +1,11 @@
 from django.urls import path
-from .views import SignUpView, ProfileUpdateView, UserProfileView, ProfileDeleteView
+from .views import (
+    SignUpView,
+    ProfileUpdateView,
+    UserProfileView,
+    ProfileDeleteView,
+    follow_user,
+)
 
 
 urlpatterns = [
@@ -11,4 +17,7 @@ urlpatterns = [
     #
     # Public profile route | "/u/otaku/"
     path("profile/<str:username>/", UserProfileView.as_view(), name="user_profile"),
+    #
+    # Social routes
+    path("follow/<str:username>/", follow_user, name="follow_user"),
 ]

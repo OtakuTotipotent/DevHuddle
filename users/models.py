@@ -16,6 +16,8 @@ class CustomUser(AbstractUser):
     bio = models.TextField(
         blank=True, null=True, help_text="Tell the world about your stack."
     )
+
+    # URL Fields
     github_url = models.URLField(
         blank=True, null=True, help_text="Link to your github profile"
     )
@@ -38,12 +40,26 @@ class CustomUser(AbstractUser):
         blank=True, null=True, help_text="Your Upwork profile link"
     )
 
+    # Social Fields
+    following = models.ManyToManyField(
+        "self",
+        symmetrical=False,
+        related_name="followers",
+        blank=True,
+    )
+
     avatar = models.ImageField(
         blank=True,
         null=True,
         upload_to=rename_avatar,
         validators=[validate_file_size, validate_image_extension],
     )
+
+    def is_following(self, target_user):
+        return self.following.filter(pk=target_user.pk).exists()
+
+    def is_followed_by(self, target_user):
+        return self.followers.filter(pk=target_user.pk).exists()
 
     def __str__(self):
         return self.username

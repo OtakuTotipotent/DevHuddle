@@ -123,17 +123,21 @@
                     class="border border-purple-400 hover:opacity-80 cursor-pointer text-purple-400 text-sm px-2 pb-[2px] rounded-full transition">
                     Hire
                 </button>
-                <button
-                    class="border border-indigo-400 hover:opacity-80 cursor-pointer text-indigo-400 text-sm px-2 pb-[2px] rounded-full transition">
-                    Projects
-                </button>
-                <button
+                <button onclick="toggleFollow('{{ profile_user.username }}')" id="follow-btn"
                     class="border border-blue-400 hover:opacity-80 cursor-pointer text-blue-400 text-sm px-2 pb-[2px] rounded-full transition">
+                    {% if user in profile_user.followers.all %}
+                    Unfollow
+                    {% else %}
                     Follow
+                    {% endif %}
                 </button>
                 <button
                     class="border border-red-400 hover:opacity-80 cursor-pointer text-red-400 text-sm px-2 pb-[2px] rounded-full transition">
                     Block
+                </button>
+                <button
+                    class="border border-indigo-400 hover:opacity-80 cursor-pointer text-indigo-400 text-sm px-2 pb-[2px] rounded-full transition">
+                    Projects
                 </button>
                 <button
                     class="border border-yellow-400 hover:opacity-80 cursor-pointer text-yellow-400 text-sm px-2 pb-[2px] rounded-full transition">
@@ -155,8 +159,17 @@
                 </div>
                 <!-- Followers: one sided connection -->
                 <div class="text-center">
-                    <span class="block text-xl font-bold">0</span>
+                    <span class="block text-xl font-bold" id="followers-count">
+                        {{ profile_user.followers.count }}
+                    </span>
                     <span class="text-xs text-gray-400 uppercase tracking-wide">Followers</span>
+                </div>
+                <!-- Following: one sided connection -->
+                <div class="text-center">
+                    <span class="block text-xl font-bold" id="followering-count">
+                        {{ profile_user.following.count }}
+                    </span>
+                    <span class="text-xs text-gray-400 uppercase tracking-wide">Following</span>
                 </div>
                 <!-- Connections: two sided mutual connection (both follow each other) -->
                 <div class="text-center">
@@ -223,4 +236,41 @@
     </div>
 
 </div>
+{% endblock %}
+
+
+{% block scripts %}
+<script>
+    function toggleFollow(username) {
+        const url = `/users/follow/${username}/`;
+        const btn = document.getElementById('follow-btn');
+        const followersCount = document.getElementById('followers-count');
+
+        fetch(url, {
+            method: 'POST',
+            headers: {
+                'X-CSRFToken': '{{ csrf_token }}',
+                'Content-Type': 'application/json'
+            }
+        })
+            .then(response => response.json())
+            .then(data => {
+                if (data.error) {
+                    alert(data.error);
+                    return;
+                }
+
+                // Update Counter
+                followersCount.innerText = data.followers_count;
+
+                // Update Button Style
+                if (data.is_following) {
+                    btn.innerText = "Unfollow";
+                } else {
+                    btn.innerText = "Follow";
+                }
+            })
+            .catch(error => console.error('Error:', error));
+    }
+</script>
 {% endblock %}
