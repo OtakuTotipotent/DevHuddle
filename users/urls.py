@@ -10,5 +10,5 @@ urlpatterns = [
     path("delete/", ProfileDeleteView.as_view(), name="profile_delete"),
     #
     # Public profile route | "/u/otaku/"
-    path("u/<str:username>/", UserProfileView.as_view(), name="user_profile"),
+    path("profile/<str:username>/", UserProfileView.as_view(), name="user_profile"),
 ]
