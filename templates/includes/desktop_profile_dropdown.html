@@ -32,7 +32,8 @@
             <p class="text-gray-400 text-center text-xs mt-1 truncate">
                 {{ user.email }}
             </p>
-            <a href="#" class="block font-semibold text-gray-300 hover:text-blue-400 transition text-center py-2">
+            <a href="{% url 'user_profile' user.username %}"
+                class="block font-semibold text-gray-300 hover:text-blue-400 transition text-center py-2">
                 @{{ user.username }} →
             </a>
         </div>
@@ -125,9 +126,9 @@
         <div class="grid grid-cols-2 gap-px bg-gray-700">
             <div class="bg-gray-800 p-1 text-center hover:bg-gray-750 transition">
                 <span class="block text-sm font-bold text-blue-500">
-                    {{ user.post_set.count }}
+                    Fullstack
                 </span>
-                <span class="text-[10px] text-gray-400 uppercase tracking-wider">Posts</span>
+                <span class="text-[10px] text-gray-400 uppercase tracking-wider">Status</span>
             </div>
 
             <div class="bg-gray-800 p-1 text-center hover:bg-gray-750 transition">
@@ -142,21 +143,33 @@
         <div class="grid grid-cols-2 gap-px bg-gray-700">
             <div class="bg-gray-800 p-1 text-center hover:bg-gray-750 transition">
                 <span class="block text-sm font-bold text-blue-500">
-                    0
+                    09
                 </span>
-                <span class="text-[10px] text-gray-400 uppercase tracking-wider">Connections</span>
+                <span class="text-[10px] text-gray-400 uppercase tracking-wider">Notifications</span>
             </div>
 
             <div class="bg-gray-800 p-1 text-center hover:bg-gray-750 transition">
                 <span class="block text-sm font-bold text-blue-500">
-                    Top
+                    Top 5%
                 </span>
-                <span class="text-[10px] text-gray-400 uppercase tracking-wider">Ranking</span>
+                <span class="text-[10px] text-gray-400 uppercase tracking-wider">Rank</span>
             </div>
         </div>
 
         <!-- Account Settings -->
         <div class="grid grid-cols-2 pt-[1px] gap-px bg-gray-700">
+            <div class="bg-gray-800">
+                <a href="#"
+                    class="block text-center px-4 py-2 text-sm bg-gray-800 text-red-400 hover:bg-red-900/20 hover:text-red-300 transition">
+                    Notifications
+                </a>
+            </div>
+            <div class="bg-gray-800">
+                <a href="#"
+                    class="block text-center px-4 py-2 text-sm bg-gray-800 text-red-400 hover:bg-red-900/20 hover:text-red-300 transition">
+                    Subscription
+                </a>
+            </div>
             <div class="bg-gray-800">
                 <a href="{% url 'profile_edit' %}"
                     class="block text-center px-4 py-2 text-sm bg-gray-800 text-red-400 hover:bg-red-900/20 hover:text-red-300 transition">
@@ -169,7 +182,6 @@
                     Delete Account
                 </a>
             </div>
-
         </div>
 
         <!-- LOGOUT BUTTON -->
