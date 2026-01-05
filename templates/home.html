@@ -33,27 +33,55 @@
 {% else %}
 
 <div class="max-w-2xl mx-auto">
-    <!-- FEED BUTTONS -->
-    <div class="flex flex-wrap justify-start gap-3 items-center mb-8 mt-3">
-        <a href="#" class="text-sm text-purple-400 hover:text-purple-500 bg-gray-800 px-2 py-1 rounded-full transition">
-            AI playground >
+    <!-- FEATURES & ACTIONS -->
+    <div class="flex flex-wrap justify-center gap-1 sm:gap-2 items-center mb-3 mt-1">
+        <a href="#"
+            class="text-sm text-purple-400 hover:text-purple-300 bg-gray-800 px-2 py-1 sm:px-3 sm:py-[6px] rounded-full transition">
+            AI playground
         </a>
-        <a href="#" class="text-sm text-green-600 hover:text-green-400 bg-gray-800 px-2 py-1 rounded-full transition">
-            Find work ?
+        <a href="#"
+            class="text-sm text-green-600 hover:text-green-400 bg-gray-800 px-2 py-1 sm:px-3 sm:py-[6px] rounded-full transition">
+            Find work
         </a>
-        <a href="#" class="text-sm text-yellow-500 hover:text-yellow-300 bg-gray-800 px-2 py-1 rounded-full transition">
-            Go premium &infin;
+        <a href="#"
+            class="text-sm text-yellow-500 hover:text-yellow-300 bg-gray-800 px-2 py-1 sm:px-3 sm:py-[6px] rounded-full transition">
+            Go premium
         </a>
-        <a href="#" class="text-sm text-orange-600 hover:text-orange-500 bg-gray-800 px-2 py-1 rounded-full transition">
-            Post offer $
+        <a href="#"
+            class="text-sm text-orange-600 hover:text-orange-500 bg-gray-800 px-2 py-1 sm:px-3 sm:py-[6px] rounded-full transition">
+            Post offer
         </a>
-        <a href="#" class="text-sm text-gray-300 hover:text-gray-100 bg-gray-800 px-2 py-1 rounded-full transition">
-            Announce job *
+        <a href="#"
+            class="text-sm text-gray-300 hover:text-gray-100 bg-gray-800 px-2 py-1 sm:px-3 sm:py-[6px] rounded-full transition">
+            Announce job
         </a>
         <a href="{% url 'post_new' %}"
-            class="text-sm text-gray-300 bg-blue-600 px-2 py-1 border-2 border-blue-600 rounded-full hover:bg-transparent hover:text-blue-600 transition">
-            New Post +
+            class="text-sm text-blue-600 bg-transparent px-2 py-1 border-2 border-blue-600 rounded-full hover:bg-blue-600 hover:text-gray-300 transition">
+            New Post
         </a>
+    </div>
+
+    <!-- FEED BUTTONS -->
+    <div class="grid grid-cols-4 border-t gap-[2px] border-gray-800 sm:rounded-b-2xl rounded-b-lg mb-4 overflow-hidden">
+        <a href="?feed=global" class="py-2 text-sm text-center transition
+        {% if current_feed == 'global' %} text-blue-400 font-bold bg-gray-950
+        {% else %} text-gray-400 hover:text-blue-400 hover:bg-gray-950 {% endif %}">
+            Global </a>
+
+        <a href="?feed=fellows" class="py-2 text-sm text-center transition
+        {% if current_feed == 'fellows' %} text-blue-400 font-bold bg-gray-950
+        {% else %} text-gray-400 hover:text-blue-400 hover:bg-gray-950 {% endif %}">
+            Fellows </a>
+
+        <a href="?feed=business" class="py-2 text-sm text-center transition
+        {% if current_feed == 'business' %} text-blue-400 font-bold bg-gray-950
+        {% else %} text-gray-400 hover:text-blue-400 hover:bg-gray-950 {% endif %}">
+            Business </a>
+
+        <a href="?feed=ads" class="py-2 text-sm text-center transition
+        {% if current_feed == 'ads' %} text-blue-400 font-bold bg-gray-950
+        {% else %} text-gray-400 hover:text-blue-400 hover:bg-gray-950 {% endif %}">
+            Advertisers </a>
     </div>
 
     <!-- POSTS -->
@@ -197,9 +225,51 @@
 
     <!-- FRESH FEED / EMPTY FEED PAGES -->
     {% empty %}
-    <div class="text-center text-gray-500 mt-10">
-        <p>It's quiet here... too quiet.</p>
+
+    {% if current_feed == 'fellows' and suggested_users %}
+
+    <div class="text-center mb-4">
+        <h2 class="text-lg font-semibold text-white mb-2">Your huddle is empty!</h2>
+        <p class="text-gray-400 mb-6">Connect with these top developers to start your feed 🦗</p>
+
+        <div class="grid grid-cols-1 md:grid-cols-2 gap-2">
+            {% for suggestion in suggested_users %}
+            <div class="bg-gray-800 p-2 sm:p-4 rounded-lg flex items-center justify-between border border-gray-700">
+                <div class="flex items-center gap-3">
+                    {% if suggestion.avatar %}
+                    <img src="{{ suggestion.avatar.url }}" class="w-10 h-10 rounded-full object-cover">
+                    {% else %}
+                    <div
+                        class="w-10 h-10 rounded-full bg-blue-600 flex items-center justify-center font-bold text-white">
+                        {{ suggestion.username|slice:":1"|upper }}
+                    </div>
+                    {% endif %}
+
+                    <div class="text-left">
+                        <span class="block font-semibold text-blue-400">
+                            @{{ suggestion.username }}
+                        </span>
+                        <span class="text-xs text-gray-500">
+                            {{ suggestion.bio}}
+                        </span>
+                    </div>
+                </div>
+
+                <a href="{% url 'user_profile' suggestion.username %}"
+                    class="text-sm bg-blue-600 hover:bg-blue-700 text-white px-3 py-1 rounded-full transition">
+                    View
+                </a>
+            </div>
+            {% endfor %}
+        </div>
     </div>
+
+    {% else %}
+    <div class="text-center text-gray-500 mt-10">
+        <p>No posts found here yet.</p>
+    </div>
+    {% endif %}
+
     {% endfor %}
 
     <!-- PAGINATION -->

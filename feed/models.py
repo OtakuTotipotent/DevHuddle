@@ -26,6 +26,14 @@ class Post(models.Model):
 
     created_at = models.DateTimeField(auto_now_add=True)
 
+    POST_TYPES = (
+        ("huddle", "Huddle"),  # Standard social post
+        ("job", "Job/Offer"),  # Business feed
+        ("ad", "Advertisement"),  # Advertiser feed
+    )
+    post_type = models.CharField(max_length=10, choices=POST_TYPES, default="huddle")
+    is_boosted = models.BooleanField(default=False)
+
     likes = models.ManyToManyField(
         settings.AUTH_USER_MODEL, related_name="liked_posts", blank=True
     )
