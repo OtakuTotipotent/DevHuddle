@@ -24,9 +24,9 @@
                 {{ field }}
 
                 {% if field.help_text %}
-                <p class="text-xs text-gray-500 mt-1">
+                <div class="text-xs text-gray-500 mt-1">
                     {{ field.help_text|safe }}
-                </p>
+                </div>
                 {% endif %}
 
                 {% if field.errors %}

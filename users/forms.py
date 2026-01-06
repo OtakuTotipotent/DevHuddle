@@ -88,5 +88,10 @@ class CustomUserCreationForm(UserCreationForm):
                     }
                 )
 
-            if "password" in field_name:
-                field.widget.attrs["class"] += " remove-eye-icon"
+            if field_name == "password1" or field_name == "password":
+                field.widget.attrs.update({"placeholder": "Create a new password..."})
+
+            if field_name == "password2":
+                field.widget.attrs.update(
+                    {"placeholder": "Type again your password here..."}
+                )

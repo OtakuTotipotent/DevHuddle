@@ -15,7 +15,10 @@
                 {% for field in form %}
 
                 <div>
-                    <label class="block text-sm text-blue-500 font-semibold mb-1">{{ field.label }}</label>
+                    <label class="block text-sm text-blue-500 font-semibold mb-1">
+                        {{ field.label }}
+                    </label>
+
                     {{ field }}
 
                     {% if field.errors %}
@@ -24,6 +27,10 @@
                 </div>
 
                 {% endfor %}
+
+                <a href="{% url 'password_reset' %}" class="text-sm text-blue-500 hover:text-blue-600 hover:underline">
+                    Click here to change your password?
+                </a>
             </div>
 
             <!-- SUBMIT / CANCEL BUTTONS -->

@@ -85,3 +85,10 @@ AUTH_USER_MODEL = "users.CustomUser"
 LOGIN_URL = "/admin/login/"
 LOGIN_REDIRECT_URL = "home"
 LOGOUT_REDIRECT_URL = "home"
+
+
+# DEV MODE: Prints email to terminal
+EMAIL_BACKEND = "django.core.mail.backends.console.EmailBackend"
+# PRODUCTION MODE
+# EMAIL_BACKEND = 'django.core.mail.backends.smtp.EmailBackend'
+# EMAIL_HOST = 'smtp.gmail.com' ...
