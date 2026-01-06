@@ -33,8 +33,25 @@
         class="px-2 py-3 border-b border-gray-800 bg-gray-900/80 backdrop-blur-sm sticky top-0 z-50 transition-all duration-300">
         <div class="container mx-auto flex justify-between items-center relative">
 
+            <!-- LOGO -->
             <a href="/" class="md:text-2xl text-lg font-bold text-blue-500">DevHuddle_</a>
 
+            <!-- SEARCH BAR -->
+            <div class="hidden md:block flex-grow max-w-xs mx-6">
+                <form action="{% url 'search' %}" method="get" class="relative">
+                    <input type="text" name="q" placeholder="Search devs, stacks, or posts..."
+                        class="w-full bg-gray-800 text-gray-200 border border-gray-700 rounded-full py-1 px-4 pl-10 focus:outline-none focus:border-blue-500 focus:ring-1 focus:ring-blue-500 transition text-sm">
+
+                    <div class="absolute left-3 top-2.5 text-gray-500">
+                        <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z"></path>
+                        </svg>
+                    </div>
+                </form>
+            </div>
+
+            <!-- MENU'S -->
             <div class="flex md:gap-6 gap-4 items-center">
                 <!-- Navigation Links -->
                 <div class="hidden md:flex items-center gap-8">

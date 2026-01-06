@@ -9,7 +9,7 @@ from django.views.generic import (
 from django.contrib.auth.mixins import LoginRequiredMixin, UserPassesTestMixin
 from django.contrib.auth.decorators import login_required
 from django.views.generic.edit import FormMixin
-from django.shortcuts import get_object_or_404
+from django.shortcuts import get_object_or_404, render
 from django.http import JsonResponse
 from django.urls import reverse, reverse_lazy
 from django.db.models import Q
@@ -31,6 +31,29 @@ def like_post(request, pk):
         liked = True
 
     return JsonResponse({"liked": liked, "count": post.likes.count()})
+
+
+@login_required
+def search_results(request):
+    query = request.GET.get("q")
+
+    users = []
+    posts = []
+
+    if query:
+        users = CustomUser.objects.filter(
+            Q(username__icontains=query)
+            | Q(first_name__icontains=query)
+            | Q(last_name__icontains=query)
+            | Q(tech_stack__icontains=query)
+            | Q(bio__icontains=query)
+        ).distinct()
+
+        posts = Post.objects.filter(Q(body__icontains=query)).order_by("-created_at")
+
+    context = {"query": query, "users": users, "posts": posts}
+
+    return render(request, "search_results.html", context)
 
 
 class HomePageView(ListView):
