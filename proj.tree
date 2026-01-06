@@ -1,60 +1,139 @@
-D:/DevHuddle
+DevHuddle:
 �   .gitignore
+�   db.sqlite3
 �   manage.py
+�   notes.md
 �   proj.tree
 �   requirements.txt
 �   tailwind.config.js
-�   
 +---config
-�       asgi.py
-�       settings.py
-�       urls.py
-�       views.py
-�       wsgi.py
-�       __init__.py
-�       
+�   �   asgi.py
+�   �   settings.py
+�   �   urls.py
+�   �   wsgi.py
+�   �   __init__.py
+�   �   
+�   +---__pycache__
+�           settings.cpython-314.pyc
+�           urls.cpython-314.pyc
+�           wsgi.cpython-314.pyc
+�           __init__.cpython-314.pyc
+�           
 +---feed
 �   �   admin.py
 �   �   apps.py
 �   �   forms.py
 �   �   models.py
+�   �   signals.py
 �   �   tests.py
 �   �   urls.py
 �   �   views.py
 �   �   __init__.py
 �   �   
 �   +---migrations
-�           0001_initial.py
-�           __init__.py
+�   �   �   0001_initial.py
+�   �   �   0002_post_image.py
+�   �   �   0003_alter_post_image.py
+�   �   �   0004_post_likes.py
+�   �   �   0005_comment.py
+�   �   �   0006_alter_post_image.py
+�   �   �   0007_post_is_boosted_post_post_type.py
+�   �   �   __init__.py
+�   �   �   
+�   �   +---__pycache__
+�   �           0001_initial.cpython-314.pyc
+�   �           0002_post_image.cpython-314.pyc
+�   �           0003_alter_post_image.cpython-314.pyc
+�   �           0004_post_likes.cpython-314.pyc
+�   �           0005_comment.cpython-314.pyc
+�   �           0006_alter_post_image.cpython-314.pyc
+�   �           0007_post_is_boosted_post_post_type.cpython-314.pyc
+�   �           __init__.cpython-314.pyc
+�   �           
+�   +---__pycache__
+�           admin.cpython-314.pyc
+�           apps.cpython-314.pyc
+�           forms.cpython-314.pyc
+�           models.cpython-314.pyc
+�           signals.cpython-314.pyc
+�           urls.cpython-314.pyc
+�           views.cpython-314.pyc
+�           __init__.cpython-314.pyc
 �           
-+---static
-�   +---css
-�           styles.css
++---media
+�   +---avatar
+�   �       afnan.png
+�   �       
+�   +---post
+�           otaku_20260105_063537_bc7ee4df.png
 �           
 +---templates
 �   �   about.html
 �   �   base.html
 �   �   home.html
+�   �   notes.md
+�   �   post_delete.html
+�   �   post_detail.html
 �   �   post_form.html
+�   �   post_update.html
+�   �   search_results.html
 �   �   
+�   +---includes
+�   �       desktop_profile_dropdown.html
+�   �       
 �   +---registration
+�           delete_account.html
 �           edit_profile.html
 �           login.html
+�           password_reset_form.html
 �           signup.html
+�           user_profile.html
 �           
 +---users
     �   admin.py
     �   apps.py
     �   forms.py
     �   models.py
-    �   tests.py
+    �   signals.py
+    �   urls.py
     �   validators.py
     �   views.py
     �   __init__.py
     �   
     +---migrations
-            0001_initial.py
-            0002_customuser_avatar_customuser_bio.py
-            0003_alter_customuser_avatar.py
-            __init__.py
+    �   �   0001_initial.py
+    �   �   0002_customuser_avatar_customuser_bio.py
+    �   �   0003_alter_customuser_avatar.py
+    �   �   0004_alter_customuser_avatar.py
+    �   �   0005_alter_customuser_avatar.py
+    �   �   0006_customuser_github_url_customuser_linkedin_url_and_more.py
+    �   �   0007_customuser_fiver_url_customuser_upwork_url.py
+    �   �   0008_customuser_following.py
+    �   �   0009_customuser_role_customuser_tech_stack.py
+    �   �   0010_alter_customuser_tech_stack.py
+    �   �   __init__.py
+    �   �   
+    �   +---__pycache__
+    �           0001_initial.cpython-314.pyc
+    �           0002_customuser_avatar_customuser_bio.cpython-314.pyc
+    �           0003_alter_customuser_avatar.cpython-314.pyc
+    �           0004_alter_customuser_avatar.cpython-314.pyc
+    �           0005_alter_customuser_avatar.cpython-314.pyc
+    �           0006_customuser_github_url_customuser_linkedin_url_and_more.cpython-314.pyc
+    �           0007_customuser_fiver_url_customuser_upwork_url.cpython-314.pyc
+    �           0008_customuser_following.cpython-314.pyc
+    �           0009_customuser_role_customuser_tech_stack.cpython-314.pyc
+    �           0010_alter_customuser_tech_stack.cpython-314.pyc
+    �           __init__.cpython-314.pyc
+    �           
+    +---__pycache__
+            admin.cpython-314.pyc
+            apps.cpython-314.pyc
+            forms.cpython-314.pyc
+            models.cpython-314.pyc
+            signals.cpython-314.pyc
+            urls.cpython-314.pyc
+            validators.cpython-314.pyc
+            views.cpython-314.pyc
+            __init__.cpython-314.pyc
             

@@ -9,7 +9,7 @@ This document contains various notes and observations about the DevHuddle platfo
 ## Future Improvements
 
 * Relevant accounts suggestions based on user activity and interests (On Right Side).
-* Relevant jobs, projects, gigs \& contests suggestions based on user activity and interests (On Left side).
+* Relevant jobs, projects, gigs & contests suggestions based on user activity and interests (On Left side).
 * Relevant accounts and Relevant Jobs sections in the Business, Global, Advertisers sections on feed.
 * Enhanced search functionality with filters for content type, date, and popularity.
 * Add notifications
