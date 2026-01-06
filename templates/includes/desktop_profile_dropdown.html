@@ -1,7 +1,7 @@
 <div>
 
     <!-- PROFILE AVATAR ICON -->
-    <button onclick="toggleProfileMenu()" class="group relative flex items-center focus:outline-none cursor-pointer">
+    <button onclick="toggleProfileMenu()" class="group relative flex items-center focus:outline-none cursor-pointer animate-fade-in-down">
         {% if user.avatar %}
         <img src="{{ user.avatar.url }}?v={% now 'U' %}" alt="User's profile picture."
             class="w-8 h-8 rounded-full object-cover border-2 border-transparent group-hover:border-blue-500 transition-all duration-300">
