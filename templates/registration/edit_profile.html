@@ -4,48 +4,40 @@
 
 {% block content %}
 
-<div class="max-w-md mx-auto mt-10">
-    <div class="bg-gray-800 p-8 rounded-lg shadow-lg border border-gray-700">
-        <h2 class="text-2xl font-bold mb-6 text-white">Edit Profile</h2>
+<div class="max-w-md mx-auto mt-2">
+    <div class="bg-gray-800 p-4 rounded-lg shadow-lg border border-gray-700">
+        <h2 class="text-xl font-semibold mb-6 text-blue-500 text-center">Edit Profile</h2>
 
         <form method="post" enctype="multipart/form-data">
             {% csrf_token %}
 
-            <div class="space-y-4 text-gray-300">
-
+            <div class="space-y-3">
                 {% for field in form %}
 
                 <div>
-                    <label class="block text-sm font-bold mb-1">{{ field.label }}</label>
-
-                    {% if field.name == 'avatar' %}
-
+                    <label class="block text-sm text-blue-500 font-semibold mb-1">{{ field.label }}</label>
                     {{ field }}
 
-                    {% else %}
-
-                    <input type="{{ field.field.widget.input_type }}" name="{{ field.name }}"
-                        value="{{ field.value|default:'' }}"
-                        class="w-full bg-gray-700 border border-gray-600 rounded p-2 text-white">
-
-                    {% endif %}
-
                     {% if field.errors %}
-
                     <p class="text-red-400 text-xs">{{ field.errors.0 }}</p>
-
                     {% endif %}
-
                 </div>
 
                 {% endfor %}
-
             </div>
 
-            <button type="submit"
-                class="w-full bg-blue-600 hover:bg-blue-700 text-white font-bold py-3 rounded mt-6 transition">
-                Save Changes
-            </button>
+            <!-- SUBMIT / CANCEL BUTTONS -->
+            <div class="grid grid-cols-2 gap-4 items-center mt-5 mb-3">
+                <button type="submit"
+                    class="cursor-pointer text-center hover:opacity-70 py-2 text-sm font-semibold rounded-full bg-blue-600">
+                    Save Changes
+                </button>
+
+                <a href="{% url 'home' %}"
+                    class="cursor-pointer text-center hover:opacity-70 py-2 text-sm font-semibold rounded-full border border-gray-500">
+                    Cancel
+                </a>
+            </div>
 
         </form>
 

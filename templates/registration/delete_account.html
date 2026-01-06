@@ -12,12 +12,12 @@ Delete Account
     <div class="bg-gray-800 p-8 rounded-lg shadow-lg border border-red-900/50">
         <div class="text-center mb-6">
             <div
-                class="w-16 h-16 bg-red-900/30 text-red-500 rounded-full flex items-center justify-center mx-auto mb-4 text-3xl">
+                class="w-16 h-16 bg-red-900/30 rounded-full flex items-center justify-center mx-auto mb-4 text-3xl pb-2">
                 ⚠️
             </div>
-            <h2 class="text-2xl font-bold text-white">Delete Account?</h2>
-            <p class="text-gray-400 text-sm mt-2">
-                This action is <span class="text-red-400 font-bold">permanent</span>.
+            <h2 class="text-2xl font-semibold text-blue-500">Delete Account?</h2>
+            <p class="text-gray-400 text-sm my-2">
+                This action is <span class="text-red-400 font-semibold">permanent</span>.
                 All your posts, images, and data will be erased immediately.
             </p>
         </div>
@@ -25,14 +25,14 @@ Delete Account
         <form method="post">
             {% csrf_token %}
 
-            <div class="flex flex-col gap-3">
+            <div class="flex flex-col gap-5">
                 <button type="submit"
-                    class="w-full bg-red-600 hover:bg-red-700 text-white font-bold py-3 rounded transition cursor-pointer">
+                    class="w-full bg-red-600 hover:opacity-70 text-white font-semibold py-2 rounded-full transition cursor-pointer">
                     Yes, Delete My Account
                 </button>
 
                 <a href="{% url 'home' %}"
-                    class="block text-center w-full bg-gray-700 hover:bg-gray-600 text-white py-3 rounded transition">
+                    class="block text-center w-full bg-gray-700 hover:opacity-70 text-white py-2 rounded-full transition">
                     Cancel, Keep it.
                 </a>
             </div>

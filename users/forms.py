@@ -12,6 +12,8 @@ class CustomUserChangeForm(UserChangeForm):
             "last_name",
             "bio",
             "avatar",
+            "role",
+            "tech_stack",
             "github_url",
             "linkedin_url",
             "twitter_url",
@@ -24,17 +26,38 @@ class CustomUserChangeForm(UserChangeForm):
 
     def __init__(self, *args, **kwargs):
         super().__init__(*args, **kwargs)
-        generic_class = "w-full bg-gray-700 text-white border border-gray-600 rounded-lg p-1 focus:outline-none focus:border-blue-500 mb-2"
-        for field in self.fields.values():
-            field.widget.attrs.update({"class": generic_class, "placeholder": " "})
+        for field_name, field in self.fields.items():
+            field.widget.attrs.update(
+                {
+                    "class": "w-full bg-gray-700 text-white border border-gray-600 rounded-full px-3 pt-1 pb-2 focus:outline-none focus:border-blue-500 mb-2",
+                    "placeholder": f"Enter {field_name} here...",
+                }
+            )
 
-        self.fields["avatar"].widget.attrs.update(
-            {
-                "class": "block w-full text-sm text-gray-400 file:mr-4 file:py-2 file:px-4 file:rounded-full file:border-0 file:text-sm file:font-semibold file:bg-blue-600 file:text-white hover:file:bg-blue-700 cursor-pointer mt-2"
-            }
-        )
-        if "password" in self.fields:
-            self.fields["password"].widget = forms.HiddenInput()
+            if field_name == "role":
+                field.widget.attrs.update(
+                    {
+                        "class": "bg-gray-700 text-white border border-gray-600 rounded-full px-3 pt-1 pb-2 focus:outline-none focus:border-blue-500 mb-2"
+                    }
+                )
+
+            if field_name == "bio":
+                field.widget.attrs.update(
+                    {
+                        "class": "w-full bg-gray-700 text-white border border-gray-600 rounded-lg p-3 focus:outline-none focus:border-blue-500 mb-2",
+                        "rows": 4,
+                    }
+                )
+
+            if field_name == "avatar":
+                field.widget.attrs.update(
+                    {
+                        "class": "block w-full text-sm text-gray-400 file:mr-4 file:py-2 file:px-4 file:rounded-full file:border-0 file:text-sm file:font-semibold file:bg-blue-600 file:text-white hover:file:bg-blue-700 file:cursor-pointer cursor-pointer mt-2"
+                    }
+                )
+
+            if field_name == "password":
+                self.fields["password"].widget = forms.HiddenInput()
 
 
 class CustomUserCreationForm(UserCreationForm):
@@ -45,12 +68,10 @@ class CustomUserCreationForm(UserCreationForm):
     def __init__(self, *args, **kwargs):
         super().__init__(*args, **kwargs)
 
-        STYLE = "w-full bg-gray-700 text-white border border-gray-600 rounded-full px-4 pt-1 pb-2 focus:outline-none focus:border-blue-500 mb-2 placeholder:text-xs"
-
         for field_name, field in self.fields.items():
             field.widget.attrs.update(
                 {
-                    "class": STYLE,
+                    "class": "w-full bg-gray-700 text-white border border-gray-600 rounded-full px-4 pt-1 pb-2 focus:outline-none focus:border-blue-500 mb-2 placeholder:text-xs",
                     "placeholder": f"Enter {field_name} here...",
                 }
             )
