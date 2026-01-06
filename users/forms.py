@@ -24,7 +24,7 @@ class CustomUserChangeForm(UserChangeForm):
 
     def __init__(self, *args, **kwargs):
         super().__init__(*args, **kwargs)
-        generic_class = "w-full bg-gray-700 text-white border border-gray-600 rounded-lg p-3 focus:outline-none focus:border-blue-500 mb-2"
+        generic_class = "w-full bg-gray-700 text-white border border-gray-600 rounded-lg p-1 focus:outline-none focus:border-blue-500 mb-2"
         for field in self.fields.values():
             field.widget.attrs.update({"class": generic_class, "placeholder": " "})
 
@@ -47,7 +47,7 @@ class CustomUserCreationForm(UserCreationForm):
         for field in self.fields.values():
             field.widget.attrs.update(
                 {
-                    "class": "w-full bg-gray-700 text-white border border-gray-600 rounded-lg p-3 focus:outline-none focus:border-blue-500 mb-2",
-                    "placeholder": " ",
+                    "class": "w-full bg-gray-700 text-white border border-gray-600 rounded-full px-5 pt-1 pb-2 focus:outline-none focus:border-blue-500 mb-2",
+                    "placeholder": "",
                 }
             )
