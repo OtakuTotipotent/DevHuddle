@@ -40,14 +40,32 @@ class CustomUserChangeForm(UserChangeForm):
 class CustomUserCreationForm(UserCreationForm):
     class Meta:
         model = CustomUser
-        fields = ("username", "email")
+        fields = ("username", "email", "role", "tech_stack")
 
     def __init__(self, *args, **kwargs):
         super().__init__(*args, **kwargs)
-        for field in self.fields.values():
+
+        STYLE = "w-full bg-gray-700 text-white border border-gray-600 rounded-full px-4 pt-1 pb-2 focus:outline-none focus:border-blue-500 mb-2 placeholder:text-xs"
+
+        for field_name, field in self.fields.items():
             field.widget.attrs.update(
                 {
-                    "class": "w-full bg-gray-700 text-white border border-gray-600 rounded-full px-5 pt-1 pb-2 focus:outline-none focus:border-blue-500 mb-2",
-                    "placeholder": "",
+                    "class": STYLE,
+                    "placeholder": f"Enter {field_name} here...",
                 }
             )
+
+            if field_name == "tech_stack":
+                field.widget.attrs["placeholder"] = (
+                    "MERN, SpringBoot, Django, Laravel, AWS, DBMS, AI..."
+                )
+
+            if field_name == "role":
+                field.widget.attrs.update(
+                    {
+                        "class": "bg-gray-700 text-white border border-gray-600 rounded-full px-4 pt-1 pb-2 focus:outline-none focus:border-blue-500 mb-2"
+                    }
+                )
+
+            if "password" in field_name:
+                field.widget.attrs["class"] += " remove-eye-icon"

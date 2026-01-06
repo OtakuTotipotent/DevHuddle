@@ -55,6 +55,19 @@ class CustomUser(AbstractUser):
         validators=[validate_file_size, validate_image_extension],
     )
 
+    ROLE_CHOICES = (
+        ("dev", "Developer"),
+        ("client", "Client / Hirer"),
+        ("org", "Organization"),
+    )
+    role = models.CharField(max_length=10, choices=ROLE_CHOICES, default="dev")
+
+    tech_stack = models.CharField(
+        max_length=255,
+        blank=True,
+        help_text="e.g. Python, Java, CI/CD, Unity... (Comma separated)",
+    )
+
     def is_following(self, target_user):
         return self.following.filter(pk=target_user.pk).exists()
 
