@@ -27,88 +27,16 @@
         </style>
 
     <style>
-        body::-webkit-scrollbar {
-            width: 0 !important;
-        }
-
         /* DEFAULT DARK THEME */
         :root {
             --site-bg: #111827;
-            /* gray-900 */
             --site-card: #1f2937;
-            /* gray-800 */
             --site-text: #f3f4f6;
-            /* gray-100 */
             --site-muted: #9ca3af;
-            /* gray-400 */
             --site-border: #374151;
-            /* gray-700 */
             --site-primary: #3b82f6;
-            /* blue-500 */
             --site-hover: #1d4ed8;
-            /* blue-700 */
             --autofill-bg: #374151;
-        }
-
-        /* LIGHT THEME */
-        [data-theme="light"] {
-            --site-bg: #f8fafc;
-            /* slate-50 */
-            --site-card: #ffffff;
-            /* white */
-            --site-text: #0f172a;
-            /* slate-900 */
-            --site-muted: #64748b;
-            /* slate-500 */
-            --site-border: #cbd5e1;
-            /* slate-300 */
-            --site-primary: #2563eb;
-            /* blue-600 */
-            --site-hover: #1d4ed8;
-            /* blue-700 */
-            --autofill-bg: #ffffff;
-        }
-
-        /* Huddle THEME (Midnight Luxury) */
-        [data-theme="huddle"] {
-            --site-bg: #020617;
-            /* slate-950 */
-            --site-card: #0f172a;
-            /* slate-900 */
-            --site-text: #e2e8f0;
-            /* slate-200 */
-            --site-muted: #94a3b8;
-            /* slate-400 */
-            --site-border: #1e293b;
-            /* slate-800 */
-            --site-primary: #38bdf8;
-            /* sky-400 */
-            --site-hover: #0ea5e9;
-            /* sky-500 */
-            --autofill-bg: #0f172a;
-        }
-
-        /* Dynamic Autofill Fix */
-        input:-webkit-autofill,
-        input:-webkit-autofill:hover,
-        input:-webkit-autofill:focus,
-        input:-webkit-autofill:active {
-            -webkit-box-shadow: 0 0 0 30px var(--autofill-bg) inset !important;
-            -webkit-text-fill-color: var(--site-text) !important;
-            transition: background-color 5000s ease-in-out 0s;
-        }
-
-        .animate-fade-in-down {
-            animation: ping .4s cubic-bezier(0.4, 0, 0.6, 1);
-        }
-
-        @keyframes ping {
-
-            75%,
-            100% {
-                transform: scale(1.5);
-                opacity: 0;
-            }
         }
     </style>
 </head>
@@ -262,19 +190,6 @@
     </footer>
 
     <script>
-        // THEME LOGIC
-        function setTheme(themeName) {
-            localStorage.setItem('theme', themeName);
-            document.documentElement.setAttribute('data-theme', themeName);
-            document.body.classList.add('transition-colors', 'duration-500');
-        }
-
-        // ON LOAD: Check saved theme
-        (function () {
-            const savedTheme = localStorage.getItem('theme') || 'dark';
-            document.documentElement.setAttribute('data-theme', savedTheme);
-        })();
-
         // Profile Toggle
         function toggleProfileMenu() {
             const menu = document.getElementById('profile-dropdown');
@@ -287,10 +202,9 @@
             const openIcon = document.getElementById('mobile-icon-open');
             const closeIcon = document.getElementById('mobile-icon-close');
 
-            menu.classList.toggle('hidden'); // 1. Toggles the Menu Visibility
-            menu.classList.toggle('flex'); // Ensure flex layout activates when visible
+            menu.classList.toggle('hidden');
+            menu.classList.toggle('flex');
 
-            // 2. Swap the Icons
             if (menu.classList.contains('hidden')) {
                 // Menu is CLOSED -> Show Hamburger, Hide Cross
                 openIcon.classList.remove('hidden');
@@ -306,10 +220,10 @@
             }
         }
 
-        // MOBILE MENU: Updated Click Outside Listener to handle Mobile Menu too
+        // MOBILE MENU
         document.addEventListener('click', function (event) {
             const mobileMenu = document.getElementById('mobile-menu');
-            const mobileButton = event.target.closest('button'); // Catch clicks on the hamburger
+            const mobileButton = event.target.closest('button');
 
             if (!mobileMenu.classList.contains('hidden') && !mobileMenu.contains(event.target) && !mobileButton) {
                 toggleMobileMenu();
@@ -319,10 +233,9 @@
         // Close menu when clicking outside
         document.addEventListener('click', function (event) {
             const menu = document.getElementById('profile-dropdown');
-            const button = event.target.closest('button'); // Checks if click was inside the button
-            const dropdown = event.target.closest('#profile-dropdown'); // Checks if click was inside the menu
+            const button = event.target.closest('button');
+            const dropdown = event.target.closest('#profile-dropdown');
 
-            // If we clicked ANYWHERE except the button or the menu, hide the menu
             if (!button && !dropdown && !menu.classList.contains('hidden')) {
                 menu.classList.add('hidden');
             }
