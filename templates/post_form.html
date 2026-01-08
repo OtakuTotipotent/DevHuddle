@@ -5,8 +5,8 @@
 {% block content %}
 
 <div class="max-w-xl mx-auto mt-2">
-    <div class="bg-gray-800 p-3 rounded-lg shadow-lg border border-gray-700">
-        <h2 class="text-2xl font-semibold mb-6 text-blue-500">Create a Huddle_</h2>
+    <div class="bg-site-card p-3 rounded-lg shadow-lg border border-site-border">
+        <h2 class="text-2xl font-semibold mb-6 text-site-primary">Create a Huddle_</h2>
 
         <form method="post" enctype="multipart/form-data">
             {% csrf_token %}
@@ -16,7 +16,7 @@
                 {{ form.body.errors}}
 
                 <div class="mt-4">
-                    <label class="block text-sm font-semibold text-gray-400 mb-3">
+                    <label class="block text-sm font-semibold text-site-muted mb-3">
                         Attach Image (Optional)
                     </label>
 

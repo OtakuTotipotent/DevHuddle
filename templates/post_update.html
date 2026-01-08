@@ -4,21 +4,21 @@
 
 {% block content %}
 <div class="max-w-xl mx-auto mt-2">
-    <div class="bg-gray-800 p-4 rounded-lg shadow-xl border border-gray-700">
-        <h2 class="text-xl font-semibold mb-4 text-blue-500 text-center">Edit Your Huddle_</h2>
+    <div class="bg-site-card p-4 rounded-lg shadow-xl border border-site-border">
+        <h2 class="text-xl font-semibold mb-4 text-site-primary text-center">Edit Your Huddle_</h2>
 
         <form method="post" enctype="multipart/form-data">
             {% csrf_token %}
 
             <!-- CATEGORY -->
             <div>
-                <label class="text-gray-400 text-sm font-semibold">Post Category :</label>
+                <label class="text-site-muted text-sm font-semibold">Post Category :</label>
                 {{ form.post_type }}
             </div>
 
             <!-- IMAGE SECTION -->
             <div class="mb-4">
-                <label class="block text-gray-400 text-sm font-semibold mb-2">Image :</label>
+                <label class="block text-site-muted text-sm font-semibold mb-2">Image :</label>
 
                 {% if form.instance.image %}
                 <div class="flex items-center gap-4 mb-4 p-2 bg-gray-700 rounded-lg">

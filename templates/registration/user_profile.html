@@ -6,7 +6,7 @@
 <div class="max-w-4xl mx-auto mt-6">
 
     <!-- User Info -->
-    <div class="bg-gray-800 rounded-xl shadow-lg border border-gray-700 overflow-hidden mb-8">
+    <div class="bg-site-card rounded-xl shadow-lg border border-site-border overflow-hidden mb-8">
         <div class="h-32 bg-gradient-to-r from-blue-900 to-gray-900">
         </div>
 
@@ -28,14 +28,14 @@
             <h1 class="text-2xl text-white">{{ profile_user.first_name }} {{ profile_user.last_name }}
             </h1>
 
-            <p class="text-gray-400 font-mono mb-2">@{{ profile_user.username }}</p>
+            <p class="text-site-muted font-mono mb-2">@{{ profile_user.username }}</p>
 
             {% if profile_user.bio %}
             <p class="text-blue-400 max-w-2xl mb-1">{{ profile_user.bio }}</p>
             {% endif %}
 
             <!-- Links -->
-            <div class="flex flex-wrap gap-x-4 gap-y-1 text-gray-400 mb-4">
+            <div class="flex flex-wrap gap-x-4 gap-y-1 text-site-muted mb-4">
                 {% if profile_user.portfolio_url %}
                 <a href="{{ profile_user.portfolio_url }}" target="_blank" class="hover:text-purple-300 transition"
                     title="Portfolio">
@@ -151,50 +151,50 @@
             </div>
 
             <!-- Stats -->
-            <div class="flex flex-wrap justify-center gap-8 mt-4 border-t border-gray-700 pt-6 text-white">
+            <div class="flex flex-wrap justify-center gap-8 mt-4 border-t border-site-border pt-6 text-white">
                 <!-- Posts: Total posts count -->
                 <div class="text-center">
                     <span class="block text-xl font-bold">{{ profile_user.post_set.count }}</span>
-                    <span class="text-xs text-gray-400 uppercase tracking-wide">Posts</span>
+                    <span class="text-xs text-site-muted uppercase tracking-wide">Posts</span>
                 </div>
                 <!-- Followers: one sided connection -->
                 <div class="text-center">
                     <span class="block text-xl font-bold" id="followers-count">
                         {{ profile_user.followers.count }}
                     </span>
-                    <span class="text-xs text-gray-400 uppercase tracking-wide">Followers</span>
+                    <span class="text-xs text-site-muted uppercase tracking-wide">Followers</span>
                 </div>
                 <!-- Following: one sided connection -->
                 <div class="text-center">
                     <span class="block text-xl font-bold" id="following-count">
                         {{ profile_user.following.count }}
                     </span>
-                    <span class="text-xs text-gray-400 uppercase tracking-wide">Following</span>
+                    <span class="text-xs text-site-muted uppercase tracking-wide">Following</span>
                 </div>
                 <!-- Connections: two sided mutual connection (both follow each other) -->
                 <div class="text-center">
                     <span class="block text-xl font-bold">0</span>
-                    <span class="text-xs text-gray-400 uppercase tracking-wide">Connections</span>
+                    <span class="text-xs text-site-muted uppercase tracking-wide">Connections</span>
                 </div>
                 <!-- Ranking: on basis of likes + comments + boosts + expertise level got -->
                 <div class="text-center">
                     <span class="block text-xl font-bold">786</span>
-                    <span class="text-xs text-gray-400 uppercase tracking-wide">Rank</span>
+                    <span class="text-xs text-site-muted uppercase tracking-wide">Rank</span>
                 </div>
                 <!-- Projects: if any | Open source or finished projects -->
                 <div class="text-center">
                     <span class="block text-xl font-bold">0</span>
-                    <span class="text-xs text-gray-400 uppercase tracking-wide">Projects</span>
+                    <span class="text-xs text-site-muted uppercase tracking-wide">Projects</span>
                 </div>
                 <!-- Active: average time spent on DevHuddle_ -->
                 <div class="text-center">
                     <span class="block text-xl font-bold">47%</span>
-                    <span class="text-xs text-gray-400 uppercase tracking-wide">Active</span>
+                    <span class="text-xs text-site-muted uppercase tracking-wide">Active</span>
                 </div>
                 <!-- Availability: YES/NO (Can someone hire them or not?) -->
                 <div class="text-center">
                     <span class="block text-xl font-bold">Yes</span>
-                    <span class="text-xs text-gray-400 uppercase tracking-wide">Availability</span>
+                    <span class="text-xs text-site-muted uppercase tracking-wide">Availability</span>
                 </div>
             </div>
         </div>
@@ -202,10 +202,10 @@
 
     <!-- Posts -->
     <div class="grid gap-6">
-        <h2 class="text-xl font-bold text-gray-400 mb-2">Recent Huddles</h2>
+        <h2 class="text-xl font-bold text-site-muted mb-2">Recent Huddles</h2>
 
         {% for post in profile_user.post_set.all|dictsortreversed:"created_at" %}
-        <div class="bg-gray-800 p-6 rounded-lg border border-gray-700">
+        <div class="bg-site-card p-6 rounded-lg border border-site-border">
             <div class="flex justify-between items-start mb-4">
                 <div class="flex items-center gap-3">
                     {% if post.author.avatar %}
@@ -215,9 +215,9 @@
                         class="w-8 h-8 rounded-full bg-blue-600 flex items-center justify-center font-bold text-xs text-white">
                         {{ post.author.username|slice:":1"|upper }}</div>
                     {% endif %}
-                    <span class="text-gray-400 text-sm">{{ post.created_at|date:"M d, Y" }}</span>
+                    <span class="text-site-muted text-sm">{{ post.created_at|date:"M d, Y" }}</span>
                 </div>
-                <a href="{% url 'post_detail' post.pk %}" class="text-blue-500 hover:text-blue-400 text-sm">
+                <a href="{% url 'post_detail' post.pk %}" class="text-site-primary hover:text-blue-400 text-sm">
                     View Thread →
                 </a>
             </div>

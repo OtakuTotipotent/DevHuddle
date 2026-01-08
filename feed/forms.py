@@ -19,7 +19,7 @@ class PostForm(forms.ModelForm):
             ),
             "image": forms.FileInput(
                 attrs={
-                    "class": "block w-full text-sm text-gray-400 file:mr-4 file:py-1 file:px-3 file:rounded-full file:border-0 file:text-sm file:font-semibold file:bg-blue-600 file:text-white hover:file:bg-blue-700 cursor-pointer mt-2 file:cursor-pointer cursor-pointer"
+                    "class": "block w-full text-sm text-site-muted file:mr-4 file:py-1 file:px-3 file:rounded-full file:border-0 file:text-sm file:font-semibold file:bg-blue-600 file:text-white hover:file:bg-blue-700 cursor-pointer mt-2 file:cursor-pointer cursor-pointer"
                 }
             ),
             "post_type": forms.Select(

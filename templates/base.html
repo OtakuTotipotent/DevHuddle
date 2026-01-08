@@ -13,18 +13,88 @@
 
     <link rel="stylesheet" href="{% static 'css/custom.css' %}">
 
+    <style type="text/tailwindcss">
+        @theme {
+                /* Map Tailwind classes to our CSS Variables */
+                --color-site-bg: var(--site-bg);
+                --color-site-card: var(--site-card);
+                --color-site-text: var(--site-text);
+                --color-site-muted: var(--site-muted);
+                --color-site-border: var(--site-border);
+                --color-site-primary: var(--site-primary);
+                --color-site-hover: var(--site-hover);
+            }
+        </style>
+
     <style>
         body::-webkit-scrollbar {
             width: 0 !important;
         }
 
-        /* KILL THE WHITE AUTOFILL BACKGROUND */
+        /* DEFAULT DARK THEME */
+        :root {
+            --site-bg: #111827;
+            /* gray-900 */
+            --site-card: #1f2937;
+            /* gray-800 */
+            --site-text: #f3f4f6;
+            /* gray-100 */
+            --site-muted: #9ca3af;
+            /* gray-400 */
+            --site-border: #374151;
+            /* gray-700 */
+            --site-primary: #3b82f6;
+            /* blue-500 */
+            --site-hover: #1d4ed8;
+            /* blue-700 */
+            --autofill-bg: #374151;
+        }
+
+        /* LIGHT THEME */
+        [data-theme="light"] {
+            --site-bg: #f8fafc;
+            /* slate-50 */
+            --site-card: #ffffff;
+            /* white */
+            --site-text: #0f172a;
+            /* slate-900 */
+            --site-muted: #64748b;
+            /* slate-500 */
+            --site-border: #cbd5e1;
+            /* slate-300 */
+            --site-primary: #2563eb;
+            /* blue-600 */
+            --site-hover: #1d4ed8;
+            /* blue-700 */
+            --autofill-bg: #ffffff;
+        }
+
+        /* Huddle THEME (Midnight Luxury) */
+        [data-theme="huddle"] {
+            --site-bg: #020617;
+            /* slate-950 */
+            --site-card: #0f172a;
+            /* slate-900 */
+            --site-text: #e2e8f0;
+            /* slate-200 */
+            --site-muted: #94a3b8;
+            /* slate-400 */
+            --site-border: #1e293b;
+            /* slate-800 */
+            --site-primary: #38bdf8;
+            /* sky-400 */
+            --site-hover: #0ea5e9;
+            /* sky-500 */
+            --autofill-bg: #0f172a;
+        }
+
+        /* Dynamic Autofill Fix */
         input:-webkit-autofill,
         input:-webkit-autofill:hover,
         input:-webkit-autofill:focus,
         input:-webkit-autofill:active {
-            -webkit-box-shadow: 0 0 0 30px #374151 inset !important;
-            -webkit-text-fill-color: white !important;
+            -webkit-box-shadow: 0 0 0 30px var(--autofill-bg) inset !important;
+            -webkit-text-fill-color: var(--site-text) !important;
             transition: background-color 5000s ease-in-out 0s;
         }
 
@@ -43,21 +113,21 @@
     </style>
 </head>
 
-<body class="bg-gray-900 text-gray-100 font-sans antialiased overflow-x-hidden">
+<body class="bg-site-bg text-site-text font-sans antialiased overflow-x-hidden transition-colors duration-300">
 
     <nav
-        class="px-2 py-3 border-b border-gray-800 bg-gray-900/80 backdrop-blur-sm sticky top-0 z-50 transition-all duration-300">
+        class="px-2 py-3 border-b border-site-border bg-site-bg/80 backdrop-blur-sm sticky top-0 z-50 transition-all duration-300">
         <div class="container mx-auto flex justify-between items-center relative">
 
             <!-- LOGO -->
-            <a href="/" class="md:text-2xl text-lg font-bold text-blue-500">DevHuddle_</a>
+            <a href="/" class="md:text-2xl text-lg font-bold text-site-primary">DevHuddle_</a>
 
             <!-- SEARCH BAR -->
             {% if user.is_authenticated %}
             <div class="hidden md:block flex-grow max-w-xs mx-6">
                 <form action="{% url 'search' %}" method="get" class="relative">
                     <input type="text" name="q" placeholder="Search devs, stacks, or posts..."
-                        class="w-full bg-gray-800 text-gray-200 border border-gray-700 rounded-full py-1 px-4 pl-10 focus:outline-none focus:border-blue-500 focus:ring-1 focus:ring-blue-500 transition text-sm"
+                        class="w-full bg-site-card text-gray-200 border border-site-border rounded-full py-1 px-4 pl-10 focus:outline-none focus:border-blue-500 focus:ring-1 focus:ring-blue-500 transition text-sm"
                         autocomplete="off" aria-autocomplete="none">
 
                     <div class="absolute left-3 top-2.5 text-gray-500">
@@ -74,15 +144,15 @@
             <div class="flex md:gap-6 gap-4 items-center">
                 <!-- Navigation Links -->
                 <div class="hidden md:flex items-center gap-8">
-                    <a href="{% url 'about' %}" class="text-gray-300 hover:text-white transition">About</a>
+                    <a href="{% url 'about' %}" class="text-site-text hover:text-white transition">About</a>
 
                     <!-- USER PROFILE ICON -->
                     {% if not user.is_authenticated %}
-                    <div class="flex items-center gap-4 border-l border-gray-700 pl-4 font-medium">
-                        <a href="{% url 'login' %}" class="text-blue-500 hover:text-blue-600 transition">
+                    <div class="flex items-center gap-4 border-l border-site-border pl-4 font-medium">
+                        <a href="{% url 'login' %}" class="text-site-primary hover:text-blue-600 transition">
                             Login
                         </a>
-                        <a href="{% url 'signup' %}" class="text-blue-500 hover:text-blue-600 transition">
+                        <a href="{% url 'signup' %}" class="text-site-primary hover:text-blue-600 transition">
                             Join Now
                         </a>
                     </div>
@@ -97,7 +167,7 @@
                 <!-- MOBILE MENU BUTTONS | HAMBURGER -->
                 <div class="md:hidden flex items-center z-50">
                     <button onclick="toggleMobileMenu()"
-                        class="text-blue-500 hover:text-blue-400 focus:outline-none cursor-pointer">
+                        class="text-site-primary hover:text-blue-400 focus:outline-none cursor-pointer">
 
                         <svg id="mobile-icon-open" class="w-8 h-8 block" fill="none" stroke="currentColor"
                             viewBox="0 0 24 24">
@@ -117,13 +187,13 @@
 
                 <!-- MOBILE MENU DROPDOWN -->
                 <div id="mobile-menu"
-                    class="hidden absolute top-12 right-0 w-64 bg-gray-800 rounded-xl shadow-2xl border border-gray-700 z-50 flex-col overflow-hidden">
+                    class="hidden absolute top-12 right-0 w-64 bg-site-card rounded-xl shadow-2xl border border-site-border z-50 flex-col overflow-hidden">
 
                     <div class="p-2">
                         {% if user.is_authenticated %}
                         <form action="{% url 'search' %}" method="get" class="relative">
                             <input type="text" name="q" placeholder="Search..."
-                                class="w-full bg-gray-900 text-gray-200 border border-gray-600/60 rounded-full py-2 pr-2 pl-12 text-sm focus:outline-none focus:border-blue-500/50 transition"
+                                class="w-full bg-site-bg text-gray-200 border border-gray-600/60 rounded-full py-2 pr-2 pl-12 text-sm focus:outline-none focus:border-blue-500/50 transition"
                                 aria-autocomplete="none">
 
                             <div class="absolute left-6 top-3 text-gray-500">
@@ -135,13 +205,13 @@
                         </form>
                         {% else %}
                         <div class="flex items-center justify-center gap-2 font-medium">
-                            <a href="{% url 'login' %}" class="text-blue-500 hover:text-blue-400 transition">
+                            <a href="{% url 'login' %}" class="text-site-primary hover:text-blue-400 transition">
                                 Login
                             </a>
 
                             <div class="w-px h-6 bg-gray-600/70 mx-4"></div>
 
-                            <a href="{% url 'signup' %}" class="text-blue-500 hover:text-blue-400 transition">
+                            <a href="{% url 'signup' %}" class="text-site-primary hover:text-blue-400 transition">
                                 Join Now
                             </a>
                         </div>
@@ -152,25 +222,25 @@
                         <div class="h-px bg-gray-700 my-1 mx-2"></div>
 
                         <a href="/"
-                            class="block px-4 py-2 text-gray-300 hover:bg-gray-700 hover:text-white rounded-lg transition"
+                            class="block px-4 py-2 text-site-text hover:bg-gray-700 hover:text-white rounded-lg transition"
                             onclick="toggleMobileMenu()">Home</a>
 
                         <a href="{% url 'about' %}"
-                            class="block px-4 py-2 text-gray-300 hover:bg-gray-700 hover:text-white rounded-lg transition"
+                            class="block px-4 py-2 text-site-text hover:bg-gray-700 hover:text-white rounded-lg transition"
                             onclick="toggleMobileMenu()">About</a>
 
                         <a href="#"
-                            class="block px-4 py-2 text-gray-300 hover:bg-gray-700 hover:text-white rounded-lg transition"
+                            class="block px-4 py-2 text-site-text hover:bg-gray-700 hover:text-white rounded-lg transition"
                             onclick="toggleMobileMenu()">Users</a>
 
                         <a href="#"
-                            class="block px-4 py-2 text-gray-300 hover:bg-gray-700 hover:text-white rounded-lg transition"
+                            class="block px-4 py-2 text-site-text hover:bg-gray-700 hover:text-white rounded-lg transition"
                             onclick="toggleMobileMenu()">Jobs & Clients</a>
 
                         <div class="h-px bg-gray-700 my-1 mx-2"></div>
 
                         <a href="#"
-                            class="block px-4 py-2 text-gray-300 hover:bg-gray-700 hover:text-white rounded-lg transition"
+                            class="block px-4 py-2 text-site-text hover:bg-gray-700 hover:text-white rounded-lg transition"
                             onclick="toggleMobileMenu()">Help & Support</a>
                     </div>
                 </div>
@@ -188,10 +258,24 @@
         &copy; 2025 DevHuddle Inc. Built with <span class="text-sky-500">Python</span>/<span
             class="text-yellow-500">Django</span> &
         Caffeine by <a href="http://github.com/OtakuTotipotent" target="_blank" rel="noopener noreferrer"
-            class="text-gray-300 hover:text-blue-400">&nbsp;OtakuTotipotent</a>.
+            class="text-site-text hover:text-blue-400">&nbsp;OtakuTotipotent</a>.
     </footer>
 
     <script>
+        // THEME LOGIC
+        function setTheme(themeName) {
+            localStorage.setItem('theme', themeName);
+            document.documentElement.setAttribute('data-theme', themeName);
+            document.body.classList.add('transition-colors', 'duration-500');
+        }
+
+        // ON LOAD: Check saved theme
+        (function () {
+            const savedTheme = localStorage.getItem('theme') || 'dark';
+            document.documentElement.setAttribute('data-theme', savedTheme);
+        })();
+
+        // Profile Toggle
         function toggleProfileMenu() {
             const menu = document.getElementById('profile-dropdown');
             menu.classList.toggle('hidden');

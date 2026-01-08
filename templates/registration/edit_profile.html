@@ -5,8 +5,8 @@
 {% block content %}
 
 <div class="max-w-md mx-auto mt-2">
-    <div class="bg-gray-800 p-4 rounded-lg shadow-lg border border-gray-700">
-        <h2 class="text-xl font-semibold mb-6 text-blue-500 text-center">Edit Profile</h2>
+    <div class="bg-site-card p-4 rounded-lg shadow-lg border border-site-border">
+        <h2 class="text-xl font-semibold mb-6 text-site-primary text-center">Edit Profile</h2>
 
         <form method="post" enctype="multipart/form-data">
             {% csrf_token %}
@@ -15,7 +15,7 @@
                 {% for field in form %}
 
                 <div>
-                    <label class="block text-sm text-blue-500 font-semibold mb-1">
+                    <label class="block text-sm text-site-primary font-semibold mb-1">
                         {{ field.label }}
                     </label>
 
@@ -28,7 +28,7 @@
 
                 {% endfor %}
 
-                <a href="{% url 'password_reset' %}" class="text-sm text-blue-500 hover:text-blue-600 hover:underline">
+                <a href="{% url 'password_reset' %}" class="text-sm text-site-primary hover:text-blue-600 hover:underline">
                     Click here to change your password?
                 </a>
             </div>
