@@ -6,12 +6,12 @@
 <div class="max-w-2xl mx-auto mt-6">
 
     <!-- BACK BUTTON -->
-    <a href="{% url 'home' %}" class="text-site-muted hover:text-white mb-4 inline-block transition">
+    <a href="{% url 'home' %}" class="text-gray-400 hover:text-white mb-4 inline-block transition">
         &larr; Back to Feed
     </a>
 
     <!-- POST CONTENT -->
-    <div class="bg-site-card p-4 rounded-lg border border-site-border shadow-xl mb-6">
+    <div class="bg-gray-800 p-4 rounded-lg border border-gray-700 shadow-xl mb-6">
         <!-- AUTHOR'S INFO & LOGO -->
         <div class="flex items-center gap-3 mb-3">
             {% if post.author.avatar %}
@@ -28,14 +28,14 @@
         </div>
 
         <!-- BODY -->
-        <p class="text-site-text text-lg leading-relaxed">{{ post.body }}</p>
+        <p class="text-gray-100 text-lg leading-relaxed">{{ post.body }}</p>
         {% if post.image %}
         <img src="{{ post.image.url }}" class="mt-4 rounded-lg w-full">
         {% endif %}
     </div>
 
     <!-- COMMENTS -->
-    <div class="bg-site-card/50 p-6 rounded-lg border border-site-border/50">
+    <div class="bg-gray-800/50 p-6 rounded-lg border border-gray-700/50">
         <h3 class="text-xl font-bold text-white mb-4">Comments ({{ post.comments.count }})</h3>
 
         <!-- ADD COMMENT -->
@@ -69,7 +69,7 @@
                         <span class="text-blue-400 font-bold text-sm">@{{ comment.author.username }}</span>
                         <span class="text-gray-500 text-xs">{{ comment.created_at|timesince }} ago</span>
                     </div>
-                    <p class="text-site-text text-sm">{{ comment.body }}</p>
+                    <p class="text-gray-100 text-sm">{{ comment.body }}</p>
                 </div>
             </div>
             {% empty %}

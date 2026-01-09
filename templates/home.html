@@ -4,308 +4,41 @@
 {% block content %}
 
 {% if not user.is_authenticated %}
-<div class="flex flex-col items-center justify-center h-[70vh]">
-    <h1 class="text-3xl font-bold mb-4 text-site-text">
-        Where Developers <span class="text-site-primary">Collide.</span>
-    </h1>
-    <p class="text-xl text-site-muted mb-8 max-w-2xl px-2 leading-loose">
-        Share code, sell assets, get services, hire top talents and build your legacy.
-        <span class="text-yellow-600">
-            An AI powered DEVELOPERS platform.
-        </span>
-        The professional network that doesn't feel like a corporate meeting.
-        <span class="text-yellow-600">Share & Gear up...</span>
-    </p>
-
-    <div class="space-x-4 mt-4">
-        <a href="{% url 'signup' %}"
-            class="bg-blue-800 font-semibold text-site-text px-5 py-2 rounded-full hover:bg-blue-700 transition inline-block">
-            Start Huddle
-        </a>
-
-        <a href="{% url 'login' %}"
-            class="border border-gray-600 text-site-text px-7 py-2 rounded-full hover:bg-site-card transition inline-block">
-            Login
-        </a>
-    </div>
-</div>
+{% include 'includes/landing_hero.html' %}
 
 {% else %}
-
-<div class="max-w-2xl mx-auto">
-    <!-- FEATURES & ACTIONS -->
-    <div class="flex flex-wrap justify-center gap-1 sm:gap-2 items-center mb-3 mt-1">
-        <a href="#"
-            class="text-sm text-purple-400 hover:text-purple-300 bg-site-card px-2 py-1 sm:px-3 sm:py-[6px] rounded-full transition">
-            AI playground
-        </a>
-        <a href="#"
-            class="text-sm text-green-600 hover:text-green-400 bg-site-card px-2 py-1 sm:px-3 sm:py-[6px] rounded-full transition">
-            Find work
-        </a>
-        <a href="#"
-            class="text-sm text-yellow-500 hover:text-yellow-300 bg-site-card px-2 py-1 sm:px-3 sm:py-[6px] rounded-full transition">
-            Go premium
-        </a>
-        <a href="#"
-            class="text-sm text-orange-600 hover:text-orange-500 bg-site-card px-2 py-1 sm:px-3 sm:py-[6px] rounded-full transition">
-            Post offer
-        </a>
-        <a href="#"
-            class="text-sm text-site-text hover:text-site-text bg-site-card px-2 py-1 sm:px-3 sm:py-[6px] rounded-full transition">
-            Announce job
-        </a>
-        <a href="{% url 'post_new' %}"
-            class="text-sm text-blue-600 bg-transparent px-2 py-1 border border-blue-600 rounded-full hover:bg-blue-600 hover:text-site-text transition">
-            New Post
-        </a>
-    </div>
-
-    <!-- FEED BUTTONS -->
-    <div class="grid grid-cols-4 border-t gap-[2px] border-gray-800 sm:rounded-b-2xl rounded-b-lg mb-4 overflow-hidden">
-        <a href="?feed=global" class="py-2 text-sm text-center transition
-        {% if current_feed == 'global' %} text-blue-400 font-bold bg-gray-950
-        {% else %} text-site-muted hover:text-blue-400 hover:bg-gray-950 {% endif %}">
-            Global </a>
-
-        <a href="?feed=fellows" class="py-2 text-sm text-center transition
-        {% if current_feed == 'fellows' %} text-blue-400 font-bold bg-gray-950
-        {% else %} text-site-muted hover:text-blue-400 hover:bg-gray-950 {% endif %}">
-            Fellows </a>
-
-        <a href="?feed=business" class="py-2 text-sm text-center transition
-        {% if current_feed == 'business' %} text-blue-400 font-bold bg-gray-950
-        {% else %} text-site-muted hover:text-blue-400 hover:bg-gray-950 {% endif %}">
-            Business </a>
-
-        <a href="?feed=ads" class="py-2 text-sm text-center transition
-        {% if current_feed == 'ads' %} text-blue-400 font-bold bg-gray-950
-        {% else %} text-site-muted hover:text-blue-400 hover:bg-gray-950 {% endif %}">
-            Advertisers </a>
-    </div>
-
-    <!-- POSTS -->
-    {% for post in posts %}
-    <div class="bg-site-card p-3 rounded-lg mb-4 border border-gray-600 transition shadow-lg">
-        <div class="flex items-center justify-between mb-2">
-            <!-- AUTHOR'S INFO & LOGO -->
-            <div class="flex items-center gap-3">
-                {% if post.author.avatar %}
-                <a href="{% url 'user_profile' post.author.username %}" class="hover:opacity-70">
-                    <img src="{{ post.author.avatar.url }}"
-                        class="w-10 h-10 rounded-full object-cover border border-gray-600">
-                </a>
-
-                {% else %}
-                <!-- PROFILE ICON LETTER -->
-                <a href="{% url 'user_profile' post.author.username %}" class="hover:opacity-70">
-                    <div
-                        class="w-10 h-10 rounded-full bg-blue-600 flex items-center justify-center font-bold text-site-text text-sm">
-                        {{ post.author.username|slice:":1"|upper }}
-                    </div>
-                </a>
-                {% endif %}
-
-                <div class="leading-tight">
-                    <a href="{% url 'user_profile' post.author.username %}"
-                        class="block font-semibold text-gray-200 hover:text-blue-400 hover:underline transition">
-                        @{{ post.author.username }}
-                    </a>
-                    <span class="block text-xs text-gray-500">{{ post.created_at|date:"d M Y • h:i:s A" }}</span>
-                </div>
-            </div>
-
-            <!-- EDIT/DELETE LOGIC -->
-            {% if post.author == user %}
-            <div class="relative">
-                <button onclick="togglePostMenu('{{ post.pk }}')"
-                    class="text-site-muted hover:text-white p-2 hover:bg-gray-700/50 rounded-full transition cursor-pointer">
-                    <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
-                            d="M5 12h.01M12 12h.01M19 12h.01M6 12a1 1 0 11-2 0 1 1 0 012 0zm7 0a1 1 0 11-2 0 1 1 0 012 0zm7 0a1 1 0 11-2 0 1 1 0 012 0z">
-                        </path>
-                    </svg>
-                </button>
-
-                <div id="post-menu-{{ post.pk }}"
-                    class="hidden absolute right-0 mt-2 w-36 bg-site-card rounded-lg shadow-xl border border-site-border z-20 overflow-hidden">
-                    <a href="{% url 'post_edit' pk=post.pk %}"
-                        class="block px-4 py-2 text-sm text-site-text hover:bg-gray-700 hover:text-white transition">
-                        Edit Post
-                    </a>
-                    <div class="h-px bg-gray-700 mx-2 my-1"></div>
-                    <a href="{% url 'post_delete' pk=post.pk %}"
-                        class="block px-4 py-2 text-sm text-red-400 hover:bg-red-900/20 hover:text-red-300 transition">
-                        Delete Post
-                    </a>
-                </div>
-            </div>
-
-            {% else %}
-            <div class="flex gap-2 items-center">
-                <!-- LIKE BUTTON -->
-                <button onclick="toggleLike(event, '{{ post.pk }}')"
-                    class="flex items-center gap-1 group transition focus:outline-none cursor-pointer">
-
-                    <div id="like-icon-{{ post.pk }}">
-                        {% if user in post.likes.all %}
-                        <svg class="w-6 h-6 text-red-500 group-hover:scale-110 transition-transform" fill="currentColor"
-                            viewBox="0 0 24 24">
-                            <path
-                                d="M12 21.35l-1.45-1.32C5.4 15.36 2 12.28 2 8.5 2 5.42 4.42 3 7.5 3c1.74 0 3.41.81 4.5 2.09C13.09 3.81 14.76 3 16.5 3 19.58 3 22 5.42 22 8.5c0 3.78-3.4 6.86-8.55 11.54L12 21.35z" />
-                        </svg>
-                        {% else %}
-                        <svg class="w-6 h-6 text-site-muted group-hover:text-red-500 group-hover:scale-110 transition-transform"
-                            fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
-                                d="M4.318 6.318a4.5 4.5 0 000 6.364L12 20.364l7.682-7.682a4.5 4.5 0 00-6.364-6.364L12 7.636l-1.318-1.318a4.5 4.5 0 00-6.364 0z">
-                            </path>
-                        </svg>
-                        {% endif %}
-                    </div>
-
-                    <span id="like-count-{{ post.pk }}"
-                        class="text-sm font-bold {% if user in post.likes.all %}text-red-500{% else %}text-site-muted{% endif %}">
-                        {{ post.likes.count }}
-                    </span>
-                </button>
-
-                <!-- COMMENT BUTTON -->
-                <a href="{% url 'post_detail' post.pk %}"
-                    class="flex items-center gap-1 text-site-muted hover:text-blue-400 transition cursor-pointer hover:pb-1">
-                    <span class="text-xl">💬</span>
-                    <span class="text-sm font-bold">{{ post.comments.count }}</span>
-                </a>
-
-                <!-- POST REACTION OPTIONS -->
-                <div class="relative">
-                    <button onclick="togglePostMenu('{{ post.pk }}')"
-                        class="text-site-muted hover:text-white p-2 hover:bg-gray-700/50 rounded-full transition cursor-pointer">
-                        <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
-                                d="M5 12h.01M12 12h.01M19 12h.01M6 12a1 1 0 11-2 0 1 1 0 012 0zm7 0a1 1 0 11-2 0 1 1 0 012 0zm7 0a1 1 0 11-2 0 1 1 0 012 0z">
-                            </path>
-                        </svg>
-                    </button>
-                    <div id="post-menu-{{ post.pk }}"
-                        class="hidden absolute right-0 mt-2 w-36 bg-site-card rounded-lg shadow-xl border border-site-border z-20 overflow-hidden">
-                        <a href="#"
-                            class="border-b border-site-border block px-4 py-2 text-sm text-site-text hover:bg-gray-700 transition">Boost
-                            it ⚡</a>
-                        <a href="#"
-                            class="border-b border-site-border block px-4 py-2 text-sm text-site-text hover:bg-gray-700 transition">Learn
-                            by AI</a>
-                        <a href="#"
-                            class="border-b border-site-border block px-4 py-2 text-sm text-site-text hover:bg-gray-700 transition">Check
-                            Profile</a>
-                        <a href="#"
-                            class="border-b border-site-border block px-4 py-2 text-sm text-site-text hover:bg-gray-700 transition">See
-                            Comments</a>
-                        <a href="#"
-                            class="border-b border-site-border block px-4 py-2 text-sm text-site-text hover:bg-gray-700 transition">
-                            Report this</a>
-                        <a href="#"
-                            class="border-b border-site-border block px-4 py-2 text-sm text-site-text hover:bg-gray-700 transition">
-                            Bookmark</a>
-                    </div>
-                </div>
-            </div>
-            {% endif %}
-
-        </div>
-
-        <!-- POST BODY -->
-        <p class="text-site-text leading-relaxed mt-1">{{ post.body }}</p>
-        {% if post.image %}
-        <div class="mt-3 rounded-lg overflow-hidden border border-site-border">
-            <img src="{{ post.image.url }}" alt="Post Image" class="w-full h-auto object-cover max-h-[500px]">
-        </div>
-        {% endif %}
-    </div>
-
-    <!-- FRESH FEED / EMPTY FEED PAGES -->
-    {% empty %}
-    {% if current_feed == 'fellows' and suggested_users %}
-    <div class="text-center mb-4">
-        <h2 class="text-lg font-semibold text-white mb-2">Your huddle is empty!</h2>
-        <p class="text-site-muted mb-6">Connect with these top developers to start your feed 🦗</p>
-
-        <div class="grid grid-cols-1 md:grid-cols-2 gap-2">
-            {% for suggestion in suggested_users %}
-            <div class="bg-site-card p-2 sm:p-4 rounded-lg flex items-center justify-between border border-site-border">
-                <div class="flex items-center gap-3">
-                    {% if suggestion.avatar %}
-                    <img src="{{ suggestion.avatar.url }}" class="w-10 h-10 rounded-full object-cover">
-                    {% else %}
-                    <div
-                        class="w-10 h-10 rounded-full bg-blue-600 flex items-center justify-center font-bold text-white">
-                        {{ suggestion.username|slice:":1"|upper }}
-                    </div>
-                    {% endif %}
-
-                    <div class="text-left">
-                        <span class="block font-semibold text-blue-400">
-                            @{{ suggestion.username }}
-                        </span>
-                        <span class="text-xs text-gray-500">
-                            {{ suggestion.bio}}
-                        </span>
-                    </div>
-                </div>
-
-                <a href="{% url 'user_profile' suggestion.username %}"
-                    class="text-sm bg-blue-600 hover:bg-blue-700 text-white px-3 py-1 rounded-full transition">
-                    View
-                </a>
-            </div>
-            {% endfor %}
-        </div>
-    </div>
-
-    {% else %}
-    <div class="text-center text-gray-500 mt-10">
-        <p>No posts found here yet.</p>
-    </div>
-    {% endif %}
-
-    {% endfor %}
-
-    <!-- PAGINATION -->
-    {% if is_paginated %}
-    <div class="flex justify-center items-center space-x-4 mt-8">
-
-        {% if page_obj.has_previous %}
-        <a href="?page={{ page_obj.previous_page_number }}"
-            class="px-2 py-1 bg-site-card border border-gray-600 rounded-lg text-site-text hover:bg-blue-600 hover:text-white hover:border-blue-500 transition shadow-md cursor-pointer">
-            &larr; Previous
-        </a>
-        {% else %}
-        <span class="px-2 py-1 bg-site-card/50 border border-site-border rounded-lg text-gray-600 cursor-not-allowed">
-            &larr; Previous
-        </span>
-        {% endif %}
-
-        <span class="text-sm text-site-muted font-mono">
-            Page {{ page_obj.number }} of {{ page_obj.paginator.num_pages }}
-        </span>
-
-        {% if page_obj.has_next %}
-        <a href="?page={{ page_obj.next_page_number }}"
-            class="px-2 py-1 bg-site-card border border-gray-600 rounded-lg text-site-text hover:bg-blue-600 hover:text-white hover:border-blue-500 transition shadow-md cursor-pointer">
-            Next &rarr;
-        </a>
-        {% else %}
-        <span class="px-2 py-1 bg-site-card/50 border border-site-border rounded-lg text-gray-600 cursor-not-allowed">
-            Next &rarr;
-        </span>
-        {% endif %}
-
-    </div>
-    {% endif %}
-
+<!-- FEATURES & ACTIONS -->
+<div class="flex flex-wrap justify-center gap-1 sm:gap-2 items-center mb-3 mt-1">
+    <a href="#"
+        class="text-sm text-purple-400 hover:text-purple-300 bg-gray-800 px-2 py-1 sm:px-3 sm:py-[6px] rounded-full transition">
+        AI playground
+    </a>
+    <a href="#"
+        class="text-sm text-green-600 hover:text-green-400 bg-gray-800 px-2 py-1 sm:px-3 sm:py-[6px] rounded-full transition">
+        Find work
+    </a>
+    <a href="#"
+        class="text-sm text-yellow-500 hover:text-yellow-300 bg-gray-800 px-2 py-1 sm:px-3 sm:py-[6px] rounded-full transition">
+        Go premium
+    </a>
+    <a href="#"
+        class="text-sm text-orange-600 hover:text-orange-500 bg-gray-800 px-2 py-1 sm:px-3 sm:py-[6px] rounded-full transition">
+        Post offer
+    </a>
+    <a href="#"
+        class="text-sm text-gray-100 hover:text-gray-100 bg-gray-800 px-2 py-1 sm:px-3 sm:py-[6px] rounded-full transition">
+        Announce job
+    </a>
+    <a href="{% url 'post_new' %}"
+        class="text-sm text-blue-600 bg-transparent px-2 py-1 border border-blue-600 rounded-full hover:bg-blue-600 hover:text-gray-100 transition">
+        New Post
+    </a>
 </div>
+{% include 'includes/authorized_landing_homepage.html' %}
 
-{% endif %} {% endblock content %}
+{% endif %}
+
+{% endblock content %}
 
 <!-- SCRIPTS -->
 {% block scripts %}
@@ -357,7 +90,7 @@
             countSpan.innerText = data.count; // likes count
             if (data.liked) {
                 // turning the like RED
-                countSpan.classList.remove('text-site-muted');
+                countSpan.classList.remove('text-gray-400');
                 countSpan.classList.add('text-red-500');
                 iconContainer.innerHTML = `
                     <svg class="w-6 h-6 text-red-500 group-hover:scale-110 transition-transform" fill="currentColor" viewBox="0 0 24 24">
@@ -366,9 +99,9 @@
             } else {
                 // turning the like GRAY
                 countSpan.classList.remove('text-red-500');
-                countSpan.classList.add('text-site-muted');
+                countSpan.classList.add('text-gray-400');
                 iconContainer.innerHTML = `
-                    <svg class="w-6 h-6 text-site-muted group-hover:text-red-500 group-hover:scale-110 transition-transform" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <svg class="w-6 h-6 text-gray-400 group-hover:text-red-500 group-hover:scale-110 transition-transform" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                         <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4.318 6.318a4.5 4.5 0 000 6.364L12 20.364l7.682-7.682a4.5 4.5 0 00-6.364-6.364L12 7.636l-1.318-1.318a4.5 4.5 0 00-6.364 0z"></path>
                     </svg>`;
             }

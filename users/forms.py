@@ -52,7 +52,7 @@ class CustomUserChangeForm(UserChangeForm):
             if field_name == "avatar":
                 field.widget.attrs.update(
                     {
-                        "class": "block w-full text-sm text-site-muted file:mr-4 file:py-2 file:px-4 file:rounded-full file:border-0 file:text-sm file:font-semibold file:bg-blue-600 file:text-white hover:file:bg-blue-700 file:cursor-pointer cursor-pointer mt-2"
+                        "class": "block w-full text-sm text-gray-400 file:mr-4 file:py-2 file:px-4 file:rounded-full file:border-0 file:text-sm file:font-semibold file:bg-blue-600 file:text-white hover:file:bg-blue-700 file:cursor-pointer cursor-pointer mt-2"
                     }
                 )
 

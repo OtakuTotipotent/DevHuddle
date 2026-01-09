@@ -12,7 +12,7 @@ from django.views.generic.edit import FormMixin
 from django.shortcuts import get_object_or_404, render
 from django.http import JsonResponse
 from django.urls import reverse, reverse_lazy
-from django.db.models import Q
+from django.db.models import Q, Count
 
 from .models import Post
 from users.models import CustomUser
@@ -60,7 +60,7 @@ class HomePageView(ListView):
     model = Post
     template_name = "home.html"
     context_object_name = "posts"
-    paginate_by = 10
+    paginate_by = 7
 
     def get_queryset(self):
         if not self.request.user.is_authenticated:
@@ -92,19 +92,19 @@ class HomePageView(ListView):
 
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
-        # Pass the current selection to highlight the button
         current_feed = self.request.GET.get("feed", "fellows")
         context["current_feed"] = current_feed
 
-        # EMPTY FEED LOGIC (The "Top 20" Fallback)
-        if current_feed == "fellows" and not context["posts"]:
-            # Fetch random or top users to suggest
-            # (Simple version: first 20 users who represent the 'community')
-            context["suggested_users"] = CustomUser.objects.exclude(
-                pk=self.request.user.pk
-            )[:20]
+        if self.request.user.is_authenticated:
+            my_following = self.request.user.following.values_list("id", flat=True)
+            context["who_to_follow"] = (
+                CustomUser.objects.exclude(id__in=my_following)
+                .exclude(id=self.request.user.id)
+                .annotate(follower_count=Count("followers"))
+                .order_by("-follower_count")[:10]
+            )
 
-        return context
+            return context
 
 
 class AboutPageView(TemplateView):
