@@ -11,13 +11,13 @@ from .models import CustomUser
 class SignUpView(CreateView):
     form_class = CustomUserCreationForm
     success_url = reverse_lazy("login")
-    template_name = "registration/signup.html"
+    template_name = "users/auth/signup.html"
 
 
 class ProfileUpdateView(LoginRequiredMixin, UpdateView):
     model = CustomUser
     form_class = CustomUserChangeForm
-    template_name = "registration/edit_profile.html"
+    template_name = "users/profile/edit.html"
     success_url = reverse_lazy("home")
 
     def get_object(self):
@@ -26,7 +26,7 @@ class ProfileUpdateView(LoginRequiredMixin, UpdateView):
 
 class ProfileDeleteView(LoginRequiredMixin, DeleteView):
     model = CustomUser
-    template_name = "registration/delete_account.html"
+    template_name = "users/profile/delete.html"
     success_url = reverse_lazy("signup")
 
     def get_object(self):
@@ -35,7 +35,7 @@ class ProfileDeleteView(LoginRequiredMixin, DeleteView):
 
 class UserProfileView(DetailView):
     model = CustomUser
-    template_name = "registration/user_profile.html"
+    template_name = "users/profile/view.html"
     context_object_name = "profile_user"
     slug_field = "username"
     slug_url_kwarg = "username"

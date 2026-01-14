@@ -1,0 +1,45 @@
+{% if current_feed == 'fellows' and who_to_follow %}
+<div class="text-center mb-4">
+    <h2 class="text-lg font-semibold text-gray-400 mt-8 mb-2">Your huddle is empty!</h2>
+    <p class="text-gray-400 mb-8">Connect with these top developers to start your feed 🦗</p>
+
+    <div class="grid grid-cols-1 md:grid-cols-2 gap-x-4 gap-y-3">
+        {% for suggestion in who_to_follow %}
+        <div class="bg-gray-800 p-2 rounded-lg flex gap-2 items-center justify-between border border-gray-700">
+            <div class="flex items-center gap-3 sm:gap-2 truncate">
+                {% if suggestion.avatar %}
+                <img src="{{ suggestion.avatar.url }}" class="w-10 h-10 rounded-full object-cover">
+                {% else %}
+                <div
+                    class="w-10 h-10 rounded-full bg-blue-600 flex items-center justify-center font-bold text-white shrink-0">
+                    {{ suggestion.username|slice:":1"|upper }}
+                </div>
+                {% endif %}
+
+                <div class="text-left truncate text-gray-500">
+                    <span class="block font-semibold text-blue-500">
+                        @{{ suggestion.username }}
+                    </span>
+                    <span class="text-xs text-gray-500">
+                        {% if suggestion.bio %}
+                        {{ suggestion.bio}}
+                        {% else %}
+                        {{ suggestion.tech_stack }}
+                        {% endif %}
+                    </span>
+                </div>
+            </div>
+
+            <a href="{% url 'user_profile' suggestion.username %}"
+                class="text-sm bg-blue-600 hover:bg-blue-700 text-white px-3 py-1 rounded-full transition">
+                View
+            </a>
+        </div>
+        {% endfor %}
+    </div>
+</div>
+{% else %}
+<div class="text-center text-gray-500 mt-10">
+    <p>No posts found here yet.</p>
+</div>
+{% endif %}

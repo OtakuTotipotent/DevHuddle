@@ -1,0 +1,21 @@
+<div class="grid grid-cols-4 border-t gap-[2px] border-gray-800 sm:rounded-b-2xl rounded-b-lg mb-4 overflow-hidden">
+    <a href="?feed=global" class="py-2 text-sm text-center transition
+                {% if current_feed == 'global' %} text-blue-500 font-semibold bg-gray-950
+                {% else %} text-gray-400 hover:text-blue-500 hover:bg-gray-950 {% endif %}">
+        Global </a>
+
+    <a href="?feed=fellows" class="py-2 text-sm text-center transition
+                {% if current_feed == 'fellows' %} text-blue-500 font-semibold bg-gray-950
+                {% else %} text-gray-400 hover:text-blue-500 hover:bg-gray-950 {% endif %}">
+        Fellows </a>
+
+    <a href="?feed=business" class="py-2 text-sm text-center transition
+                {% if current_feed == 'business' %} text-blue-500 font-semibold bg-gray-950
+                {% else %} text-gray-400 hover:text-blue-500 hover:bg-gray-950 {% endif %}">
+        Business </a>
+
+    <a href="?feed=ads" class="py-2 text-sm text-center transition
+                {% if current_feed == 'ads' %} text-blue-500 font-semibold bg-gray-950
+                {% else %} text-gray-400 hover:text-blue-500 hover:bg-gray-950 {% endif %}">
+        Advertisers </a>
+</div>

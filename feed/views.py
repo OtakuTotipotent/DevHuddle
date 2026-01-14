@@ -53,12 +53,12 @@ def search_results(request):
 
     context = {"query": query, "users": users, "posts": posts}
 
-    return render(request, "search_results.html", context)
+    return render(request, "pages/search_results.html", context)
 
 
 class HomePageView(ListView):
     model = Post
-    template_name = "home.html"
+    template_name = "pages/home.html"
     context_object_name = "posts"
     paginate_by = 7
 
@@ -108,13 +108,13 @@ class HomePageView(ListView):
 
 
 class AboutPageView(TemplateView):
-    template_name = "about.html"
+    template_name = "pages/about.html"
 
 
 class PostCreateView(LoginRequiredMixin, CreateView):
     model = Post
     form_class = PostForm
-    template_name = "post_form.html"
+    template_name = "components/posts/create.html"
     success_url = reverse_lazy("home")
 
     def form_valid(self, form):
@@ -125,7 +125,7 @@ class PostCreateView(LoginRequiredMixin, CreateView):
 class PostUpdateView(LoginRequiredMixin, UserPassesTestMixin, UpdateView):
     model = Post
     form_class = PostForm
-    template_name = "post_update.html"
+    template_name = "components/posts/update.html"
     success_url = reverse_lazy("home")
 
     def test_func(self):
@@ -135,7 +135,7 @@ class PostUpdateView(LoginRequiredMixin, UserPassesTestMixin, UpdateView):
 
 class PostDeleteView(LoginRequiredMixin, UserPassesTestMixin, DeleteView):
     model = Post
-    template_name = "post_delete.html"
+    template_name = "components/posts/delete.html"
     success_url = reverse_lazy("home")
 
     def test_func(self):
@@ -145,7 +145,7 @@ class PostDeleteView(LoginRequiredMixin, UserPassesTestMixin, DeleteView):
 
 class PostDetailView(LoginRequiredMixin, FormMixin, DetailView):
     model = Post
-    template_name = "post_detail.html"
+    template_name = "components/posts/view.html"
     context_object_name = "post"
     form_class = CommentForm
 

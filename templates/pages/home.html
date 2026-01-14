@@ -1,0 +1,28 @@
+{% extends 'base.html' %}
+{% load static %}
+{% block title %}Feed{% endblock %}
+
+{% block content %}
+
+{% if not user.is_authenticated %}
+{% include 'components/landing/intro.html' %}
+
+{% else %}
+<div class="grid grid-cols-1 lg:grid-cols-4 gap-5 max-w-7xl mx-auto">
+    <!-- LEFT SIDEBAR -->
+    {% include 'components/landing/left_sidebar.html' %}
+
+    <!-- CENTER MAINSTREAM -->
+    {% include 'components/landing/mainstream.html' %}
+
+    <!-- RIGHT SIDEBAR -->
+    {% include 'components/landing/right_sidebar.html' %}
+</div>
+{% endif %}
+
+{% endblock content %}
+
+<!-- SCRIPTS -->
+{% block scripts %}
+<script src="{% static 'js/feed_controller.js' %}"></script>
+{% endblock %}

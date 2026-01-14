@@ -1,0 +1,29 @@
+<div class="flex justify-center items-center space-x-4 mt-8">
+
+    {% if page_obj.has_previous %}
+    <a href="?page={{ page_obj.previous_page_number }}"
+        class="px-2 py-1 bg-gray-800 border border-gray-600 rounded-lg text-gray-100 hover:bg-blue-600 hover:text-white hover:border-blue-500 transition shadow-md cursor-pointer">
+        &larr; Previous
+    </a>
+    {% else %}
+    <span class="px-2 py-1 bg-gray-800/50 border border-gray-700 rounded-lg text-gray-600 cursor-not-allowed">
+        &larr; Previous
+    </span>
+    {% endif %}
+
+    <span class="text-sm text-gray-400 font-mono">
+        Page {{ page_obj.number }} of {{ page_obj.paginator.num_pages }}
+    </span>
+
+    {% if page_obj.has_next %}
+    <a href="?page={{ page_obj.next_page_number }}"
+        class="px-2 py-1 bg-gray-800 border border-gray-600 rounded-lg text-gray-100 hover:bg-blue-600 hover:text-white hover:border-blue-500 transition shadow-md cursor-pointer">
+        Next &rarr;
+    </a>
+    {% else %}
+    <span class="px-2 py-1 bg-gray-800/50 border border-gray-700 rounded-lg text-gray-600 cursor-not-allowed">
+        Next &rarr;
+    </span>
+    {% endif %}
+
+</div>

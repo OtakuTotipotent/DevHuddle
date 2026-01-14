@@ -4,15 +4,13 @@ from django.conf import settings
 from django.conf.urls.static import static
 
 urlpatterns = [
+    # Only for ADMIN users
     path("admin/", admin.site.urls),
     #
-    # Built-in Auth (Login, Logout)
-    path("accounts/", include("django.contrib.auth.urls")),
-    #
-    # Users (Signup, Profiles, Edit - NEW)
+    # Users (Login, Signup, Profiles, Edit/New)
     path("users/", include("users.urls")),
     #
-    # Feed (Home, Posts)
+    # Feed (Home, Posts, ...)
     path("", include("feed.urls")),
 ]
 

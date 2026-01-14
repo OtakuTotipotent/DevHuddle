@@ -1,0 +1,57 @@
+<button onclick="toggleMobileMenu()"
+    class="md:hidden flex items-center z-50 text-site-primary hover:text-blue-400 focus:outline-none cursor-pointer">
+    <svg id="mobile-icon-open" class="w-8 h-8 block" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16m-7 6h7"></path>
+    </svg>
+
+    <svg id="mobile-icon-close" class="w-8 h-8 hidden" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12">
+        </path>
+    </svg>
+</button>
+
+<!-- MOBILE MENU DROPDOWN -->
+<div id="mobile-menu"
+    class="hidden absolute top-12 right-0 w-64 bg-gray-800 rounded-xl shadow-2xl border border-site-border z-50 flex-col overflow-hidden">
+
+    <div class="p-2">
+        {% if user.is_authenticated %}
+        {% include 'components/searchbar/small.html'}
+
+        {% else %}
+        <div class="flex items-center justify-center gap-2 font-medium">
+            <a href="{% url 'login' %}" class="text-site-primary hover:text-blue-400 transition">
+                Login
+            </a>
+
+            <div class="w-px h-6 bg-gray-600/70 mx-4"></div>
+
+            <a href="{% url 'signup' %}" class="text-site-primary hover:text-blue-400 transition">
+                Join Now
+            </a>
+        </div>
+        {% endif %}
+    </div>
+
+    <div class="px-3 pb-2">
+        <div class="h-px bg-gray-700 my-1 mx-2"></div>
+
+        <a href="/" class="block px-4 py-2 text-gray-100 hover:bg-gray-700 hover:text-white rounded-lg transition"
+            onclick="toggleMobileMenu()">Home</a>
+
+        <a href="{% url 'about' %}"
+            class="block px-4 py-2 text-gray-100 hover:bg-gray-700 hover:text-white rounded-lg transition"
+            onclick="toggleMobileMenu()">About</a>
+
+        <a href="#" class="block px-4 py-2 text-gray-100 hover:bg-gray-700 hover:text-white rounded-lg transition"
+            onclick="toggleMobileMenu()">Users</a>
+
+        <a href="#" class="block px-4 py-2 text-gray-100 hover:bg-gray-700 hover:text-white rounded-lg transition"
+            onclick="toggleMobileMenu()">Jobs & Clients</a>
+
+        <div class="h-px bg-gray-700 my-1 mx-2"></div>
+
+        <a href="#" class="block px-4 py-2 text-gray-100 hover:bg-gray-700 hover:text-white rounded-lg transition"
+            onclick="toggleMobileMenu()">Help & Support</a>
+    </div>
+</div>

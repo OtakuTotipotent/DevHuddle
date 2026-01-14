@@ -1,249 +1,52 @@
 {% load static %}
-
 <!DOCTYPE html>
 <html lang="en">
 
 <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-
     <title>DevHuddle | {% block title %}Connect{% endblock %}</title>
 
     <script src="https://cdn.jsdelivr.net/npm/@tailwindcss/browser@4"></script>
-
     <link rel="stylesheet" href="{% static 'css/custom.css' %}">
-
     <style type="text/tailwindcss">
         @theme {
-                /* Map Tailwind classes to CSS Variables */
-                --color-site-bg: var(--site-bg);
-                --color-site-card: var(--site-card);
-                --color-site-text: var(--site-text);
-                --color-site-muted: var(--site-muted);
-                --color-site-border: var(--site-border);
-                --color-site-primary: var(--site-primary);
-                --color-site-hover: var(--site-hover);
+                /* BACKGROUNDS */
+                --color-site-bg: var(--color-bg-page);
+                --color-site-card: var(--color-bg-card);
+                --color-site-input: var(--color-bg-input);
+    
+                /* TEXT */
+                --color-site-text: var(--color-text-main);
+                --color-site-muted: var(--color-text-muted);
+    
+                /* BORDERS */
+                --color-site-border: var(--color-border);
+    
+                /* ACTIONS / BRAND */
+                --color-site-primary: var(--color-primary);
+                --color-site-hover: var(--color-primary-hover);
+                
+                /* STATES */
+                --color-site-danger: var(--color-danger);
+                --color-site-success: var(--color-success);
             }
         </style>
-
-    <style>
-        /* DEFAULT DARK THEME */
-        :root {
-            --site-bg: #111827;
-            --site-card: #1f2937;
-            --site-text: #f3f4f6;
-            --site-muted: #9ca3af;
-            --site-border: #374151;
-            --site-primary: #3b82f6;
-            --site-hover: #1d4ed8;
-            --autofill-bg: #374151;
-        }
-    </style>
 </head>
 
-<body class="bg-gray-900 text-gray-100 font-sans antialiased overflow-x-hidden transition-colors duration-300">
+<body class="bg-site-bg text-site-text font-sans antialiased overflow-x-hidden">
 
-    <nav
-        class="px-2 py-3 border-b border-gray-700 bg-gray-900/80 backdrop-blur-sm sticky top-0 z-50 transition-all duration-300">
-        <div class="container mx-auto flex justify-between items-center relative">
-
-            <!-- LOGO -->
-            <a href="/" class="md:text-2xl text-lg font-bold text-blue-500">DevHuddle_</a>
-
-            <!-- SEARCH BAR -->
-            {% if user.is_authenticated %}
-            <div class="hidden md:block flex-grow max-w-xs mx-6">
-                <form action="{% url 'search' %}" method="get" class="relative">
-                    <input type="text" name="q" placeholder="Search devs, stacks, or posts..."
-                        class="w-full bg-gray-800 text-gray-200 border border-gray-700 rounded-full py-1 px-4 pl-10 focus:outline-none focus:border-blue-500 focus:ring-1 focus:ring-blue-500 transition text-sm"
-                        autocomplete="off" aria-autocomplete="none">
-
-                    <div class="absolute left-3 top-2.5 text-gray-500">
-                        <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
-                                d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z"></path>
-                        </svg>
-                    </div>
-                </form>
-            </div>
-            {% endif %}
-
-            <!-- MENU'S -->
-            <div class="flex md:gap-6 gap-4 items-center">
-                <!-- Navigation Links -->
-                <div class="hidden md:flex items-center gap-8">
-                    <a href="{% url 'about' %}" class="text-gray-100 hover:text-white transition">About</a>
-
-                    <!-- USER PROFILE ICON -->
-                    {% if not user.is_authenticated %}
-                    <div class="flex items-center gap-4 border-l border-gray-700 pl-4 font-medium">
-                        <a href="{% url 'login' %}" class="text-blue-500 hover:text-blue-600 transition">
-                            Login
-                        </a>
-                        <a href="{% url 'signup' %}" class="text-blue-500 hover:text-blue-600 transition">
-                            Join Now
-                        </a>
-                    </div>
-                    {% endif %}
-                </div>
-
-                <!-- AVATAR & PROFILE MENU -->
-                {% if user.is_authenticated %}
-                {% include 'includes/desktop_profile_dropdown.html' %}
-                {% endif %}
-
-                <!-- MOBILE MENU BUTTONS | HAMBURGER -->
-                <div class="md:hidden flex items-center z-50">
-                    <button onclick="toggleMobileMenu()"
-                        class="text-blue-500 hover:text-blue-400 focus:outline-none cursor-pointer">
-
-                        <svg id="mobile-icon-open" class="w-8 h-8 block" fill="none" stroke="currentColor"
-                            viewBox="0 0 24 24">
-                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
-                                d="M4 6h16M4 12h16m-7 6h7"></path>
-                        </svg>
-
-                        <svg id="mobile-icon-close" class="w-8 h-8 hidden" fill="none" stroke="currentColor"
-                            viewBox="0 0 24 24">
-                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
-                                d="M6 18L18 6M6 6l12 12">
-                            </path>
-                        </svg>
-
-                    </button>
-                </div>
-
-                <!-- MOBILE MENU DROPDOWN -->
-                <div id="mobile-menu"
-                    class="hidden absolute top-12 right-0 w-64 bg-gray-800 rounded-xl shadow-2xl border border-gray-700 z-50 flex-col overflow-hidden">
-
-                    <div class="p-2">
-                        {% if user.is_authenticated %}
-                        <form action="{% url 'search' %}" method="get" class="relative">
-                            <input type="text" name="q" placeholder="Search..."
-                                class="w-full bg-gray-900 text-gray-200 border border-gray-600/60 rounded-full py-2 pr-2 pl-12 text-sm focus:outline-none focus:border-blue-500/50 transition"
-                                aria-autocomplete="none">
-
-                            <div class="absolute left-6 top-3 text-gray-500">
-                                <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
-                                        d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z"></path>
-                                </svg>
-                            </div>
-                        </form>
-                        {% else %}
-                        <div class="flex items-center justify-center gap-2 font-medium">
-                            <a href="{% url 'login' %}" class="text-blue-500 hover:text-blue-400 transition">
-                                Login
-                            </a>
-
-                            <div class="w-px h-6 bg-gray-600/70 mx-4"></div>
-
-                            <a href="{% url 'signup' %}" class="text-blue-500 hover:text-blue-400 transition">
-                                Join Now
-                            </a>
-                        </div>
-                        {% endif %}
-                    </div>
-
-                    <div class="px-3 pb-2">
-                        <div class="h-px bg-gray-700 my-1 mx-2"></div>
-
-                        <a href="/"
-                            class="block px-4 py-2 text-gray-100 hover:bg-gray-700 hover:text-white rounded-lg transition"
-                            onclick="toggleMobileMenu()">Home</a>
-
-                        <a href="{% url 'about' %}"
-                            class="block px-4 py-2 text-gray-100 hover:bg-gray-700 hover:text-white rounded-lg transition"
-                            onclick="toggleMobileMenu()">About</a>
-
-                        <a href="#"
-                            class="block px-4 py-2 text-gray-100 hover:bg-gray-700 hover:text-white rounded-lg transition"
-                            onclick="toggleMobileMenu()">Users</a>
-
-                        <a href="#"
-                            class="block px-4 py-2 text-gray-100 hover:bg-gray-700 hover:text-white rounded-lg transition"
-                            onclick="toggleMobileMenu()">Jobs & Clients</a>
-
-                        <div class="h-px bg-gray-700 my-1 mx-2"></div>
-
-                        <a href="#"
-                            class="block px-4 py-2 text-gray-100 hover:bg-gray-700 hover:text-white rounded-lg transition"
-                            onclick="toggleMobileMenu()">Help & Support</a>
-                    </div>
-                </div>
-            </div>
-
-        </div>
-    </nav>
+    {% include 'sections/navbar.html' %}
 
     <main class="container mx-auto p-3 min-h-[80vh]">
-        {% block content %}
-        {% endblock content %}
+        {% block content %} {% endblock content %}
     </main>
 
-    <footer class="p-2 text-center text-gray-500 text-sm border-t border-gray-800 mt-10">
-        &copy; 2025 DevHuddle Inc. Built with <span class="text-sky-500">Python</span>/<span
-            class="text-yellow-500">Django</span> &
-        Caffeine by <a href="http://github.com/OtakuTotipotent" target="_blank" rel="noopener noreferrer"
-            class="text-gray-100 hover:text-blue-400">&nbsp;OtakuTotipotent</a>.
-    </footer>
+    {% include 'sections/footer.html' %}
 
-    <script>
-        // Profile Toggle
-        function toggleProfileMenu() {
-            const menu = document.getElementById('profile-dropdown');
-            menu.classList.toggle('hidden');
-        }
-
-        // Mobile Menu
-        function toggleMobileMenu() {
-            const menu = document.getElementById('mobile-menu');
-            const openIcon = document.getElementById('mobile-icon-open');
-            const closeIcon = document.getElementById('mobile-icon-close');
-
-            menu.classList.toggle('hidden');
-            menu.classList.toggle('flex');
-
-            if (menu.classList.contains('hidden')) {
-                // Menu is CLOSED -> Show Hamburger, Hide Cross
-                openIcon.classList.remove('hidden');
-                openIcon.classList.add('block');
-                closeIcon.classList.remove('block');
-                closeIcon.classList.add('hidden');
-            } else {
-                // Menu is OPEN -> Hide Hamburger, Show Cross
-                openIcon.classList.remove('block');
-                openIcon.classList.add('hidden');
-                closeIcon.classList.remove('hidden');
-                closeIcon.classList.add('block');
-            }
-        }
-
-        // MOBILE MENU
-        document.addEventListener('click', function (event) {
-            const mobileMenu = document.getElementById('mobile-menu');
-            const mobileButton = event.target.closest('button');
-
-            if (!mobileMenu.classList.contains('hidden') && !mobileMenu.contains(event.target) && !mobileButton) {
-                toggleMobileMenu();
-            }
-        });
-
-        // Close menu when clicking outside
-        document.addEventListener('click', function (event) {
-            const menu = document.getElementById('profile-dropdown');
-            const button = event.target.closest('button');
-            const dropdown = event.target.closest('#profile-dropdown');
-
-            if (!button && !dropdown && !menu.classList.contains('hidden')) {
-                menu.classList.add('hidden');
-            }
-        });
-    </script>
-
-    {% block scripts %}
-    {% endblock scripts %}
+    <script src="{% static 'js/theme_toggle.js' %}"></script>
+    <script src="{% static 'js/menu_toggle.js' %}"></script>
+    {% block scripts %} {% endblock scripts %}
 
 </body>
 

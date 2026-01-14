@@ -1,0 +1,175 @@
+<div id="profile-dropdown"
+    class="hidden absolute right-0 mt-3 w-72 bg-gray-800 rounded-xl shadow-2xl border border-gray-700 z-50 overflow-hidden transform origin-top-right transition-all duration-200">
+
+    <!-- PROFILE INFO -->
+    <div class="pt-3 border-gray-700 bg-gray-800/50">
+        <h3 class="text-blue-500 text-center font-bold text-sm truncate">
+            {{ user.first_name }}
+            {{ user.last_name }}
+        </h3>
+        <p class="text-gray-400 text-center text-xs mt-1 truncate">
+            {{ user.email }}
+        </p>
+        <a href="{% url 'user_profile' user.username %}"
+            class="block font-semibold text-gray-100 hover:text-blue-400 transition text-center py-2">
+            @{{ user.username }} →
+        </a>
+    </div>
+
+    <!-- Social Links -->
+    <div class="flex flex-wrap justify-center items-center gap-3 pb-4 pt-3 border-b border-gray-700 bg-gray-800/30">
+        {% if user.portfolio_url %}
+        <a href="{{ user.portfolio_url }}" target="_blank" class="text-gray-400 hover:text-blue-500 transition"
+            title="Portfolio">
+            <svg viewBox="0 0 64 64" class="w-6 h-6" fill="none" stroke="currentColor">
+                <path stroke-width="2" d="M39.93,55.72A24.86,24.86,0,1,1,56.86,32.15a37.24,37.24,0,0,1-.73,6" />
+                <path stroke-width="2" d="M37.86,51.1A47,47,0,0,1,32,56.7" />
+                <path stroke-width="2" d="M32,7A34.14,34.14,0,0,1,43.57,30a34.07,34.07,0,0,1,.09,4.85" />
+                <path stroke-width="2" d="M32,7A34.09,34.09,0,0,0,20.31,32.46c0,16.2,7.28,21,11.66,24.24" />
+                <line x1="10.37" y1="19.9" x2="53.75" y2="19.9" />
+                <line x1="32" y1="6.99" x2="32" y2="56.7" />
+                <line x1="11.05" y1="45.48" x2="37.04" y2="45.48" />
+                <line x1="7.14" y1="32.46" x2="56.86" y2="31.85" />
+                <path stroke-width="2"
+                    d="M53.57,57,58,52.56l-8-8,4.55-2.91a.38.38,0,0,0-.12-.7L39.14,37.37a.39.39,0,0,0-.46.46L42,53.41a.39.39,0,0,0,.71.13L45.57,49Z" />
+            </svg>
+        </a>
+        {% endif %}
+
+        {% if user.github_url %}
+        <a href="{{ user.github_url }}" target="_blank" class="text-gray-400 hover:text-white transition"
+            title="GitHub">
+            <svg class="w-5 h-5" fill="currentColor" viewBox="0 0 24 24">
+                <path
+                    d="M12 0c-6.626 0-12 5.373-12 12 0 5.302 3.438 9.8 8.207 11.387.599.111.793-.261.793-.577v-2.234c-3.338.726-4.033-1.416-4.033-1.416-.546-1.387-1.333-1.756-1.333-1.756-1.089-.745.083-.729.083-.729 1.205.084 1.839 1.237 1.839 1.237 1.07 1.834 2.807 1.304 3.492.997.107-.775.418-1.305.762-1.604-2.665-.305-5.467-1.334-5.467-5.931 0-1.311.469-2.381 1.236-3.221-.124-.303-.535-1.524.117-3.176 0 0 1.008-.322 3.301 1.23.957-.266 1.983-.399 3.003-.404 1.02.005 2.047.138 3.006.404 2.291-1.552 3.297-1.23 3.297-1.23.653 1.653.242 2.874.118 3.176.77.84 1.235 1.911 1.235 3.221 0 4.609-2.807 5.624-5.479 5.921.43.372.823 1.102.823 2.222v3.293c0 .319.192.694.801.576 4.765-1.589 8.199-6.086 8.199-11.386 0-6.627-5.373-12-12-12z" />
+            </svg>
+        </a>
+        {% endif %}
+
+        {% if user.linkedin_url %}
+        <a href="{{ user.linkedin_url }}" target="_blank" class="text-gray-400 hover:text-blue-500 transition"
+            title="LinkedIn">
+            <svg class="w-5 h-5" fill="currentColor" viewBox="0 0 24 24">
+                <path
+                    d="M19 0h-14c-2.761 0-5 2.239-5 5v14c0 2.761 2.239 5 5 5h14c2.762 0 5-2.239 5-5v-14c0-2.761-2.238-5-5-5zm-11 19h-3v-11h3v11zm-1.5-12.268c-.966 0-1.75-.79-1.75-1.764s.784-1.764 1.75-1.764 1.75.79 1.75 1.764-.783 1.764-1.75 1.764zm13.5 12.268h-3v-5.604c0-3.368-4-3.113-4 0v5.604h-3v-11h3v1.765c1.396-2.586 7-2.777 7 2.476v6.759z" />
+            </svg>
+        </a>
+        {% endif %}
+
+        {% if user.twitter_url %}
+        <a href="{{ user.twitter_url }}" target="_blank" class="text-gray-400 hover:text-white transition"
+            title="X (Twitter)">
+            <svg class="w-5 h-5" fill="currentColor" viewBox="0 0 24 24">
+                <path
+                    d="M18.244 2.25h3.308l-7.227 8.26 8.502 11.24H16.17l-5.214-6.817L4.99 21.75H1.68l7.73-8.835L1.254 2.25H8.08l4.713 6.231zm-1.161 17.52h1.833L7.084 4.126H5.117z" />
+            </svg>
+        </a>
+        {% endif %}
+
+        {% if user.stackoverflow_url %}
+        <a href="{{ user.stackoverflow_url }}" target="_blank" class="text-gray-400 hover:text-orange-500 transition"
+            title="Stack Overflow">
+            <svg fill="currentColor" viewBox="-4 -2 24 24" class="w-6 h-6">
+                <path d='M13.492 18.136v-5.272h1.665v7.022H.13v-7.022h1.665v5.272z' />
+                <path
+                    d='M3.632 12.364l8.173 1.795.346-1.727-8.173-1.796-.346 1.728zm1.082-4.091l7.567 3.704.692-1.59-7.568-3.728-.691 1.614zm2.097-3.91l6.421 5.614 1.06-1.34L7.87 3.022l-1.06 1.34zM10.962.206L9.622 1.25l4.973 7.045 1.34-1.045L10.962.205zM3.46 16.364h8.346v-1.75H3.46v1.75z' />
+            </svg>
+        </a>
+        {% endif %}
+
+        {% if user.upwork_url %}
+        <a href="{{ user.upwork_url }}" target="_blank" class="text-gray-400 hover:text-green-600 transition"
+            title="Upwork">
+            <svg fill="currentColor" viewBox="0 0 32 32" class="w-5 h-5">
+                <path
+                    d="M24.75 17.542c-1.469 0-2.849-0.62-4.099-1.635l0.302-1.432 0.010-0.057c0.276-1.521 1.13-4.078 3.786-4.078 1.99 0 3.604 1.615 3.604 3.604 0 1.984-1.615 3.599-3.604 3.599zM24.75 6.693c-3.385 0-6.016 2.198-7.083 5.818-1.625-2.443-2.865-5.38-3.583-7.854h-3.646v9.484c-0.005 1.875-1.521 3.391-3.396 3.396-1.875-0.005-3.391-1.526-3.396-3.396v-9.484h-3.646v9.484c0 3.885 3.161 7.068 7.042 7.068 3.885 0 7.042-3.182 7.042-7.068v-1.589c0.708 1.474 1.578 2.974 2.635 4.297l-2.234 10.495h3.729l1.62-7.615c1.417 0.906 3.047 1.479 4.917 1.479 4 0 7.25-3.271 7.25-7.266 0-4-3.25-7.25-7.25-7.25z" />
+            </svg>
+        </a>
+        {% endif %}
+
+        {% if user.fiver_url %}
+        <a href="{{ user.fiver_url }}" target="_blank" class="text-gray-400 hover:text-green-500 transition"
+            title="Fiverr">
+            <svg fill="currentColor" viewBox="-2.5 -2 24 24" class="w-4 h-4">
+                <path
+                    d='M16.25 16.25v-10h-10v-.625c0-1.034.841-1.875 1.875-1.875H10V0H8.125A5.632 5.632 0 0 0 2.5 5.625v.625H0V10h2.5v6.25H0V20h8.75v-3.75h-2.5V10h6.285v6.25H10V20h8.75v-3.75h-2.5z' />
+                <circle cx='14.375' cy='1.875' r='1.875' />
+            </svg>
+        </a>
+        {% endif %}
+
+    </div>
+
+    <!-- Profile Stats -->
+    <div class="grid grid-cols-2 gap-px bg-gray-700">
+        <div class="bg-gray-800 p-1 text-center hover:bg-gray-750 transition">
+            <span class="block text-sm font-bold text-blue-500">
+                Fullstack
+            </span>
+            <span class="text-[10px] text-gray-400 uppercase tracking-wider">Status</span>
+        </div>
+
+        <div class="bg-gray-800 p-1 text-center hover:bg-gray-750 transition">
+            <span class="block text-sm font-bold text-blue-500">
+                {{ user.date_joined|date:"M Y" }}
+            </span>
+            <span class="text-[10px] text-gray-400 uppercase tracking-wider">Joined</span>
+        </div>
+    </div>
+
+    <!-- ACCOUNT INFO -->
+    <div class="grid grid-cols-2 gap-px bg-gray-700">
+        <div class="bg-gray-800 p-1 text-center hover:bg-gray-750 transition">
+            <span class="block text-sm font-bold text-blue-500">
+                09
+            </span>
+            <span class="text-[10px] text-gray-400 uppercase tracking-wider">Notifications</span>
+        </div>
+
+        <div class="bg-gray-800 p-1 text-center hover:bg-gray-750 transition">
+            <span class="block text-sm font-bold text-blue-500">
+                Top 5%
+            </span>
+            <span class="text-[10px] text-gray-400 uppercase tracking-wider">Rank</span>
+        </div>
+    </div>
+
+    <!-- Account Settings -->
+    <div class="grid grid-cols-2 pt-[1px] gap-px bg-gray-700">
+        <div class="bg-gray-800">
+            <a href="#"
+                class="block text-center px-4 py-2 text-sm bg-gray-800 text-red-400 hover:bg-red-900/20 hover:text-red-300 transition">
+                Notifications
+            </a>
+        </div>
+        <div class="bg-gray-800">
+            <a href="#"
+                class="block text-center px-4 py-2 text-sm bg-gray-800 text-red-400 hover:bg-red-900/20 hover:text-red-300 transition">
+                Subscription
+            </a>
+        </div>
+        <div class="bg-gray-800">
+            <a href="{% url 'profile_edit' %}"
+                class="block text-center px-4 py-2 text-sm bg-gray-800 text-red-400 hover:bg-red-900/20 hover:text-red-300 transition">
+                Edit Profile
+            </a>
+        </div>
+        <div class="bg-gray-800">
+            <a href="{% url 'profile_delete' %}"
+                class="block text-center px-4 py-2 text-sm bg-gray-800 text-red-400 hover:bg-red-900/20 hover:text-red-300 transition">
+                Delete Account
+            </a>
+        </div>
+    </div>
+
+    <!-- LOGOUT BUTTON -->
+    <div class="pt-[1px] bg-gray-700">
+        <form action="{% url 'logout' %}" method="post" class="block bg-gray-800">
+            {% csrf_token %}
+            <button type="submit"
+                class="w-full px-4 py-2 text-sm text-red-400 hover:bg-red-900/20 hover:text-red-300 rounded-md transition cursor-pointer">
+                Sign Out
+            </button>
+        </form>
+    </div>
+</div>

@@ -1,0 +1,26 @@
+<div class="col-span-1 lg:col-span-2">
+    <!-- FEATURES & ACTIONS -->
+    {% include 'components/landing/features.html' %}
+    
+    <!-- FEED BUTTONS -->
+    {% include 'components/feed/feed_tabs.html' %}
+
+    <!-- POSTS -->
+    <div class="space-y-6">
+        {% for post in posts %}
+
+        {% include 'components/feed/post_card.html' %}
+
+        {% empty %}
+        {% include 'components/feed/empty_fellows.html' %}
+
+        {% endfor %}
+
+
+        <!-- PAGINATION -->
+        {% if is_paginated %}
+        {% include 'sections/pagination.html' %}
+        {% endif %}
+
+    </div>
+</div>
