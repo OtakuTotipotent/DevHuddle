@@ -1,7 +1,8 @@
 import os
 from django.dispatch import receiver
-from django.db.models.signals import post_delete, pre_save
+from django.db.models.signals import post_delete, pre_save, post_save
 from .models import CustomUser
+from feed.models import Notification
 
 
 @receiver(post_delete, sender=CustomUser)
@@ -29,3 +30,15 @@ def delete_old_avatar_on_update(sender, instance, **kwargs):
     ):
         if os.path.isfile(old_avatar.path):
             os.remove(old_avatar.path)
+
+
+@receiver(post_save, sender=CustomUser)
+def create_welcome_notification(sender, instance, created, **kwargs):
+    # Only run when user is FIRST created.
+    if created:
+        Notification.objects.create(
+            recipient=instance,
+            actor=instance,
+            verb="welcome",
+            is_read=False,
+        )

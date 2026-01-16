@@ -65,6 +65,13 @@ class CustomUserCreationForm(UserCreationForm):
         model = CustomUser
         fields = ("username", "email", "role")
 
+    def clean_username(self):
+        username = self.cleaned_data.get("username")
+        if len(username) < 4:
+            raise forms.ValidationError("Username must be at least 4 characters long.")
+
+        return username
+
     def __init__(self, *args, **kwargs):
         super().__init__(*args, **kwargs)
 

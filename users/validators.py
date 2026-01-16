@@ -32,5 +32,5 @@ def validate_username(value):
     """
     if not re.match("^(?!.*[.]{2})[A-Za-z0-9._-]+$", value):
         raise ValidationError(
-            "Invalid valid username. Only letters, numbers, dot, hyphen and underscores."
+            "Only letters, numbers, dot, hyphen and underscores. No consecutive dots are allowed.",
         )

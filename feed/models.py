@@ -65,6 +65,7 @@ class Notification(models.Model):
     )
 
     VERB_CHOICES = (
+        ("welcome", "Welcome to DevHuddle_! Update your profile"),
         ("like", "liked your post"),
         ("comment", "commented on your post"),
         ("follow", "started following you"),
