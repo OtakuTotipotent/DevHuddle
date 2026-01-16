@@ -26,11 +26,46 @@ def validate_image_extension(file):
 
 
 def validate_username(value):
-    """
-    Validator to ensure the username contains only letters, numbers,
-    dot, hyphen, and underscores.
-    """
-    if not re.match("^(?!.*[.]{2})[A-Za-z0-9._-]+$", value):
+    RESERVED_USERNAMES = [
+        "admin",
+        "superuser",
+        "staff",
+        "login",
+        "logout",
+        "signup",
+        "register",
+        "api",
+        "media",
+        "static",
+        "assets",
+        "help",
+        "about",
+        "contact",
+        "terms",
+        "privacy",
+        "settings",
+        "profile",
+        "dashboard",
+        "feed",
+        "notifications",
+        "messages",
+        "search",
+        "explore",
+        "huddle",
+        "dev",
+        "root",
+        "support",
+    ]
+
+    # Reserved Words
+    if value.lower() in RESERVED_USERNAMES:
+        raise ValidationError(f"'{value}' is a reserved system keyword.")
+
+    # Allowed Characters (Alphanumeric, dot, underscore)
+    if not re.match("^(?!.*[._]{2})[a-zA-Z0-9._]+$", value):
         raise ValidationError(
-            "Only letters, numbers, dot, hyphen and underscores. No consecutive dots are allowed.",
+            "Username can only contain letters, numbers, dots (.), and underscores (_). No consecutive dots or underscores allowed.",
         )
+    # Specific Dangerous Patterns
+    if "devhuddle" in value.lower():
+        raise ValidationError("Username cannot contain the platform name.")
