@@ -39,6 +39,18 @@ class Post(models.Model):
         settings.AUTH_USER_MODEL, related_name="liked_posts", blank=True
     )
 
+    deadline = models.DateTimeField(
+        null=True, blank=True, help_text="For Ads/Jobs only"
+    )
+    target_url = models.URLField(
+        null=True, blank=True, help_text="Link for the Ad button"
+    )
+    tags = models.CharField(
+        max_length=100,
+        blank=True,
+        help_text="Comma separated tags (e.g. #python, #remote)",
+    )
+
     def __str__(self):
         return f"{self.author.username.upper()} - {self.created_at:%Y-%m-%d %H:%M}"
 

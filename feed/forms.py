@@ -7,7 +7,7 @@ class PostForm(forms.ModelForm):
 
     class Meta:
         model = Post
-        fields = ["body", "image", "post_type"]
+        fields = ["post_type", "body", "image", "deadline", "target_url", "tags"]
 
         widgets = {
             "body": forms.Textarea(
@@ -25,6 +25,21 @@ class PostForm(forms.ModelForm):
             "post_type": forms.Select(
                 attrs={
                     "class": "bg-gray-700 text-white border border-gray-500 rounded-full px-2 pt-[1px] pb-[3px] mx-6 my-5 outline-none cursor-pointer text-center"
+                }
+            ),
+            "deadline": forms.DateInput(
+                attrs={
+                    "type": "date",
+                }
+            ),
+            "target_url": forms.URLInput(
+                attrs={
+                    "placeholder": "https://...",
+                }
+            ),
+            "tags": forms.TextInput(
+                attrs={
+                    "placeholder": "e.g. Python, Remote",
                 }
             ),
         }

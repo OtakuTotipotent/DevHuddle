@@ -31,6 +31,19 @@
                 </div>
             </div>
 
+            <div id="ad-fields" class="hidden mt-4 bg-site-bg/50 p-2 rounded-lg border border-site-border">
+                <h4 class="text-sm font-bold text-site-primary mb-2">Advertisement Details</h4>
+
+                <label>Target URL</label>
+                {{ form.target_url }}
+
+                <label>Deadline</label>
+                {{ form.deadline }}
+
+                <label>Tags</label>
+                {{ form.tags }}
+            </div>
+
             <!-- BUTTONS -->
             <div class="grid grid-cols-2 gap-4 items-center mt-7 mb-3">
                 <button type="submit"
@@ -48,3 +61,21 @@
 </div>
 
 {% endblock content %}
+
+{% block scripts %}
+<script>
+    const typeSelect = document.getElementById('id_post_type');
+    const adFields = document.getElementById('ad-fields');
+
+    function toggleFields() {
+        const val = typeSelect.value;
+        if (val === 'ad' || val === 'job') {
+            adFields.classList.remove('hidden');
+        } else {
+            adFields.classList.add('hidden');
+        }
+    }
+
+    typeSelect.addEventListener('change', toggleFields);
+</script>
+{% endblock scripts %}
