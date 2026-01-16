@@ -2,17 +2,17 @@
     class="group relative flex items-center focus:outline-none cursor-pointer animate-fade-in-down">
     {% if user.avatar %}
     <img src="{{ user.avatar.url }}?v={% now 'U' %}" alt="User's profile picture."
-        class="w-8 h-8 rounded-full object-cover border-2 border-transparent group-hover:border-blue-500 transition-all duration-300">
+        class="w-8 h-8 rounded-full object-cover border-2 border-transparent group-hover:border-site-primary transition-all duration-300">
     {% else %}
     <div
-        class="w-8 h-8 rounded-full bg-blue-600 flex items-center justify-center font-bold text-white border-2 border-transparent group-hover:border-blue-400">
+        class="w-8 h-8 rounded-full bg-site-hover flex items-center justify-center font-bold text-site-main border-2 border-transparent group-hover:border-site-primary">
         {{ user.username|slice:":1"|upper }}
     </div>
     {% endif %}
 
     <!-- USERNAME TOOLTIP -->
     <span
-        class="absolute -bottom-8 left-1/2 -translate-x-1/2 bg-gray-800 text-white text-xs px-2 py-1 rounded opacity-0 group-hover:opacity-100 transition-opacity duration-300 whitespace-nowrap pointer-events-none">
+        class="absolute right-full -translate-x-1 md:-right-full md:translate-x-7 bg-site-hover text-site-main text-xs px-2 py-1 rounded opacity-0 group-hover:opacity-100 transition-opacity duration-300 whitespace-nowrap pointer-events-none">
         @{{ user.username }}
     </span>
 </button>

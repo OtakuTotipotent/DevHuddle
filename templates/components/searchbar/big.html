@@ -1,8 +1,9 @@
 <div class="hidden md:block flex-grow max-w-xs mx-6">
     <form action="{% url 'search' %}" method="get" class="relative">
         <input type="text" name="q" placeholder="Search devs, stacks, or posts..."
-            class="w-full bg-site-input text-site-text border border-site-border rounded-full py-1 px-4 pl-10 focus:outline-none focus:border-site-primary focus:ring-1 focus:ring-site-primary transition text-sm">
-        <div class="absolute left-3 top-2.5 text-site-muted">
+            class="w-full text-site-muted border border-site-border rounded-full py-1 pr-2 pl-11 text-sm focus:outline-none focus:border-site-primary/50 transition"
+            autocomplete="off">
+        <div class="absolute left-4 top-2 text-site-muted">
             <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                 <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
                     d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z"></path>

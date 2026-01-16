@@ -5,18 +5,25 @@
 {% block content %}
 
 <div class="max-w-xl mx-auto mt-2">
-    <div class="bg-gray-800 p-3 rounded-lg shadow-lg border border-gray-700">
-        <h2 class="text-2xl font-semibold mb-6 text-blue-500">Create a Huddle_</h2>
+    <div class="bg-site-card p-3 rounded-lg shadow-lg border border-site-border">
+        <h2 class="text-2xl font-semibold mb-6 text-site-primary">Create a Huddle:</h2>
 
         <form method="post" enctype="multipart/form-data">
             {% csrf_token %}
 
-            <div class="mb-4 text-white">
+            <div>
+                <label class="text-site-muted text-sm font-semibold mb-2">
+                    Post Category
+                </label>
+                {{ form.post_type }}
+            </div>
+
+            <div class="mb-4 text-site-main">
                 {{ form.body }}
                 {{ form.body.errors}}
 
                 <div class="mt-4">
-                    <label class="block text-sm font-semibold text-gray-400 mb-3">
+                    <label class="block text-sm font-semibold text-site-muted mb-3">
                         Attach Image (Optional)
                     </label>
 
@@ -27,12 +34,12 @@
             <!-- BUTTONS -->
             <div class="grid grid-cols-2 gap-4 items-center mt-7 mb-3">
                 <button type="submit"
-                    class="cursor-pointer text-center hover:opacity-70 py-2 text-sm font-semibold rounded-full bg-blue-600">
+                    class="cursor-pointer text-center hover:opacity-70 py-2 text-sm font-semibold rounded-full bg-site-hover">
                     Create Post
                 </button>
 
                 <a href="{% url 'home' %}"
-                    class="cursor-pointer text-center hover:opacity-70 py-2 text-sm font-semibold rounded-full border border-gray-500">
+                    class="cursor-pointer text-center hover:opacity-70 py-2 text-sm font-semibold rounded-full border border-site-muted/60 text-site-muted">
                     Cancel
                 </a>
             </div>
@@ -41,14 +48,3 @@
 </div>
 
 {% endblock content %}
-
-{% block scripts %}
-<script>
-    document.addEventListener('DOMContentLoaded', function () {
-        const bodyField = document.querySelector('[name="body"]');
-        if (bodyField) {
-            bodyField.focus();
-        }
-    });
-</script>
-{% endblock scripts %}

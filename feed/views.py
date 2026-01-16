@@ -14,7 +14,7 @@ from django.http import JsonResponse
 from django.urls import reverse, reverse_lazy
 from django.db.models import Q, Count
 
-from .models import Post
+from .models import Post, Notification
 from users.models import CustomUser
 from .forms import PostForm, CommentForm
 
@@ -28,6 +28,10 @@ def like_post(request, pk):
         liked = False
     else:
         post.likes.add(request.user)
+        if request.user != post.author:  # Don't notify if I like my own post
+            Notification.objects.create(
+                recipient=post.author, actor=request.user, verb="like", post=post
+            )
         liked = True
 
     return JsonResponse({"liked": liked, "count": post.likes.count()})

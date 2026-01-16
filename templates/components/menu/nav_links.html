@@ -1,15 +1,21 @@
-<div class="hidden md:flex items-center gap-8">
-    <a href="{% url 'about' %}" class="text-gray-100 hover:text-white transition">About</a>
-
+<div class="hidden md:flex items-center gap-6">
     <!-- USER PROFILE ICON -->
-    {% if not user.is_authenticated %}
+    {% if user.is_authenticated %}
+    <a href="/" class="text-site-muted hover:text-site-primary transition">Home</a>
+    <a href="#" class="text-site-muted hover:text-site-primary transition">Users</a>
+    <a href="#" class="text-site-muted hover:text-site-primary transition">Trends</a>
+
+    {% else %}
+    <a href="{% url 'about' %}" class="text-site-text hover:text-site-primary transition">About</a>
+
     <div class="flex items-center gap-4 border-l border-site-border pl-4 font-medium">
-        <a href="{% url 'login' %}" class="text-site-primary hover:text-blue-600 transition">
+        <a href="{% url 'login' %}" class="text-site-primary hover:text-site-hover transition">
             Login
         </a>
-        <a href="{% url 'signup' %}" class="text-site-primary hover:text-blue-600 transition">
+        <a href="{% url 'signup' %}" class="text-site-primary hover:text-site-hover transition">
             Join Now
         </a>
     </div>
+
     {% endif %}
 </div>

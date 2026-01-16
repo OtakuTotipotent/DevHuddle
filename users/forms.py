@@ -63,7 +63,7 @@ class CustomUserChangeForm(UserChangeForm):
 class CustomUserCreationForm(UserCreationForm):
     class Meta:
         model = CustomUser
-        fields = ("username", "email", "role", "tech_stack")
+        fields = ("username", "email", "role")
 
     def __init__(self, *args, **kwargs):
         super().__init__(*args, **kwargs)
@@ -76,11 +76,6 @@ class CustomUserCreationForm(UserCreationForm):
                 }
             )
 
-            if field_name == "tech_stack":
-                field.widget.attrs["placeholder"] = (
-                    "MERN, SpringBoot, Django, Laravel, AWS, DBMS, AI..."
-                )
-
             if field_name == "role":
                 field.widget.attrs.update(
                     {
@@ -88,7 +83,7 @@ class CustomUserCreationForm(UserCreationForm):
                     }
                 )
 
-            if field_name == "password1" or field_name == "password":
+            if field_name == "password1":
                 field.widget.attrs.update({"placeholder": "Create a new password..."})
 
             if field_name == "password2":

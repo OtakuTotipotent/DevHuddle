@@ -1,8 +1,9 @@
 import os
-from django.db import models
-from django.contrib.auth.models import AbstractUser
 from PIL import Image, ImageOps
-from .validators import validate_image_extension, validate_file_size
+from django.db import models
+from django.core.validators import MinLengthValidator
+from django.contrib.auth.models import AbstractUser
+from .validators import validate_image_extension, validate_file_size, validate_username
 
 
 def rename_avatar(instance, filename):
@@ -12,6 +13,15 @@ def rename_avatar(instance, filename):
 
 
 class CustomUser(AbstractUser):
+    username = models.CharField(
+        max_length=20,
+        unique=True,
+        validators=[MinLengthValidator(4), validate_username],
+        error_messages={
+            "unique": "A user with that username already exists.",
+            "min_length": "Username must be at least 4 characters long.",
+        },
+    )
     email = models.EmailField(unique=True)
     bio = models.TextField(
         blank=True, null=True, help_text="Tell the world about your stack."

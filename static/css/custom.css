@@ -1,67 +1,36 @@
+/* DEFAULT DARK THEME */
 :root {
-    /* gray-900 */
     --color-bg-page: #111827;
-    /* gray-800 */
     --color-bg-card: #1f2937;
-    /* gray-700 */
     --color-bg-input: #374151;
-    /* gray-100 */
     --color-text-main: #f3f4f6;
-    /* gray-400 */
     --color-text-muted: #9ca3af;
-    /* gray-700 */
     --color-border: #374151;
-    /* blue-500 */
     --color-primary: #3b82f6;
-    /* blue-700 */
     --color-primary-hover: #1d4ed8;
-    /* red-500 */
-    --color-danger: #ef4444;
-    /* green-500 */
+    --color-danger: #f87171;
+    --color-error: #ef4444;
     --color-success: #10b981;
-    /* yellow-500 */
     --color-warning: #f59e0b;
+
     --autofill-bg: #374151;
+    --color-text-dev: #f7fafc;
 }
 
+/* LIGHT THEME */
 [data-theme="light"] {
-    /* slate-50 */
-    --color-bg-page: #f8fafc;
-    /* white */
+    --color-bg-page: #c5c5c5;
     --color-bg-card: #ffffff;
-    /* slate-200 */
     --color-bg-input: #e2e8f0;
-    /* slate-900 */
     --color-text-main: #0f172a;
-    /* slate-500 */
     --color-text-muted: #64748b;
-    /* slate-300 */
-    --color-border: #cbd5e1;
-    /* blue-600 */
-    --color-primary: #2563eb;
-    /* blue-700 */
+    --color-border: #93b1d6;
+    --color-primary: #3b82f6;
     --color-primary-hover: #1d4ed8;
+    --color-danger: #ef4444;
+    --color-success: #10b981;
+    --color-warning: #f59e0b;
     --autofill-bg: #ffffff;
-}
-
-[data-theme="huddle"] {
-    /* slate-950 */
-    --color-bg-page: #020617;
-    /* slate-900 */
-    --color-bg-card: #0f172a;
-    /* slate-800 */
-    --color-bg-input: #1e293b;
-    /* slate-200 */
-    --color-text-main: #e2e8f0;
-    /* slate-400 */
-    --color-text-muted: #94a3b8;
-    /* slate-800 */
-    --color-border: #1e293b;
-    /* sky-400 */
-    --color-primary: #38bdf8;
-    /* sky-500 */
-    --color-primary-hover: #0ea5e9;
-    --autofill-bg: #0f172a;
 }
 
 /* UTILITIES */
@@ -69,6 +38,10 @@ body {
     background-color: var(--color-bg-page);
     color: var(--color-text-main);
     transition: background-color 0.3s ease, color 0.3s ease;
+}
+
+body::-webkit-scrollbar {
+    width: 0;
 }
 
 /* Autofill Fix for different browsers */
@@ -79,8 +52,4 @@ input:-webkit-autofill:active {
     -webkit-box-shadow: 0 0 0 30px var(--autofill-bg) inset !important;
     -webkit-text-fill-color: var(--color-text-main) !important;
     transition: background-color 5000s ease-in-out 0s;
-}
-
-body::-webkit-scrollbar {
-    width: 0 !important;
 }

@@ -4,6 +4,7 @@ from django.utils.timezone import now
 from django.db import models
 from django.conf import settings
 from users.validators import validate_file_size, validate_image_extension
+from users.models import CustomUser
 
 
 def rename_post_image(instance, filename):
@@ -53,3 +54,29 @@ class Comment(models.Model):
 
     def __str__(self):
         return f"Comment by {self.author.username} on {self.post}"
+
+
+class Notification(models.Model):
+    recipient = models.ForeignKey(
+        CustomUser, on_delete=models.CASCADE, related_name="notifications"
+    )
+    actor = models.ForeignKey(
+        CustomUser, on_delete=models.CASCADE, related_name="triggered_notifications"
+    )
+
+    VERB_CHOICES = (
+        ("like", "liked your post"),
+        ("comment", "commented on your post"),
+        ("follow", "started following you"),
+        ("block", "blocked you"),
+        ("boost", "boosted you"),
+        ("connect", "sent you a connection"),
+        ("dm", "sent you a message"),
+        ("hire", "wants to hire you"),
+        ("profile", "checked your profile"),
+        ("visit", "visited your profile"),
+    )
+    verb = models.CharField(max_length=26, choices=VERB_CHOICES)
+    post = models.ForeignKey(Post, on_delete=models.CASCADE, null=True, blank=True)
+    is_read = models.BooleanField(default=False)
+    created_at = models.DateTimeField(auto_now_add=True)
