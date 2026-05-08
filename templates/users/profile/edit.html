@@ -1,56 +1,36 @@
-{% extends 'base.html' %}
-{% load static %}
-{% block title %}Edit Profile{% endblock %}
-
-{% block content %}
-<div class="max-w-md mx-auto mt-2">
+{% extends 'base.html' %} {% load static %} {% block title %}
+  Edit Profile
+{% endblock %} {% block content %}
+  <div class="max-w-md mx-auto mt-2">
     <div class="bg-gray-800 p-4 rounded-lg shadow-lg border border-gray-700">
-        <h2 class="text-xl font-semibold mb-6 text-blue-500 text-center">Edit Profile</h2>
+      <h2 class="text-xl font-semibold mb-6 text-blue-500 text-center">Edit Profile</h2>
 
-        <form method="post" enctype="multipart/form-data">
-            {% csrf_token %}
+      <form method="post" enctype="multipart/form-data">
+        {% csrf_token %}
 
-            <div class="space-y-3">
-                {% for field in form %}
+        <div class="space-y-3">
+          {% for field in form %}
+            <div>
+              <label class="block text-sm text-blue-500 font-semibold mb-1">{{ field.label }}</label>
 
-                <div>
-                    <label class="block text-sm text-blue-500 font-semibold mb-1">
-                        {{ field.label }}
-                    </label>
-
-                    {{ field }}
-
-                    {% if field.errors %}
-                    <p class="text-red-400 text-xs">{{ field.errors.0 }}</p>
-                    {% endif %}
-                </div>
-
-                {% endfor %}
-
-                <a href="" class="text-sm text-blue-500 hover:text-blue-600 hover:underline">
-                    Click here to change your password?
-                </a>
+              {{ field }} {% if field.errors %}
+                <p class="text-red-400 text-xs">{{ field.errors.0 }}</p>
+              {% endif %}
             </div>
+          {% endfor %}
 
-            <!-- SUBMIT / CANCEL BUTTONS -->
-            <div class="grid grid-cols-2 gap-4 items-center mt-5 mb-3">
-                <button type="submit"
-                    class="cursor-pointer text-center hover:opacity-70 py-2 text-sm font-semibold rounded-full bg-blue-600">
-                    Save Changes
-                </button>
+          <a href="" class="text-sm text-blue-500 hover:text-blue-600 hover:underline">Click here to change your password?</a>
+        </div>
 
-                <a href="{% url 'home' %}"
-                    class="cursor-pointer text-center hover:opacity-70 py-2 text-sm font-semibold rounded-full border border-gray-500">
-                    Cancel
-                </a>
-            </div>
+        <!-- SUBMIT / CANCEL BUTTONS -->
+        <div class="grid grid-cols-2 gap-4 items-center mt-5 mb-3">
+          <button type="submit" class="cursor-pointer text-center hover:opacity-70 py-2 text-sm font-semibold rounded-full bg-blue-600">Save Changes</button>
 
-        </form>
-
+          <a href="{% url 'home' %}" class="cursor-pointer text-center hover:opacity-70 py-2 text-sm font-semibold rounded-full border border-gray-500">Cancel</a>
+        </div>
+      </form>
     </div>
-</div>
-{% endblock %}
-
-{% block scripts %}
-<script src="{% static 'js/post_upload_validator.js' %}"></script>
+  </div>
+{% endblock %} {% block scripts %}
+  <script src="{% static 'js/post_upload_validator.js' %}"></script>
 {% endblock %}

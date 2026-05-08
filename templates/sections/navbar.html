@@ -1,34 +1,29 @@
-<nav
-    class="px-2 py-2 border-b border-site-border bg-site-bg/80 backdrop-blur-sm sticky top-0 z-50 transition-all duration-300">
-    <div class="container mx-auto flex justify-between items-center relative">
+<nav class="px-2 py-2 border-b border-gray-700 bg-gray-900/80 backdrop-blur-sm sticky top-0 z-50 transition-all duration-300">
+  <div class="container mx-auto flex justify-between items-center relative">
+    <!-- LOGO -->
+    <a href="/" class="md:text-2xl text-lg font-bold text-blue-500">DevHuddle_</a>
 
-        <!-- LOGO -->
-        <a href="/" class="md:text-2xl text-lg font-bold text-site-primary">DevHuddle_</a>
+    <!-- SEARCH BAR -->
+    {% if user.is_authenticated %}
+      {% include 'components/searchbar/big.html' %}
+    {% endif %}
 
-        <!-- SEARCH BAR -->
-        {% if user.is_authenticated %}
-        {% include 'components/searchbar/big.html' %}
-        {% endif %}
+    <!-- DROPDOWN MENU -->
+    <div class="flex md:gap-6 gap-4 items-center">
+      <!-- NAVBAR LINKS -->
+      {% include 'components/menu/nav_links.html' %}
 
-        <!-- DROPDOWN MENU -->
-        <div class="flex md:gap-6 gap-4 items-center">
-
-            <!-- NAVBAR LINKS -->
-            {% include 'components/menu/nav_links.html' %}
-
-            <!-- PROFILE MENU -->
-            {% if user.is_authenticated %}
-            <div>
-                {% include 'components/menu/user_profile.html' %}
-                {% include 'users/profile/dropdown.html' %}
-            </div>
-            {% endif %}
-
-            <!-- MOBILE MENU  -->
-            <div>
-                {% include 'components/menu/mobile_screen.html' %}
-            </div>
+      <!-- PROFILE MENU -->
+      {% if user.is_authenticated %}
+        <div>
+          {% include 'components/menu/user_profile.html' %} {% include 'users/profile/dropdown.html' %}
         </div>
+      {% endif %}
 
+      <!-- MOBILE MENU -->
+      <div>
+        {% include 'components/menu/mobile_screen.html' %}
+      </div>
     </div>
+  </div>
 </nav>

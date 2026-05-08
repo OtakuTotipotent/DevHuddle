@@ -1,5 +1,5 @@
 <button onclick="toggleMobileMenu()"
-    class="md:hidden flex items-center z-50 text-site-primary hover:text-blue-400 focus:outline-none cursor-pointer">
+    class="md:hidden flex items-center z-50 text-blue-500 hover:text-blue-400 focus:outline-none cursor-pointer">
     <svg id="mobile-icon-open" class="w-8 h-8 block" fill="none" stroke="currentColor" viewBox="0 0 24 24">
         <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16m-7 6h7"></path>
     </svg>
@@ -12,7 +12,7 @@
 
 <!-- MOBILE MENU DROPDOWN -->
 <div id="mobile-menu"
-    class="hidden absolute top-12 right-0 w-64 bg-gray-800 rounded-xl shadow-2xl border border-site-border z-50 flex-col overflow-hidden">
+    class="hidden absolute top-12 right-0 w-64 bg-gray-800 rounded-xl shadow-2xl border border-gray-700 z-50 flex-col overflow-hidden">
 
     <div class="p-2">
         {% if user.is_authenticated %}
@@ -20,13 +20,13 @@
 
         {% else %}
         <div class="flex items-center justify-center gap-2 font-medium">
-            <a href="{% url 'login' %}" class="text-site-primary hover:text-blue-400 transition">
+            <a href="{% url 'login' %}" class="text-blue-500 hover:text-blue-400 transition">
                 Login
             </a>
 
             <div class="w-px h-6 bg-gray-600/70 mx-4"></div>
 
-            <a href="{% url 'signup' %}" class="text-site-primary hover:text-blue-400 transition">
+            <a href="{% url 'signup' %}" class="text-blue-500 hover:text-blue-400 transition">
                 Join Now
             </a>
         </div>
