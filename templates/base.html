@@ -10,32 +10,7 @@
       {% endblock %}
     </title>
 
-    <script src="https://cdn.jsdelivr.net/npm/@tailwindcss/browser@4"></script>
-    <link rel="stylesheet" href="{% static 'css/custom.css' %}" />
-    <style type="text/tailwindcss">
-      @theme {
-        /* BACKGROUNDS */
-        --color-site-bg: var(--color-bg-page);
-        --color-site-card: var(--color-bg-card);
-        --color-site-input: var(--color-bg-input);
-      
-        /* TEXT */
-        --color-site-text: var(--color-text-main);
-        --color-site-muted: var(--color-text-muted);
-      
-        /* BORDERS */
-        --color-site-border: var(--color-border);
-      
-        /* ACTIONS / BRAND */
-        --color-site-primary: var(--color-primary);
-        --color-site-hover: var(--color-primary-hover);
-      
-        /* STATES */
-        --color-site-error: var(--color-error);
-        --color-site-danger: var(--color-danger);
-        --color-site-success: var(--color-success);
-      }
-    </style>
+    <link rel="stylesheet" href="{% static 'css/output.css' %}" />
   </head>
 
   <body class="bg-gray-900 text-gray-100 font-sans antialiased overflow-x-hidden">

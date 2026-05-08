@@ -1,4 +1,3 @@
-/* DEFAULT DARK THEME */
 /* :root {
   --color-bg-page: #111827;
   --color-bg-card: #1f2937;
@@ -16,6 +15,13 @@
   --autofill-bg: #374151;
   --color-text-dev: #f7fafc;
 } */
+
+@import "tailwindcss";
+
+@source "../../templates/**/*.html";
+@source "../../**/templates/**/*.html";
+@source "../../**/*.py";
+@source "../js/*.js";
 
 /* UTILITIES */
 body {
