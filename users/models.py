@@ -86,16 +86,3 @@ class CustomUser(AbstractUser):
 
     def __str__(self):
         return self.username
-
-    def save(self, *args, **kwargs):
-        super().save(*args, **kwargs)
-
-        if self.avatar:
-            try:
-                img = Image.open(self.avatar.path)
-                if img.height > 300 or img.width > 300:
-                    output_size = (300, 300)
-                    img = ImageOps.fit(img, output_size, centering=(0.5, 0.5))
-                    img.save(self.avatar.path)
-            except Exception as e:
-                print(f"Image processing failed: {e}")
