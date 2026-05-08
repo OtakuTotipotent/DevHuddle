@@ -1,84 +1,64 @@
-{% extends "base.html" %} {% block title %}New Post{% endblock %} {% block
-content %}
+{% extends 'base.html' %} {% block title %}
+  New Post
+{% endblock %} {% block content %}
+  <div class="max-w-xl mx-auto mt-2">
+    <div class="bg-gray-800 p-3 rounded-lg shadow-lg border border-gray-700">
+      <h2 class="text-2xl font-semibold mb-6 text-blue-500">Create a Huddle:</h2>
 
-<div class="max-w-xl mx-auto mt-2">
-  <div class="bg-gray-800 p-3 rounded-lg shadow-lg border border-gray-700">
-    <h2 class="text-2xl font-semibold mb-6 text-blue-500">Create a Huddle:</h2>
+      <form method="post" enctype="multipart/form-data">
+        {% csrf_token %}
 
-    <form method="post" enctype="multipart/form-data">
-      {% csrf_token %}
-
-      <div>
-        <label class="text-gray-400 text-sm font-semibold mb-2">
-          Post Category
-        </label>
-        {{ form.post_type }}
-      </div>
-
-      <div class="mb-4 text-gray-100">
-        {{ form.body }} {{ form.body.errors}}
-
-        <div class="mt-4">
-          <label class="block text-sm font-semibold text-gray-400 mb-3">
-            Attach Image (Optional)
-          </label>
-
-          {{ form.image }}
+        <div>
+          <label class="text-gray-400 text-sm font-semibold mb-2">Post Category</label>
+          {{ form.post_type }}
         </div>
-      </div>
 
-      <div
-        id="ad-fields"
-        class="hidden mt-4 bg-gray-900/50 p-2 rounded-lg border border-gray-700"
-      >
-        <h4 class="text-sm font-bold text-blue-500 mb-2">
-          Advertisement Details
-        </h4>
+        <div class="mb-4 text-gray-100">
+          {{ form.body }} {{ form.body.errors }}
 
-        <label>Target URL</label>
-        {{ form.target_url }}
+          <div class="mt-4">
+            <label class="block text-sm font-semibold text-gray-400 mb-3">Attach Image (Optional)</label>
 
-        <label>Deadline</label>
-        {{ form.deadline }}
+            {{ form.image }}
+          </div>
+        </div>
 
-        <label>Tags</label>
-        {{ form.tags }}
-      </div>
+        <div id="ad-fields" class="hidden mt-4 bg-gray-900/50 p-2 rounded-lg border border-gray-700">
+          <h4 class="text-sm font-bold text-blue-500 mb-2">Advertisement Details</h4>
 
-      <!-- BUTTONS -->
-      <div class="grid grid-cols-2 gap-4 items-center mt-7 mb-3">
-        <button
-          type="submit"
-          class="cursor-pointer text-center hover:opacity-70 py-2 text-sm font-semibold rounded-full bg-blue-700"
-        >
-          Create Post
-        </button>
+          <label>Target URL</label>
+          {{ form.target_url }}
 
-        <a
-          href="{% url 'home' %}"
-          class="cursor-pointer text-center hover:opacity-70 py-2 text-sm font-semibold rounded-full border border-gray-400/60 text-gray-400"
-        >
-          Cancel
-        </a>
-      </div>
-    </form>
+          <label>Deadline</label>
+          {{ form.deadline }}
+
+          <label>Tags</label>
+          {{ form.tags }}
+        </div>
+
+        <!-- BUTTONS -->
+        <div class="grid grid-cols-2 gap-4 items-center mt-7 mb-3">
+          <button type="submit" class="cursor-pointer text-center hover:opacity-70 py-2 text-sm font-semibold rounded-full bg-blue-700">Create Post</button>
+
+          <a href="{% url 'home' %}" class="cursor-pointer text-center hover:opacity-70 py-2 text-sm font-semibold rounded-full border border-gray-400/60 text-gray-400">Cancel</a>
+        </div>
+      </form>
+    </div>
   </div>
-</div>
-
-{% endblock content %} {% block scripts %}
-<script>
-  const typeSelect = document.getElementById("id_post_type");
-  const adFields = document.getElementById("ad-fields");
-
-  function toggleFields() {
-    const val = typeSelect.value;
-    if (val === "ad" || val === "job") {
-      adFields.classList.remove("hidden");
-    } else {
-      adFields.classList.add("hidden");
+{% endblock %} {% block scripts %}
+  <script>
+    const typeSelect = document.getElementById('id_post_type')
+    const adFields = document.getElementById('ad-fields')
+    
+    function toggleFields() {
+      const val = typeSelect.value
+      if (val === 'ad' || val === 'job') {
+        adFields.classList.remove('hidden')
+      } else {
+        adFields.classList.add('hidden')
+      }
     }
-  }
-
-  typeSelect.addEventListener("change", toggleFields);
-</script>
-{% endblock scripts %}
+    
+    typeSelect.addEventListener('change', toggleFields)
+  </script>
+{% endblock %}

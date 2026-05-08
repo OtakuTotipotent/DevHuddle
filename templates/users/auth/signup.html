@@ -1,53 +1,38 @@
 {% extends 'base.html' %}
-{% block title %}Join DevHuddle{% endblock %}
+{% block title %}
+  Join DevHuddle
+{% endblock %}
 
 {% block content %}
-
-<div class="max-w-md mx-auto mt-2">
+  <div class="max-w-md mx-auto mt-2">
     <div class="bg-gray-800 p-4 rounded-lg shadow-lg border border-gray-700">
+      <h2 class="text-2xl font-bold mb-6 text-blue-500 text-center">Join DevHuddle_</h2>
 
-        <h2 class="text-2xl font-bold mb-6 text-blue-500 text-center">
-            Join DevHuddle_
-        </h2>
+      <form method="post">
+        {% csrf_token %}
 
-        <form method="post">
-            {% csrf_token %}
+        {% for field in form %}
+          <div class="mb-2">
+            <label class="block text-blue-500 text-sm font-semibold mb-2">{{ field.label }}</label>
 
-            {% for field in form %}
+            {{ field }}
 
-            <div class="mb-2">
-                <label class="block text-blue-500 text-sm font-semibold mb-2">
-                    {{ field.label }}
-                </label>
+            {% if field.help_text %}
+              <div class="text-xs text-gray-500 mt-1">{{ field.help_text|safe }}</div>
+            {% endif %}
 
-                {{ field }}
+            {% if field.errors %}
+              <p class="text-red-400 text-xs mt-1">{{ field.errors|striptags }}</p>
+            {% endif %}
+          </div>
+        {% endfor %}
 
-                {% if field.help_text %}
-                <div class="text-xs text-gray-500 mt-1">
-                    {{ field.help_text|safe }}
-                </div>
-                {% endif %}
+        <button type="submit" class="w-full bg-blue-500 hover:bg-blue-600 text-white font-semibold py-2 rounded-full transition mt-4 cursor-pointer">Create Account</button>
+      </form>
 
-                {% if field.errors %}
-                <p class="text-red-400 text-xs mt-1">
-                    {{ field.errors|striptags }}
-                </p>
-                {% endif %}
-            </div>
-
-            {% endfor %}
-
-            <button type="submit"
-                class="w-full bg-blue-500 hover:bg-blue-600 text-white font-semibold py-2 rounded-full transition mt-4 cursor-pointer">
-                Create Account
-            </button>
-        </form>
-
-        <p class="text-center mt-6 text-gray-500 text-sm">
-            Already have an account? <a href="{% url 'login' %}" class="text-blue-400 hover:underline">Go to Login</a>
-        </p>
-
+      <p class="text-center mt-6 text-gray-500 text-sm">
+        Already have an account? <a href="{% url 'login' %}" class="text-blue-400 hover:underline">Go to Login</a>
+      </p>
     </div>
-</div>
-
+  </div>
 {% endblock %}

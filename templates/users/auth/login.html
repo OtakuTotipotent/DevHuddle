@@ -1,58 +1,42 @@
 {% extends 'base.html' %}
-{% block title %}Login{% endblock %}
+{% block title %}
+  Login
+{% endblock %}
 
 {% block content %}
-
-<div class="max-w-md mx-auto mt-10">
+  <div class="max-w-md mx-auto mt-10">
     <div class="bg-gray-800 p-4 rounded-lg shadow-lg border border-blue-700/70">
+      <h2 class="text-xl md:text-2xl font-semibold mb-6 text-blue-500 text-center">Welcoming DevHuddle_</h2>
 
-        <h2 class="text-xl md:text-2xl font-semibold mb-6 text-blue-500 text-center">
-            Welcoming DevHuddle_
-        </h2>
+      <form method="post">
+        {% csrf_token %}
 
-        <form method="post">
-            {% csrf_token %}
+        {% if form.errors %}
+          <div class="border border-red-500/60 text-red-500 p-2 rounded mb-4 text-sm text-center transition">Invalid username or password.</div>
+        {% endif %}
 
-            {% if form.errors %}
-            <div class="border border-red-500/60 text-red-500 p-2 rounded mb-4 text-sm text-center transition">
-                Invalid username or password.
-            </div>
-            {% endif %}
+        <div class="mb-4">
+          <label class="block text-gray-400 text-sm font-semibold mb-2">Username</label>
+          <input type="text" name="username" class="w-full bg-gray-700 text-white rounded-full px-4 py-2 border border-gray-600 focus:outline-none focus:border-blue-500" />
+        </div>
 
-            <div class="mb-4">
-                <label class="block text-gray-400 text-sm font-semibold mb-2">Username</label>
-                <input type="text" name="username"
-                    class="w-full bg-gray-700 text-white rounded-full px-4 py-2 border border-gray-600 focus:outline-none focus:border-blue-500">
-            </div>
+        <div class="mb-3">
+          <label class="block text-gray-400 text-sm font-semibold mb-2">Password</label>
+          <input type="password" name="password" class="w-full bg-gray-700 text-white rounded-full px-4 py-2 border border-gray-600 focus:outline-none focus:border-blue-500" />
+        </div>
 
-            <div class="mb-3">
-                <label class="block text-gray-400 text-sm font-semibold mb-2">Password</label>
-                <input type="password" name="password"
-                    class="w-full bg-gray-700 text-white rounded-full px-4 py-2 border border-gray-600 focus:outline-none focus:border-blue-500">
+        <div class="mb-4 flex items-center justify-end px-4">
+          <a href="#" class="text-xs text-blue-500 hover:text-blue-400 hover:underline">Forgot Password?</a>
+        </div>
 
-            </div>
+        <button type="submit" class="w-full bg-blue-600 hover:bg-blue-700 text-white font-semibold py-2 rounded-full transition cursor-pointer -tracking-tight">Login</button>
+      </form>
 
-            <div class="mb-4 flex items-center justify-end px-4">
-                <a href="#" class="text-xs text-blue-500 hover:text-blue-400 hover:underline">
-                    Forgot Password?
-                </a>
-            </div>
+      <p class="text-center mt-6 text-gray-500 text-sm">
+        Don't have an account?
 
-            <button type="submit"
-                class="w-full bg-blue-600 hover:bg-blue-700 text-white font-semibold py-2 rounded-full transition cursor-pointer -tracking-tight">
-                Login
-            </button>
-        </form>
-
-        <p class="text-center mt-6 text-gray-500 text-sm">
-            Don't have an account?
-
-            <a href="{% url 'signup' %}" class="text-blue-400 hover:underline">
-                Sign up
-            </a>
-        </p>
-
+        <a href="{% url 'signup' %}" class="text-blue-400 hover:underline">Sign up</a>
+      </p>
     </div>
-</div>
-
-{% endblock content %}
+  </div>
+{% endblock %}
