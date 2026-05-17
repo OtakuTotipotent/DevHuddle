@@ -17,7 +17,7 @@ class CustomUser(AbstractUser):
         unique=True,
         validators=[MinLengthValidator(4), validate_username],
         error_messages={
-            "unique": "A user with that username already exists.",
+            "unique": "A user with same username already exists.",
             "min_length": "Username must be at least 4 characters long.",
         },
     )

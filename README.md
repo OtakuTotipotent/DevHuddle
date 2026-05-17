@@ -40,6 +40,15 @@ python manage.py runserver
 npx @tailwindcss/cli -i ./static/css/custom.css -o ./static/css/output.css --watch
 ```
 
+## Dev: Extensions Used
+
+- [Prettier](https://marketplace.visualstudio.com/items?itemName=esbenp.prettier-vscode)
+- [Python Extensions Pack](https://marketplace.visualstudio.com/items?itemName=donjayamanne.python-extension-pack)
+- [ESLint](https://marketplace.visualstudio.com/items?itemName=donjayamanne.python-extension-pack)
+- [Django](https://marketplace.visualstudio.com/items?itemName=donjayamanne.python-extension-pack)
+- [Markdownlint](https://marketplace.visualstudio.com/items?itemName=donjayamanne.python-extension-pack)
+- [TailwindCSS Intelligence](https://marketplace.visualstudio.com/items?itemName=donjayamanne.python-extension-pack)
+
 ## Major Fixes
 
 - On same web browser, logging in/out should not interfere with each other for multiple tabs.
