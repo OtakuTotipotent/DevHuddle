@@ -82,6 +82,7 @@
     --radius-lg: 0.5rem;
     --radius-xl: 0.75rem;
     --radius-2xl: 1rem;
+    --ease-in-out: cubic-bezier(0.4, 0, 0.2, 1);
     --blur-sm: 8px;
     --default-transition-duration: 150ms;
     --default-transition-timing-function: cubic-bezier(0.4, 0, 0.2, 1);
@@ -436,8 +437,8 @@
   .max-h-64 {
     max-height: calc(var(--spacing) * 64);
   }
-  .max-h-\[500px\] {
-    max-height: 500px;
+  .max-h-125 {
+    max-height: calc(var(--spacing) * 125);
   }
   .min-h-\[80vh\] {
     min-height: 80vh;
@@ -560,6 +561,9 @@
   .justify-start {
     justify-content: flex-start;
   }
+  .gap-0\.5 {
+    gap: calc(var(--spacing) * 0.5);
+  }
   .gap-1 {
     gap: calc(var(--spacing) * 1);
   }
@@ -583,9 +587,6 @@
   }
   .gap-8 {
     gap: calc(var(--spacing) * 8);
-  }
-  .gap-\[2px\] {
-    gap: 2px;
   }
   .space-y-3 {
     :where(& > :not(:last-child)) {

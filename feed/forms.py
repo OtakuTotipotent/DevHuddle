@@ -39,7 +39,7 @@ class PostForm(forms.ModelForm):
             ),
             "tags": forms.TextInput(
                 attrs={
-                    "placeholder": "e.g. Python, Remote",
+                    "placeholder": "e.g. #Python, #Remote",
                 }
             ),
         }

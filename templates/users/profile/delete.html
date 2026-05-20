@@ -1,8 +1,7 @@
-{% extends 'base.html' %}
+{% extends "base.html" %}
 {% block title %}
   Delete Account
-{% endblock %}
-
+{% endblock title %}
 {% block content %}
   <div class="max-w-md mx-auto mt-20">
     <div class="bg-gray-800 p-8 rounded-lg shadow-lg border border-red-900/50">
@@ -13,16 +12,17 @@
           This action is <span class="text-red-400 font-semibold">permanent</span>. All your posts, images, and data will be erased immediately.
         </p>
       </div>
-
       <form method="post">
         {% csrf_token %}
-
         <div class="flex flex-col gap-5">
-          <button type="submit" class="w-full bg-red-600 hover:opacity-70 text-white font-semibold py-2 rounded-full transition cursor-pointer">Yes, Delete My Account</button>
-
-          <a href="{% url 'home' %}" class="block text-center w-full bg-gray-700 hover:opacity-70 text-white py-2 rounded-full transition">Cancel, Keep it.</a>
+          <button type="submit"
+                  class="w-full bg-red-600 hover:opacity-70 text-white font-semibold py-2 rounded-full transition cursor-pointer">
+            Yes, Delete My Account
+          </button>
+          <a href="{% url 'home' %}"
+             class="block text-center w-full bg-gray-700 hover:opacity-70 text-white py-2 rounded-full transition">Cancel, Keep it.</a>
         </div>
       </form>
     </div>
   </div>
-{% endblock %}
+{% endblock content %}

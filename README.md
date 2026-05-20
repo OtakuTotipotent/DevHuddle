@@ -42,7 +42,7 @@ npx @tailwindcss/cli -i ./static/css/custom.css -o ./static/css/output.css --wat
 
 ## Dev: Extensions Used
 
-- [Prettier](https://marketplace.visualstudio.com/items?itemName=esbenp.prettier-vscode)
+- [djLint](https://marketplace.visualstudio.com/items?itemName=monosans.djlint)
 - [Python Extensions Pack](https://marketplace.visualstudio.com/items?itemName=donjayamanne.python-extension-pack)
 - [ESLint](https://marketplace.visualstudio.com/items?itemName=donjayamanne.python-extension-pack)
 - [Django](https://marketplace.visualstudio.com/items?itemName=donjayamanne.python-extension-pack)
