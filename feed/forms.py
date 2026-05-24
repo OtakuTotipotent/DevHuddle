@@ -30,16 +30,19 @@ class PostForm(forms.ModelForm):
             "deadline": forms.DateInput(
                 attrs={
                     "type": "date",
+                    "class": "bg-gray-700 text-white border border-gray-500 rounded-full py-1 px-4 focus:border-blue-500 col-span-2 outline-none",
                 }
             ),
             "target_url": forms.URLInput(
                 attrs={
                     "placeholder": "https://...",
+                    "class": "bg-gray-700 text-white border border-gray-500 rounded-full py-1 px-4 focus:border-blue-500 col-span-2 outline-none",
                 }
             ),
             "tags": forms.TextInput(
                 attrs={
                     "placeholder": "e.g. #Python, #Remote",
+                    "class": "bg-gray-700 text-white border border-gray-500 rounded-full py-1 px-4 focus:border-blue-500 col-span-2 outline-none",
                 }
             ),
         }
