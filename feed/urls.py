@@ -2,6 +2,7 @@ from django.urls import path
 from .views import (
     HomePageView,
     AboutPageView,
+    NotificationListView,
     PostCreateView,
     PostUpdateView,
     PostDeleteView,
@@ -20,4 +21,5 @@ urlpatterns = [
     path("post/like/<int:pk>/", like_post, name="like_post"),
     path("post/<int:pk>/", PostDetailView.as_view(), name="post_detail"),
     path("search/", search_results, name="search"),
+    path("notifications/", NotificationListView.as_view(), name="notifications"),
 ]

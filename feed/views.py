@@ -176,3 +176,21 @@ class PostDetailView(LoginRequiredMixin, FormMixin, DetailView):
         form.instance.post = self.get_object()
         form.save()
         return super().form_valid(form)
+
+
+class NotificationListView(LoginRequiredMixin, ListView):
+    model = Notification
+    template_name = "pages/notifications.html"
+    context_object_name = "notifications"
+
+    def get_queryset(self):
+        return Notification.objects.filter(recipient=self.request.user).order_by(
+            "-created_at"
+        )
+
+    def get(self, request, *args, **kwargs):
+        # OPTIONAL: Mark all as read when they visit the page
+        Notification.objects.filter(recipient=request.user, is_read=False).update(
+            is_read=True
+        )
+        return super().get(request, *args, **kwargs)
