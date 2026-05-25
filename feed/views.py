@@ -1,3 +1,5 @@
+from multiprocessing import context
+
 from django.views.generic import (
     ListView,
     TemplateView,
@@ -188,9 +190,12 @@ class NotificationListView(LoginRequiredMixin, ListView):
             "-created_at"
         )
 
-    def get(self, request, *args, **kwargs):
-        # OPTIONAL: Mark all as read when they visit the page
-        Notification.objects.filter(recipient=request.user, is_read=False).update(
-            is_read=True
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        unread_qs = Notification.objects.filter(
+            recipient=self.request.user, is_read=False
         )
-        return super().get(request, *args, **kwargs)
+        context["just_read_ids"] = list(unread_qs.values_list("id", flat=True))
+        unread_qs.update(is_read=True)
+
+        return context
