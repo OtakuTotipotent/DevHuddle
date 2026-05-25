@@ -15,7 +15,7 @@ class CustomUser(AbstractUser):
     username = models.CharField(
         max_length=20,
         unique=True,
-        validators=[MinLengthValidator(4), validate_username],
+        validators=[MinLengthValidator(3), validate_username],
         error_messages={
             "unique": "A user with same username already exists.",
             "min_length": "Username must be at least 4 characters long.",
