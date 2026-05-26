@@ -77,14 +77,14 @@ class Notification(models.Model):
     )
 
     VERB_CHOICES = (
-        ("welcome", "Welcome to DevHuddle! Update your profile"),
+        ("welcome", "Welcome to DevHuddle! You can update your profile in settings"),
         ("like", "liked your post"),
         ("comment", "commented on your post"),
         ("follow", "started following you"),
-        ("block", "blocked you"),
+        ("block", "has blocked you"),
         ("boost", "boosted you"),
-        ("connect", "sent you a connection"),
-        ("dm", "sent you a message"),
+        ("connect", "sent you a connection request"),
+        ("dm", "sent you a direct message (DM)"),
         ("hire", "wants to hire you"),
         ("profile", "checked your profile"),
         ("visit", "visited your profile"),
@@ -93,3 +93,35 @@ class Notification(models.Model):
     post = models.ForeignKey(Post, on_delete=models.CASCADE, null=True, blank=True)
     is_read = models.BooleanField(default=False)
     created_at = models.DateTimeField(auto_now_add=True)
+
+    @property
+    def theme(self):
+        """Returns Tailwind classes based on the verb."""
+        themes = {
+            "welcome": {
+                "border": "border-purple-500/50",
+                "text": "text-purple-500",
+                "bg": "bg-purple-500/10",
+            },
+            "block": {
+                "border": "border-red-500/50",
+                "text": "text-red-500",
+                "bg": "bg-red-500/10",
+            },
+            "boost": {
+                "border": "border-yellow-500/50",
+                "text": "text-yellow-500",
+                "bg": "bg-yellow-500/10",
+            },
+            "hire": {
+                "border": "border-green-500/50",
+                "text": "text-green-500",
+                "bg": "bg-green-500/10",
+            },
+            "default": {
+                "border": "border-blue-500/50",
+                "text": "text-blue-500",
+                "bg": "bg-blue-500/10",
+            },
+        }
+        return themes.get(self.verb, themes["default"])
