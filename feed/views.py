@@ -12,7 +12,7 @@ from django.views.generic.edit import FormMixin
 from django.shortcuts import get_object_or_404, render
 from django.http import JsonResponse
 from django.urls import reverse, reverse_lazy
-from django.db.models import Q, Count
+from django.db.models import Q, Count, ExpressionWrapper, IntegerField, F
 
 from .models import Post, Notification
 from users.models import CustomUser
@@ -64,14 +64,17 @@ class HomePageView(ListView):
     model = Post
     template_name = "pages/home.html"
     context_object_name = "posts"
-    paginate_by = 7
+    paginate_by = 12
 
     def get_queryset(self):
         if not self.request.user.is_authenticated:
             return Post.objects.all().order_by("-created_at")
 
         feed_type = self.request.GET.get("feed", "fellows")
-        queryset = Post.objects.all()
+        queryset = Post.objects.annotate(
+            like_count=Count("likes", distance=True),
+            comment_count=Count("comments", distance=True),
+        )
 
         if feed_type == "fellows":  # Only show standard posts here
             following_ids = self.request.user.following.values_list("id", flat=True)
@@ -86,11 +89,19 @@ class HomePageView(ListView):
         elif feed_type == "ads":  # Show ONLY ads
             queryset = queryset.filter(post_type="ad")
 
-        elif feed_type == "global":  # Everything prioritized by Boost
-            queryset = queryset.filter(post_type__in=["huddle", "job"]).order_by(
-                "-is_boosted", "-created_at"
+        elif feed_type == "global":  # Everything: The Ranking Algorithm
+            # Score = (Likes * 2) + (Comments * 3) + (Boosts * 5)
+            queryset = (
+                queryset.filter(post_type__in=["huddle", "job", "ad"])
+                .annotate(
+                    engagement_score=ExpressionWrapper(
+                        (F("like_count") * 2) + (F("comment_count") * 3),
+                        output_field=IntegerField(),
+                    )
+                )
+                .order_by("-is_boosted", "-engagement_score", "-created_at")
             )
-            return queryset  # Return early to keep custom ordering
+            return queryset
 
         return queryset.order_by("-created_at")
 
