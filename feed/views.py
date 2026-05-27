@@ -72,8 +72,8 @@ class HomePageView(ListView):
 
         feed_type = self.request.GET.get("feed", "fellows")
         queryset = Post.objects.annotate(
-            like_count=Count("likes", distance=True),
-            comment_count=Count("comments", distance=True),
+            like_count=Count("likes", distinct=True),
+            comment_count=Count("comments", distinct=True),
         )
 
         if feed_type == "fellows":  # Only show standard posts here
