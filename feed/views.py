@@ -193,7 +193,7 @@ class PostDetailView(LoginRequiredMixin, FormMixin, DetailView):
         # Trigger Notification System
         if self.request.user != form.instance.post.author:
             Notification.objects.create(
-                recipient=form.instance.port.author,
+                recipient=form.instance.post.author,
                 actor=self.request.user,
                 verb="comment",
                 post=form.instance.post,
