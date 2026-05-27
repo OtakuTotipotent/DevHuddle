@@ -1,5 +1,3 @@
-from multiprocessing import context
-
 from django.views.generic import (
     ListView,
     TemplateView,
@@ -176,7 +174,26 @@ class PostDetailView(LoginRequiredMixin, FormMixin, DetailView):
         # Connect the comment to the User and the Post
         form.instance.author = self.request.user
         form.instance.post = self.get_object()
-        form.save()
+        # Handle nested replies
+        parent_id = self.request.POST.get("parent_id")
+        if parent_id:
+            form.instance.parent_id = parent_id
+        comment = form.save()
+        # Trigger Notification System
+        if self.request.user != form.instance.post.author:
+            Notification.objects.create(
+                recipient=form.instance.port.author,
+                actor=self.request.user,
+                verb="comment",
+                post=form.instance.post,
+            )
+        if parent_id and self.request.user != comment.parent.author:
+            Notification.objects.create(
+                recipient=comment.parent.author,
+                actor=self.request.user,
+                verb="reply",
+                post=form.instance.post,
+            )
         return super().form_valid(form)
 
 

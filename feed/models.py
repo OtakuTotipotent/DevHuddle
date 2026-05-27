@@ -62,10 +62,18 @@ class Comment(models.Model):
     post = models.ForeignKey(Post, on_delete=models.CASCADE, related_name="comments")
     author = models.ForeignKey(settings.AUTH_USER_MODEL, on_delete=models.CASCADE)
     body = models.TextField(max_length=200)
+    parent = models.ForeignKey(
+        "self", null=True, blank=True, on_delete=models.CASCADE, related_name="replies"
+    )
     created_at = models.DateTimeField(auto_now_add=True)
 
     def __str__(self):
         return f"Comment by {self.author.username} on {self.post}"
+
+    @property
+    def is_parent(self):
+        """Helper to easily filter top-level comments in templates."""
+        return self.parent is None
 
 
 class Notification(models.Model):
@@ -80,6 +88,7 @@ class Notification(models.Model):
         ("welcome", "Welcome to DevHuddle! You can update your profile in settings"),
         ("like", "liked your post"),
         ("comment", "commented on your post"),
+        ("reply", "replied to your comment"),
         ("follow", "started following you"),
         ("block", "has blocked you"),
         ("boost", "boosted you"),
