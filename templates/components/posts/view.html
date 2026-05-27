@@ -38,46 +38,112 @@
       {% endif %}
     </div>
     <!-- COMMENTS -->
-    <div class="bg-gray-800/50 p-4 rounded-lg border border-gray-700/50">
-      <h3 class="text-xl font-bold text-white mb-4">Comments ({{ post.comments.count }})</h3>
+    <div class="bg-gray-800/50 p-3 rounded-lg border border-gray-700/50">
+      <h3 class="text-xl font-semibold text-blue-400 mb-4">Comments ({{ post.comments.count }})</h3>
       <!-- ADD COMMENT -->
       <form method="post" class="flex gap-2 mb-8">
         {% csrf_token %}
         <div class="grow">{{ form.body }}</div>
         <button type="submit"
-                class="bg-blue-600 hover:bg-blue-700 text-white px-3 py-2 rounded-lg font-semibold transition cursor-pointer">
+                class="bg-blue-600 hover:opacity-80 text-white px-5 rounded-lg font-semibold transition cursor-pointer">
           Send
         </button>
       </form>
       <!-- ALL COMMENTS -->
       <div class="space-y-4">
         {% for comment in post.comments.all reversed %}
-          <div class="flex gap-3">
-            <div class="shrink-0">
-              {% if comment.author.avatar %}
-                <img src="{{ comment.author.avatar.url }}"
-                     class="w-8 h-8 rounded-full object-cover"
-                     width="32"
-                     height="32"
-                     alt="{{ comment.author.username }}'s avatar" />
-              {% else %}
-                <div class="w-8 h-8 rounded-full bg-gray-600 flex items-center justify-center font-bold text-white text-xs">
-                  {{ comment.author.username|slice:':1'|upper }}
+          {% if comment.is_parent %}
+            <div class="flex flex-col gap-2">
+              <div class="flex gap-3">
+                <div class="shrink-0">
+                  {% if comment.author.avatar %}
+                    <img src="{{ comment.author.avatar.url }}"
+                         class="w-8 h-8 rounded-full object-cover"
+                         width="32"
+                         height="32"
+                         alt="avatar" />
+                  {% else %}
+                    <div class="w-8 h-8 rounded-full bg-gray-600 flex items-center justify-center font-bold text-white text-xs">
+                      {{ comment.author.username|slice:':1'|upper }}
+                    </div>
+                  {% endif %}
+                </div>
+                <div class="bg-gray-700/50 p-3 rounded-lg rounded-tl-none w-full">
+                  <div class="flex justify-between items-baseline mb-1">
+                    <span class="text-blue-400 font-bold text-sm">@{{ comment.author.username }}</span>
+                    <span class="text-gray-500 text-xs">{{ comment.created_at|timesince }} ago</span>
+                  </div>
+                  <p class="text-gray-100 text-sm">{{ comment.body }}</p>
+                  <button onclick="toggleReplyForm('{{ comment.id }}')"
+                          class="text-xs text-blue-400 hover:text-blue-500 mt-2 font-semibold transition cursor-pointer float-end px-2">
+                    Reply
+                  </button>
+                </div>
+              </div>
+              <div id="reply-form-{{ comment.id }}"
+                   class="hidden ml-11 mt-1 transition-all">
+                <form method="post" class="flex gap-2">
+                  {% csrf_token %}
+                  <input type="hidden" name="parent_id" value="{{ comment.id }}">
+                  <input type="text"
+                         name="body"
+                         class="w-full bg-gray-800 text-white rounded-sm py-2 px-3 text-sm border border-gray-600 focus:border-blue-500 outline-none"
+                         placeholder="Reply to @{{ comment.author.username }}..."
+                         required>
+                  <button type="submit"
+                          class="bg-blue-600 hover:opacity-80 text-white px-5 py-1 rounded-sm text-sm font-semibold transition cursor-pointer">
+                    Post
+                  </button>
+                </form>
+              </div>
+              {% if comment.replies.all %}
+                <div class="ml-11 flex flex-col gap-2 border-l-2 border-gray-500/20 pl-4 mt-2">
+                  {% for reply in comment.replies.all %}
+                    <div class="flex gap-3">
+                      <div class="shrink-0">
+                        {% if reply.author.avatar %}
+                          <img src="{{ reply.author.avatar.url }}"
+                               class="w-6 h-6 rounded-full object-cover"
+                               width="24"
+                               height="24"
+                               alt="avatar" />
+                        {% else %}
+                          <div class="w-6 h-6 rounded-full bg-gray-600 flex items-center justify-center font-bold text-white text-[10px]">
+                            {{ reply.author.username|slice:':1'|upper }}
+                          </div>
+                        {% endif %}
+                      </div>
+                      <div class="bg-gray-800/80 p-2 rounded-lg rounded-tl-none w-full border border-gray-700/50">
+                        <div class="flex justify-between items-baseline mb-1">
+                          <span class="text-blue-400 font-bold text-xs">@{{ reply.author.username }}</span>
+                          <span class="text-gray-500 text-[10px]">{{ reply.created_at|timesince }} ago</span>
+                        </div>
+                        <p class="text-gray-300 text-sm">{{ reply.body }}</p>
+                      </div>
+                    </div>
+                  {% endfor %}
                 </div>
               {% endif %}
             </div>
-            <div class="bg-gray-700/50 p-3 rounded-lg rounded-tl-none w-full">
-              <div class="flex justify-between items-baseline mb-1">
-                <span class="text-blue-400 font-bold text-sm">@{{ comment.author.username }}</span>
-                <span class="text-gray-500 text-xs">{{ comment.created_at|timesince }} ago</span>
-              </div>
-              <p class="text-gray-100 text-sm">{{ comment.body }}</p>
-            </div>
-          </div>
+          {% endif %}
         {% empty %}
-          <p class="text-gray-500 text-center italic">What do you think about it?</p>
+          <p class="text-blue-500 font-semibold text-center italic">What do you think about it?</p>
         {% endfor %}
       </div>
     </div>
   </div>
 {% endblock content %}
+{% block scripts %}
+  <script>
+  function toggleReplyForm(commentId) {
+    const formDiv = document.getElementById(`reply-form-${commentId}`);
+    if (formDiv.classList.contains('hidden')) {
+      formDiv.classList.remove('hidden');
+      // Auto-focus the input field for better UX
+      formDiv.querySelector('input[name="body"]').focus();
+    } else {
+      formDiv.classList.add('hidden');
+    }
+  }
+  </script>
+{% endblock scripts %}
