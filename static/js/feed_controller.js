@@ -38,7 +38,7 @@ function toggleLike(event, postId) {
   })
     .then((response) => {
       if (response.status === 403 || response.status === 401) {
-        window.location.href = "/uses/login/}";
+        window.location.href = "/users/login/}";
         return;
       }
       return response.json();
