@@ -65,6 +65,7 @@ class Comment(models.Model):
     parent = models.ForeignKey(
         "self", null=True, blank=True, on_delete=models.CASCADE, related_name="replies"
     )
+    is_deleted = models.BooleanField(default=False)
     created_at = models.DateTimeField(auto_now_add=True)
 
     def __str__(self):
