@@ -213,6 +213,12 @@ class NotificationListView(LoginRequiredMixin, ListView):
     template_name = "pages/notifications.html"
     context_object_name = "notifications"
 
+    def get(self, request, *args, **kwargs):
+        unread_qs = Notification.objects.filter(recipient=request.user, is_read=False)
+        self.just_read_ids = list(unread_qs.values_list("id", flat=True))
+        unread_qs.update(is_read=True)
+        return super().get(request, *args, **kwargs)
+
     def get_queryset(self):
         return Notification.objects.filter(recipient=self.request.user).order_by(
             "-created_at"
@@ -220,10 +226,5 @@ class NotificationListView(LoginRequiredMixin, ListView):
 
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
-        unread_qs = Notification.objects.filter(
-            recipient=self.request.user, is_read=False
-        )
-        context["just_read_ids"] = list(unread_qs.values_list("id", flat=True))
-        unread_qs.update(is_read=True)
-
+        context["just_read_ids"] = self.just_read_ids
         return context
