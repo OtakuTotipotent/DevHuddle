@@ -29,26 +29,40 @@
                             <span>Hello</span>
                             <a href="{% url 'user_profile' notification.actor.username %}"
                                class="font-bold text-lg hover:underline">{{ notification.actor.username }},</a>
-                            {{ notification.get_verb_display }}.
+                            <span class="ml-1">{{ notification.get_verb_display }}.</span>
                         </p>
                         <span class="text-xs text-gray-500">{{ notification.created_at|timesince }} ago</span>
                     </div>
                     {% comment %} Notification Details {% endcomment %}
-                    {% if notification.post %}
-                        {% if notification.post.image %}
-                            <img src="{{ notification.post.image.url }}"
-                                 height="40"
-                                 width="40"
-                                 alt="avatar"
-                                 class="w-10 h-10 rounded object-cover">
-                        {% else %}
-                            <a href="{% url 'post_detail' notification.post.pk %}"
-                               class="text-xs border border-blue-500 px-2 py-1 rounded hover:bg-blue-500">View</a>
+                    <div class="shrink-0">
+                        {% if notification.verb == 'welcome' %}
+                            <a href="{% url 'profile_edit' %}"
+                               class="text-xs border {{ notification.theme.border }} {{ notification.theme.text }} hover:opacity-80 px-2.5 py-1.5 rounded-full transition font-semibold">Setup Profile</a>
+                        {% elif notification.verb == 'follow' %}
+                            <a href="{% url 'user_profile' notification.actor.username %}"
+                               class="text-xs border {{ notification.theme.border }} {{ notification.theme.text }} hover:opacity-80 px-2.5 py-1.5 rounded-full transition font-semibold">View Profile</a>
+                        {% elif notification.post %}
+                            {% if notification.post.image %}
+                                <a href="{% url 'post_detail' notification.post.pk %}">
+                                    <img src="{{ notification.post.image.url }}"
+                                         alt="post image"
+                                         height="48"
+                                         width="48"
+                                         class="w-12 h-12 rounded object-cover border {{ notification.theme.border }} hover:opacity-80 transition shadow-sm">
+                                </a>
+                            {% else %}
+                                <a href="{% url 'post_detail' notification.post.pk %}"
+                                   class="text-xs border {{ notification.theme.border }} {{ notification.theme.text }} hover:opacity-80 px-2.5 py-1.5 rounded-full transition font-semibold">View Post</a>
+                            {% endif %}
                         {% endif %}
-                    {% endif %}
+                    </div>
                 </div>
             {% empty %}
-                <p class="text-gray-500">No notifications yet.</p>
+                <div class="text-center py-10 bg-gray-800 rounded-lg border border-gray-700 shadow-sm">
+                    <div class="text-4xl mb-3">📭</div>
+                    <p class="text-gray-400 font-medium">You're all caught up!</p>
+                    <p class="text-gray-500 text-sm mt-1">No notifications yet.</p>
+                </div>
             {% endfor %}
         </div>
     </div>
