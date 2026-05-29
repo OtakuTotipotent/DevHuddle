@@ -27,7 +27,8 @@
                     <div class="grow">
                         <p class="{{ notification.theme.text }} text-sm">
                             <span>Hello</span>
-                            <span class="font-bold text-lg text-site-text">{{ notification.actor.username }},</span>
+                            <a href="{% url 'user_profile' notification.actor.username %}"
+                               class="font-bold text-lg hover:underline">{{ notification.actor.username }},</a>
                             {{ notification.get_verb_display }}.
                         </p>
                         <span class="text-xs text-gray-500">{{ notification.created_at|timesince }} ago</span>
