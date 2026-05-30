@@ -66,7 +66,7 @@ class CommentForm(forms.ModelForm):
             "body": forms.TextInput(
                 attrs={
                     "class": "w-full bg-gray-700 text-white rounded-lg p-3 border border-gray-600 focus:border-blue-500 outline-none placeholder-gray-400",
-                    "placeholder": "What do you think?...",
+                    "placeholder": "What do you think?",
                 }
             )
         }

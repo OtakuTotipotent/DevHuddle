@@ -11,7 +11,8 @@
                       class="w-full bg-gray-900 text-gray-100 rounded-lg p-3 border border-gray-600 focus:border-blue-500 outline-none"
                       rows="4">{{ form.body.value }}</textarea>
             <div class="flex justify-end gap-3 mt-4">
-                <a href="javascript:history.back()"
+                <a href="{{ request.META.HTTP_REFERER|default:'/' }}"
+                   onclick="history.back(); return false;"
                    class="px-4 py-2 text-sm text-gray-400 hover:text-white transition">Cancel</a>
                 <button type="submit"
                         class="bg-blue-600 hover:bg-blue-700 text-white px-5 py-2 rounded-lg text-sm font-bold transition">
