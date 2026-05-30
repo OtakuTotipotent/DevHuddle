@@ -227,7 +227,6 @@ class CommentDeleteView(LoginRequiredMixin, UserPassesTestMixin, View):
         comment = get_object_or_404(Comment, pk=pk)
         # Soft-delete mechanics: Flag it and overwrite the text for privacy
         comment.is_deleted = True
-        comment.body = "This message was deleted by the user."
         comment.save()
         return redirect("post_detail", pk=comment.post.pk)
 

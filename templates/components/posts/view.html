@@ -55,30 +55,59 @@
           {% if comment.is_parent %}
             <div class="flex flex-col gap-2">
               <div class="flex gap-3">
-                <div class="shrink-0">
-                  {% if comment.author.avatar %}
-                    <img src="{{ comment.author.avatar.url }}"
-                         class="w-8 h-8 rounded-full object-cover"
-                         width="32"
-                         height="32"
-                         alt="avatar" />
-                  {% else %}
-                    <div class="w-8 h-8 rounded-full bg-gray-600 flex items-center justify-center font-bold text-white text-xs">
-                      {{ comment.author.username|slice:':1'|upper }}
+                {% if comment.is_deleted %}
+                  <div class="shrink-0 w-8 h-8 rounded-full bg-gray-700/50 flex items-center justify-center text-xs border border-gray-600"
+                       title="Deleted User">🗑️</div>
+                  <div class="bg-gray-800/30 p-3 rounded-lg rounded-tl-none w-full border border-gray-700/30">
+                    <div class="flex justify-between items-baseline mb-1">
+                      <span class="text-gray-600 font-bold text-sm cursor-not-allowed">Unknown</span>
                     </div>
-                  {% endif %}
-                </div>
-                <div class="bg-gray-700/50 p-3 rounded-lg rounded-tl-none w-full">
-                  <div class="flex justify-between items-baseline mb-1">
-                    <span class="text-blue-400 font-bold text-sm">@{{ comment.author.username }}</span>
-                    <span class="text-gray-500 text-xs">{{ comment.created_at|timesince }} ago</span>
+                    <p class="text-gray-500 text-sm italic line-through">{{ comment.body }}</p>
                   </div>
-                  <p class="text-gray-100 text-sm">{{ comment.body }}</p>
-                  <button onclick="toggleReplyForm('{{ comment.id }}')"
-                          class="text-xs text-blue-400 hover:text-blue-500 mt-2 font-semibold transition cursor-pointer float-end px-2">
-                    Reply
-                  </button>
-                </div>
+                {% else %}
+                  <div class="shrink-0">
+                    {% if comment.author.avatar %}
+                      <img src="{{ comment.author.avatar.url }}"
+                           width="32"
+                           height="32"
+                           alt="logo"
+                           class="w-8 h-8 rounded-full object-cover">
+                    {% else %}
+                      <div class="w-8 h-8 rounded-full bg-blue-600 flex items-center justify-center font-bold text-white text-lg">
+                        {{ comment.author.username|slice:':1'|upper }}
+                      </div>
+                    {% endif %}
+                  </div>
+                  <div class="bg-gray-700/50 p-3 rounded-lg rounded-tl-none w-full">
+                    <div class="flex justify-between items-baseline mb-1">
+                      <span class="text-blue-400 font-bold text-sm">@{{ comment.author.username }}</span>
+                      <span class="text-gray-500 text-xs">{{ comment.created_at|timesince }} ago</span>
+                    </div>
+                    <p class="text-gray-100 text-sm">{{ comment.body }}</p>
+                    <div class="flex justify-end items-center">
+                      {% if comment.author == user %}
+                        <div class="flex gap-5">
+                          <a href="{% url 'comment_edit' comment.id %}"
+                             class="text-xs text-yellow-400 hover:opacity-70 transition flex justify-center items-center">Edit</a>
+                          <form method="post"
+                                action="{% url 'comment_delete' comment.id %}"
+                                class="inline m-0 p-0">
+                            {% csrf_token %}
+                            <button type="submit"
+                                    class="text-xs text-red-400 hover:opacity-70 cursor-pointer transition">
+                              Delete
+                            </button>
+                          </form>
+                        </div>
+                      {% else %}
+                        <button onclick="toggleReplyForm('{{ comment.id }}')"
+                                class="text-xs text-blue-400 hover:opacity-70 font-semibold transition cursor-pointer">
+                          Reply
+                        </button>
+                      {% endif %}
+                    </div>
+                  </div>
+                {% endif %}
               </div>
               <div id="reply-form-{{ comment.id }}"
                    class="hidden ml-11 mt-1 transition-all">
@@ -88,7 +117,7 @@
                   <input type="text"
                          name="body"
                          class="w-full bg-gray-800 text-white rounded-sm py-2 px-3 text-sm border border-gray-600 focus:border-blue-500 outline-none"
-                         placeholder="Reply to @{{ comment.author.username }}..."
+                         placeholder="Type here to reply @{{ comment.author.username }}"
                          required>
                   <button type="submit"
                           class="bg-blue-600 hover:opacity-80 text-white px-5 py-1 rounded-sm text-sm font-semibold transition cursor-pointer">
@@ -97,29 +126,56 @@
                 </form>
               </div>
               {% if comment.replies.all %}
-                <div class="ml-11 flex flex-col gap-2 border-l-2 border-gray-500/20 pl-4 mt-2">
+                <div class="ml-11 flex flex-col gap-2 border-l-2 border-gray-700 pl-4 mt-2">
                   {% for reply in comment.replies.all %}
                     <div class="flex gap-3">
-                      <div class="shrink-0">
-                        {% if reply.author.avatar %}
-                          <img src="{{ reply.author.avatar.url }}"
-                               class="w-6 h-6 rounded-full object-cover"
-                               width="24"
-                               height="24"
-                               alt="avatar" />
-                        {% else %}
-                          <div class="w-6 h-6 rounded-full bg-gray-600 flex items-center justify-center font-bold text-white text-[10px]">
-                            {{ reply.author.username|slice:':1'|upper }}
-                          </div>
-                        {% endif %}
-                      </div>
-                      <div class="bg-gray-800/80 p-2 rounded-lg rounded-tl-none w-full border border-gray-700/50">
-                        <div class="flex justify-between items-baseline mb-1">
-                          <span class="text-blue-400 font-bold text-xs">@{{ reply.author.username }}</span>
-                          <span class="text-gray-500 text-[10px]">{{ reply.created_at|timesince }} ago</span>
+                      {% if reply.is_deleted %}
+                        <div class="shrink-0 w-8 h-8 rounded-full bg-gray/50 flex items-center justify-center text-[10px] border border-gray-600">
+                          🗑️
                         </div>
-                        <p class="text-gray-300 text-sm">{{ reply.body }}</p>
-                      </div>
+                        <div class="bg-gray-800/30 p-2 rounded-lg rounded-tl-none w-full border border-gray-700/30">
+                          <div class="flex justify-between items-baseline mb-1">
+                            <span class="text-gray-600 font-bold text-xs">Unknown</span>
+                          </div>
+                          <p class="text-gray-500 text-sm italic line-through">{{ reply.body }}</p>
+                        </div>
+                      {% else %}
+                        <div class="shrink-0">
+                          {% if reply.author.avatar %}
+                            <img src="{{ reply.author.avatar.url }}"
+                                 width="32"
+                                 height="32"
+                                 alt="logo"
+                                 class="w-8 h-8 rounded-full object-cover">
+                          {% else %}
+                            <div class="w-8 h-8 rounded-full bg-blue-600 flex items-center justify-center font-bold text-white text-sm">
+                              {{ reply.author.username|slice:':1'|upper }}
+                            </div>
+                          {% endif %}
+                        </div>
+                        <div class="bg-gray-800/80 p-2 rounded-lg rounded-tl-none w-full border border-gray-700/50">
+                          <div class="flex justify-between items-baseline">
+                            <span class="text-blue-400 font-bold text-xs">@{{ reply.author.username }}</span>
+                            <span class="text-gray-500 text-[10px]">{{ reply.created_at|timesince }} ago</span>
+                          </div>
+                          <p class="text-gray-300 text-sm">{{ reply.body }}</p>
+                          {% if reply.author == user %}
+                            <div class="flex justify-end items-center gap-5 border-gray-700/50">
+                              <a href="{% url 'comment_edit' reply.id %}"
+                                 class="text-xs text-yellow-400 hover:opacity-70 transition">Edit</a>
+                              <form method="post"
+                                    action="{% url 'comment_delete' reply.id %}"
+                                    class="inline m-0 p-0">
+                                {% csrf_token %}
+                                <button type="submit"
+                                        class="text-[10px] text-red-400 hover:opacity-70 cursor-pointer transition">
+                                  Delete
+                                </button>
+                              </form>
+                            </div>
+                          {% endif %}
+                        </div>
+                      {% endif %}
                     </div>
                   {% endfor %}
                 </div>
