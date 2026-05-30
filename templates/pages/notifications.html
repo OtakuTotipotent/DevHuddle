@@ -7,29 +7,41 @@
         <h1 class="text-2xl font-bold text-blue-500 mb-6">Notifications</h1>
         <div class="space-y-3">
             {% for notification in notifications %}
-                <div class="p-4 rounded-lg flex items-center gap-4 transition-colors duration-500 border {{ notification.theme.border }} {% if not notification.is_read or notification.id in just_read_ids %}{{ notification.theme.bg }}{% else %}bg-transparent{% endif %}">
-                    {% comment %} Notification User Icon {% endcomment %}
-                    <a href="{% url 'user_profile' notification.actor.username %}"
+                <div class="px-4 py-2 rounded-full flex items-center gap-2 transition-colors duration-500 border {{ notification.theme.border }} {% if not notification.is_read or notification.id in just_read_ids %}{{ notification.theme.bg }}{% else %}bg-transparent{% endif %}">
+                    {% comment %} User Logo {% endcomment %}
+                    <a href="{% if notification.verb == 'welcome' or notification.verb == 'premium' %}{% url 'home' %}{% else %}{% url 'user_profile' notification.actor.username %}{% endif %}"
                        class="shrink-0">
-                        {% if notification.actor.avatar %}
+                        {% if notification.verb == 'welcome' %}
+                            <div class="w-10 h-10 rounded-full {{ notification.theme.bg }} border {{ notification.theme.border }} flex items-center justify-center text-xl">
+                                🚀
+                            </div>
+                        {% elif notification.verb == 'premium' %}
+                            <div class="w-10 h-10 rounded-full {{ notification.theme.bg }} border {{ notification.theme.border }} flex items-center justify-center text-xl">
+                                👑
+                            </div>
+                        {% elif notification.actor.avatar %}
                             <img src="{{ notification.actor.avatar.url }}"
-                                 height="32"
-                                 width="32"
-                                 alt="avatar"
-                                 class="w-10 h-10 rounded-full object-cover">
+                                 width="40"
+                                 height="40"
+                                 alt="{{ notification.actor.username }}"
+                                 class="w-10 h-10 rounded-full object-cover border {{ notification.theme.border }}">
                         {% else %}
-                            <div class="w-10 h-10 rounded-full {{ notification.theme.bg }} flex items-center justify-center font-bold text-white text-sm">
+                            <div class="w-10 h-10 rounded-full {{ notification.theme.bg }} border {{ notification.theme.border }} {{ notification.theme.text }} flex items-center justify-center font-bold text-lg">
                                 {{ notification.actor.username|slice:":1"|upper }}
                             </div>
                         {% endif %}
                     </a>
-                    {% comment %} Notification Text {% endcomment %}
+                    {% comment %} Text Message {% endcomment %}
                     <div class="grow">
                         <p class="{{ notification.theme.text }} text-sm">
-                            <span>Hello</span>
-                            <a href="{% url 'user_profile' notification.actor.username %}"
-                               class="font-bold text-lg hover:underline">{{ notification.actor.username }},</a>
-                            <span class="ml-1">{{ notification.get_verb_display }}.</span>
+                            Hello <span class="font-semibold">{{ request.user.username }}</span>,
+                            {% if notification.verb == 'welcome' or notification.verb == 'premium' %}
+                                <span class="{{ notification.theme.text }} font-semibold">{{ notification.get_verb_display }}</span>
+                            {% else %}
+                                <a href="{% url 'user_profile' notification.actor.username %}"
+                                   class="font-bold underline hover:opacity-80">@{{ notification.actor.username }}</a>
+                                <span>{{ notification.get_verb_display }}</span>
+                            {% endif %}
                         </p>
                         <span class="text-xs text-gray-500">{{ notification.created_at|timesince }} ago</span>
                     </div>
@@ -37,31 +49,30 @@
                     <div class="shrink-0">
                         {% if notification.verb == 'welcome' %}
                             <a href="{% url 'profile_edit' %}"
-                               class="text-xs border {{ notification.theme.border }} {{ notification.theme.text }} hover:opacity-80 px-2.5 py-1.5 rounded-full transition font-semibold">Setup Profile</a>
-                        {% elif notification.verb == 'follow' %}
-                            <a href="{% url 'user_profile' notification.actor.username %}"
-                               class="text-xs border {{ notification.theme.border }} {{ notification.theme.text }} hover:opacity-80 px-2.5 py-1.5 rounded-full transition font-semibold">View Profile</a>
+                               class="text-xs px-4 py-2 rounded-full transition border {{ notification.theme.border }} {{ notification.theme.text }} hover:opacity-80">Setup Profile</a>
+                        {% elif notification.verb == 'premium' %}
+                            <a href="#"
+                               class="text-xs px-4 py-2 rounded-full transition border {{ notification.theme.border }} {{ notification.theme.text }} hover:opacity-80">Go Premium</a>
                         {% elif notification.post %}
                             {% if notification.post.image %}
                                 <a href="{% url 'post_detail' notification.post.pk %}">
                                     <img src="{{ notification.post.image.url }}"
-                                         alt="post image"
-                                         height="48"
-                                         width="48"
-                                         class="w-12 h-12 rounded object-cover border {{ notification.theme.border }} hover:opacity-80 transition shadow-sm">
+                                         alt="post"
+                                         width="80"
+                                         height="40"
+                                         class="w-20 h-10 rounded object-cover border transition shadow-sm hover:opacity-80 {{ notification.theme.border }}">
                                 </a>
                             {% else %}
                                 <a href="{% url 'post_detail' notification.post.pk %}"
-                                   class="text-xs border {{ notification.theme.border }} {{ notification.theme.text }} hover:opacity-80 px-2.5 py-1.5 rounded-full transition font-semibold">View Post</a>
+                                   class="text-xs border {{ notification.theme.border }} {{ notification.theme.text }} hover:opacity-80 px-4 py-2 rounded-full transition font-semibold">View Post</a>
                             {% endif %}
                         {% endif %}
                     </div>
                 </div>
             {% empty %}
-                <div class="text-center py-10 bg-gray-800 rounded-lg border border-gray-700 shadow-sm">
+                <div class="text-center py-10 bg-gray-800 rounded-full border border-gray-700 shadow-sm">
                     <div class="text-4xl mb-3">📭</div>
                     <p class="text-gray-400 font-medium">You're all caught up!</p>
-                    <p class="text-gray-500 text-sm mt-1">No notifications yet.</p>
                 </div>
             {% endfor %}
         </div>
