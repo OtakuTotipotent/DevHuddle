@@ -86,7 +86,8 @@ class Notification(models.Model):
     )
 
     VERB_CHOICES = (
-        ("welcome", "Welcome to DevHuddle! You can update your profile in settings"),
+        ("welcome", "Welcome! You can now update your profile in settings"),
+        ("premium", "Upgrade to Premium to unlock exclusive developer tools!"),
         ("like", "liked your post"),
         ("comment", "commented on your post"),
         ("reply", "replied to your comment"),
@@ -113,20 +114,25 @@ class Notification(models.Model):
                 "text": "text-purple-500",
                 "bg": "bg-purple-500/10",
             },
+            "premium": {
+                "border": "border-yellow-500/50",
+                "text": "text-yellow-500",
+                "bg": "bg-yellow-500/10",
+            },
             "block": {
                 "border": "border-red-500/50",
                 "text": "text-red-500",
                 "bg": "bg-red-500/10",
             },
-            "boost": {
-                "border": "border-yellow-500/50",
-                "text": "text-yellow-500",
-                "bg": "bg-yellow-500/10",
-            },
             "hire": {
                 "border": "border-green-500/50",
                 "text": "text-green-500",
                 "bg": "bg-green-500/10",
+            },
+            "profile": {
+                "border": "border-white/50",
+                "text": "text-white/50",
+                "bg": "bg-white/50",
             },
             "default": {
                 "border": "border-blue-500/50",

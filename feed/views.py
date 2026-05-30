@@ -7,14 +7,15 @@ from django.views.generic import (
     DetailView,
 )
 from django.contrib.auth.mixins import LoginRequiredMixin, UserPassesTestMixin
+from django.db.models import Q, Count, ExpressionWrapper, IntegerField, F
+from django.shortcuts import get_object_or_404, render, redirect
 from django.contrib.auth.decorators import login_required
 from django.views.generic.edit import FormMixin
-from django.shortcuts import get_object_or_404, render
-from django.http import JsonResponse
 from django.urls import reverse, reverse_lazy
-from django.db.models import Q, Count, ExpressionWrapper, IntegerField, F
+from django.http import JsonResponse
+from django.views import View
 
-from .models import Post, Notification
+from .models import Comment, Post, Notification
 from users.models import CustomUser
 from .forms import PostForm, CommentForm
 
@@ -206,6 +207,33 @@ class PostDetailView(LoginRequiredMixin, FormMixin, DetailView):
                 post=form.instance.post,
             )
         return super().form_valid(form)
+
+
+class CommentUpdateView(LoginRequiredMixin, UserPassesTestMixin, UpdateView):
+    model = Comment
+    fields = ["body"]
+    template_name = "components/comments/edit.html"
+
+    def test_func(self):
+        comment = self.get_object()
+        return comment.author == self.request.user and not comment.is_deleted
+
+    def get_success_url(self):
+        return reverse("post_detail", kwargs={"pk": self.object.post.pk})
+
+
+class CommentDeleteView(LoginRequiredMixin, UserPassesTestMixin, View):
+    def post(self, request, pk, *args, **kwargs):
+        comment = get_object_or_404(Comment, pk=pk)
+        # Soft-delete mechanics: Flag it and overwrite the text for privacy
+        comment.is_deleted = True
+        comment.body = "This message was deleted by the user."
+        comment.save()
+        return redirect("post_detail", pk=comment.post.pk)
+
+    def test_func(self):
+        comment = get_object_or_404(Comment, pk=self.kwargs["pk"])
+        return comment.author == self.request.user and not comment.is_deleted
 
 
 class NotificationListView(LoginRequiredMixin, ListView):
