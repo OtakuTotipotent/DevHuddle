@@ -11,13 +11,9 @@
                     {% comment %} User Logo {% endcomment %}
                     <a href="{% if notification.verb == 'welcome' or notification.verb == 'premium' %}{% url 'home' %}{% else %}{% url 'user_profile' notification.actor.username %}{% endif %}"
                        class="shrink-0">
-                        {% if notification.verb == 'welcome' %}
+                        {% if notification.icon %}
                             <div class="w-10 h-10 rounded-full {{ notification.theme.bg }} border {{ notification.theme.border }} flex items-center justify-center text-xl">
-                                🚀
-                            </div>
-                        {% elif notification.verb == 'premium' %}
-                            <div class="w-10 h-10 rounded-full {{ notification.theme.bg }} border {{ notification.theme.border }} flex items-center justify-center text-xl">
-                                👑
+                                {{ notification.icon }}
                             </div>
                         {% elif notification.actor.avatar %}
                             <img src="{{ notification.actor.avatar.url }}"

@@ -87,18 +87,24 @@ class Notification(models.Model):
 
     VERB_CHOICES = (
         ("welcome", "Welcome! You can now update your profile in settings"),
-        ("premium", "Upgrade to Premium to unlock exclusive developer tools!"),
+        ("premium", "Upgrade to Premium for exclusive tools & opportunities!"),
+        ("congrats", "Congrats! You are ranking among the top members"),
+        ("beware", "Beware! Your are demoting from your higher ranking"),
+        ("alert", "Alert! System is under maintenance. Please be patient"),
         ("like", "liked your post"),
         ("comment", "commented on your post"),
         ("reply", "replied to your comment"),
+        ("dm", "sent you a direct message (DM)"),
+        ("connect", "sent you a connection request"),
         ("follow", "started following you"),
+        ("unfollow", "stopped following you"),
         ("block", "has blocked you"),
         ("boost", "boosted you"),
-        ("connect", "sent you a connection request"),
-        ("dm", "sent you a direct message (DM)"),
         ("hire", "wants to hire you"),
-        ("profile", "checked your profile"),
         ("visit", "visited your profile"),
+        ("profile", "checked your profile via AI Profile Checker"),
+        ("project", "interested in your projects"),
+        ("delete", "deleting your data was successful"),
     )
     verb = models.CharField(max_length=26, choices=VERB_CHOICES)
     post = models.ForeignKey(Post, on_delete=models.CASCADE, null=True, blank=True)
@@ -107,37 +113,75 @@ class Notification(models.Model):
 
     @property
     def theme(self):
-        """Returns Tailwind classes based on the verb."""
-        themes = {
-            "welcome": {
-                "border": "border-purple-500/50",
-                "text": "text-purple-500",
-                "bg": "bg-purple-500/10",
-            },
-            "premium": {
-                "border": "border-yellow-500/50",
-                "text": "text-yellow-500",
-                "bg": "bg-yellow-500/10",
-            },
-            "block": {
+        """Returns Tailwind classes based on a semantic abstraction of the verb."""
+        palettes = {
+            "danger": {
                 "border": "border-red-500/50",
                 "text": "text-red-500",
                 "bg": "bg-red-500/10",
             },
-            "hire": {
+            "brand": {
+                "border": "border-yellow-500/50",
+                "text": "text-yellow-500",
+                "bg": "bg-yellow-500/10",
+            },
+            "success": {
                 "border": "border-green-500/50",
                 "text": "text-green-500",
                 "bg": "bg-green-500/10",
             },
-            "profile": {
-                "border": "border-white/50",
-                "text": "text-white/50",
-                "bg": "bg-white/50",
-            },
-            "default": {
+            "neutral": {
                 "border": "border-blue-500/50",
                 "text": "text-blue-500",
                 "bg": "bg-blue-500/10",
             },
+            "info": {
+                "border": "border-purple-500/50",
+                "text": "text-purple-400",
+                "bg": "bg-purple-500/10",
+            },
+            "warning": {
+                "border": "border-gray-500/50",
+                "text": "text-gray-200",
+                "bg": "bg-gray-600/30",
+            },
         }
-        return themes.get(self.verb, themes["default"])
+
+        # Map Verbs to Categories
+        verb_map = {
+            "alert": "warning",
+            "beware": "warning",
+            "block": "danger",
+            "unfollow": "danger",
+            "delete": "danger",
+            "premium": "brand",
+            "boost": "brand",
+            "welcome": "brand",
+            "congrats": "success",
+            "hire": "success",
+            "connect": "info",
+            "follow": "info",
+            "project": "info",
+            "dm": "info",
+            "like": "neutral",
+            "comment": "neutral",
+            "reply": "neutral",
+            "visit": "neutral",
+            "profile": "neutral",
+        }
+
+        # Retrieve the category, fallback to neutral, then return the palette
+        category = verb_map.get(self.verb, "neutral")
+        return palettes.get(category)
+
+    @property
+    def icon(self):
+        """Returns specific emojis or icons for special verbs."""
+        icons = {
+            "welcome": "🚀",
+            "premium": "👑",
+            "congrats": "🎉",
+            "alert": "⚠️",
+            "beware": "📉",
+        }
+        return icons.get(self.verb, None)
