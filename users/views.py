@@ -33,7 +33,7 @@ class ProfileDeleteView(LoginRequiredMixin, DeleteView):
         return self.request.user
 
 
-class UserProfileView(DetailView):
+class UserProfileView(LoginRequiredMixin, DetailView):
     model = CustomUser
     template_name = "users/profile/view.html"
     context_object_name = "profile_user"
