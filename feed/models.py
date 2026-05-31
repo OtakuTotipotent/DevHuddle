@@ -77,6 +77,44 @@ class Comment(models.Model):
         return self.parent is None
 
 
+class Proposal(models.Model):
+    job = models.ForeignKey(
+        Post,
+        on_delete=models.CASCADE,
+        related_name="proposals",
+        limit_choices_to={"post_type": "job"},
+    )
+    applicant = models.ForeignKey(
+        settings.AUTH_USER_MODEL, on_delete=models.CASCADE, related_name="applications"
+    )
+
+    cover_letter = models.TextField(
+        max_length=1500, help_text="Why are you the best fit for this role?"
+    )
+    bid_amount = models.DecimalField(
+        max_digits=10,
+        decimal_places=2,
+        null=True,
+        blank=True,
+        help_text="Proposed budget in USD (Optional)",
+    )
+
+    STATUS_CHOICES = (
+        ("pending", "Pending Review"),
+        ("accepted", "Accepted"),
+        ("rejected", "Declined"),
+    )
+    status = models.CharField(max_length=10, choices=STATUS_CHOICES, default="pending")
+    created_at = models.DateTimeField(auto_now_add=True)
+
+    class Meta:
+        # DB-level protection: A user can only apply to a specific job once.
+        unique_together = ("job", "applicant")
+
+    def __str__(self):
+        return f"Proposal by {self.applicant.username} for {self.job.pk}"
+
+
 class Notification(models.Model):
     recipient = models.ForeignKey(
         CustomUser, on_delete=models.CASCADE, related_name="notifications"
@@ -101,6 +139,8 @@ class Notification(models.Model):
         ("block", "has blocked you"),
         ("boost", "boosted you"),
         ("hire", "wants to hire you"),
+        ("accept", "accepted your job proposal"),
+        ("reject", "declined your job proposal"),
         ("visit", "visited your profile"),
         ("profile", "checked your profile via AI Profile Checker"),
         ("project", "interested in your projects"),
@@ -149,20 +189,28 @@ class Notification(models.Model):
 
         # Map Verbs to Categories
         verb_map = {
+            # warning
             "alert": "warning",
             "beware": "warning",
+            # danger
             "block": "danger",
             "unfollow": "danger",
             "delete": "danger",
+            "reject": "danger",
+            # brand
             "premium": "brand",
             "boost": "brand",
             "welcome": "brand",
+            # success
             "congrats": "success",
             "hire": "success",
+            "accept": "success",
+            # info
             "connect": "info",
             "follow": "info",
             "project": "info",
             "dm": "info",
+            # neutral
             "like": "neutral",
             "comment": "neutral",
             "reply": "neutral",

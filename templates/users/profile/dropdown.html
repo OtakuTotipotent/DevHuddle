@@ -118,20 +118,22 @@
   <!-- Account Settings -->
   <div class="grid grid-cols-2 divide-x divide-y divide-gray-700/50 text-center border-t border-gray-700/50 tracking-wide">
     <a href="{% url 'notifications' %}"
-       class="py-2 text-xs text-red-400/80 hover:bg-red-500/10 transition">Notifications</a>
+       class="py-2 text-xs text-purple-400/80 hover:bg-purple-500/10 transition">Notifications</a>
     <a href="#"
-       class="py-2 text-xs text-red-400/80 hover:bg-red-500/10 transition">Subscription</a>
+       class="py-2 text-xs text-yellow-400/80 hover:bg-yellow-500/10 transition">Subscription</a>
     <a href="{% url 'profile_edit' %}"
-       class="py-2 text-xs text-red-400/80 hover:bg-red-500/10 transition">Edit Profile</a>
+       class="py-2 text-xs text-white/80 hover:bg-white/10 transition">Edit Profile</a>
+    <a href="{% if user.role == 'dev' %} {% url 'home' %} {% else %} {% url 'client_dashboard' %} {% endif %}"
+       class="py-2 text-xs text-green-400/80 hover:bg-green-500/10 transition">Dashboard</a>
+    <!-- SignOut & Delete -->
+    <form action="{% url 'logout' %}" method="post" class="">
+      {% csrf_token %}
+      <button type="submit"
+              class="w-full py-2 text-xs text-red-400/80 hover:bg-red-500/10 transition cursor-pointer tracking-wide">
+        Sign Out
+      </button>
+    </form>
     <a href="{% url 'profile_delete' %}"
        class="py-2 text-xs text-red-400/80 hover:bg-red-500/10 border-b border-gray-700/50 transition">Delete Account</a>
   </div>
-  <!-- LOGOUT BUTTON -->
-  <form action="{% url 'logout' %}" method="post" class="block">
-    {% csrf_token %}
-    <button type="submit"
-            class="w-full py-2 text-xs text-red-400/80 hover:bg-red-500/10 transition cursor-pointer tracking-wide">
-      Sign Out
-    </button>
-  </form>
 </div>

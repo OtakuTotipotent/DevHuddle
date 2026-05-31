@@ -1,5 +1,5 @@
 from django import forms
-from .models import Post, Comment
+from .models import Post, Comment, Proposal
 
 
 class PostForm(forms.ModelForm):
@@ -47,6 +47,18 @@ class PostForm(forms.ModelForm):
             ),
         }
 
+    def __init__(self, *args, **kwargs):
+        user = kwargs.pop("user", None)
+        super().__init__(*args, **kwargs)
+
+        # RBAC ENFORCEMENT: Restrict post types based on role
+        if user and user.role == "dev":
+            # Devs can ONLY post standard Huddles
+            self.fields["post_type"].choices = [("huddle", "Huddle")]
+        elif user and user.role in ["client", "org"]:
+            # Clients/Orgs can post Huddles, Jobs, and Ads
+            pass
+
     def save(self, commit=True):
         post = super().save(commit=False)
         if self.cleaned_data.get("clear_image"):
@@ -54,8 +66,30 @@ class PostForm(forms.ModelForm):
             post.image = None
         if commit:
             post.save()
-
         return post
+
+
+class ProposalForm(forms.ModelForm):
+    class Meta:
+        model = Proposal
+        fields = ["cover_letter", "bid_amount"]
+        widgets = {
+            "cover_letter": forms.Textarea(
+                attrs={
+                    "class": "w-full bg-gray-700 text-white rounded-lg p-3 my-2 border border-gray-600 focus:border-blue-500 outline-none",
+                    "placeholder": "Explain your tech stack and why you fit this project...",
+                    "rows": 5,
+                    # "style": "resize: none;",
+                }
+            ),
+            "bid_amount": forms.NumberInput(
+                attrs={
+                    "class": "w-full bg-gray-700 text-white border border-gray-600 rounded-lg p-3 focus:outline-none focus:border-blue-500",
+                    "placeholder": "e.g. 500.00",
+                    "step": "0.01",
+                }
+            ),
+        }
 
 
 class CommentForm(forms.ModelForm):

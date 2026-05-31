@@ -1,5 +1,6 @@
 from django.urls import path
 from .views import (
+    ClientDashboardView,
     CommentDeleteView,
     CommentUpdateView,
     HomePageView,
@@ -8,6 +9,8 @@ from .views import (
     PostCreateView,
     PostUpdateView,
     PostDeleteView,
+    ProposalActionView,
+    ProposalCreateView,
     like_post,
     PostDetailView,
     search_results,
@@ -27,5 +30,12 @@ urlpatterns = [
     path("comment/<int:pk>/edit/", CommentUpdateView.as_view(), name="comment_edit"),
     path(
         "comment/<int:pk>/delete/", CommentDeleteView.as_view(), name="comment_delete"
+    ),
+    path("job/<int:pk>/apply/", ProposalCreateView.as_view(), name="apply_job"),
+    path("dashboard/client/", ClientDashboardView.as_view(), name="client_dashboard"),
+    path(
+        "proposal/<int:pk>/<str:action>/",
+        ProposalActionView.as_view(),
+        name="proposal_action",
     ),
 ]

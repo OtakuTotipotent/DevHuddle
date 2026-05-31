@@ -10,14 +10,14 @@ from django.contrib.auth.mixins import LoginRequiredMixin, UserPassesTestMixin
 from django.db.models import Q, Count, ExpressionWrapper, IntegerField, F
 from django.shortcuts import get_object_or_404, render, redirect
 from django.contrib.auth.decorators import login_required
+from django.contrib import messages
 from django.views.generic.edit import FormMixin
 from django.urls import reverse, reverse_lazy
 from django.http import JsonResponse
 from django.views import View
-
-from .models import Comment, Post, Notification
 from users.models import CustomUser
-from .forms import PostForm, CommentForm
+from .models import Comment, Post, Notification, Proposal
+from .forms import PostForm, CommentForm, ProposalForm
 
 
 @login_required
@@ -127,11 +127,33 @@ class AboutPageView(TemplateView):
     template_name = "pages/about.html"
 
 
+class ClientDashboardView(LoginRequiredMixin, UserPassesTestMixin, ListView):
+    template_name = "pages/client_dashboard.html"
+    context_object_name = "jobs"
+
+    def test_func(self):
+        # RBAC: Only Clients and Orgs can access the hirer dashboard
+        return self.request.user.role in ["client", "org"]
+
+    def get_queryset(self):
+        """Performance optimization: prefetch_related stops N+1 queries when looping through proposals in the template"""
+        return (
+            Post.objects.filter(author=self.request.user, post_type="job")
+            .prefetch_related("proposals__applicant")
+            .order_by("-created_at")
+        )
+
+
 class PostCreateView(LoginRequiredMixin, CreateView):
     model = Post
     form_class = PostForm
     template_name = "components/posts/create.html"
     success_url = reverse_lazy("home")
+
+    def get_form_kwargs(self):
+        kwargs = super().get_form_kwargs()
+        kwargs["user"] = self.request.user
+        return kwargs
 
     def form_valid(self, form):
         form.instance.author = self.request.user
@@ -233,6 +255,85 @@ class CommentDeleteView(LoginRequiredMixin, UserPassesTestMixin, View):
     def test_func(self):
         comment = get_object_or_404(Comment, pk=self.kwargs["pk"])
         return comment.author == self.request.user and not comment.is_deleted
+
+
+class ProposalCreateView(LoginRequiredMixin, UserPassesTestMixin, CreateView):
+    model = Proposal
+    form_class = ProposalForm
+    template_name = "components/posts/submit_proposal.html"
+
+    def test_func(self):
+        # RBAC: Only 'dev' roles can apply for jobs
+        return self.request.user.role == "dev"
+
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        # Pass the specific job to the template
+        context["job"] = get_object_or_404(Post, pk=self.kwargs["pk"], post_type="job")
+        return context
+
+    def form_valid(self, form):
+        job = get_object_or_404(Post, pk=self.kwargs["pk"], post_type="job")
+
+        # Security: Prevent duplicate applications
+        if Proposal.objects.filter(job=job, applicant=self.request.user).exists():
+            messages.error(self.request, "You have already applied to this job.")
+            return redirect("post_detail", pk=job.pk)
+
+        form.instance.applicant = self.request.user
+        form.instance.job = job
+        proposal = form.save()
+
+        # NOTIFICATION: Notify the Client that a Dev applied
+        Notification.objects.create(
+            recipient=job.author,
+            actor=self.request.user,
+            verb="hire",
+            post=job,
+        )
+
+        messages.success(self.request, "Your proposal has been submitted successfully.")
+        return redirect("post_detail", pk=job.pk)
+
+
+class ProposalActionView(LoginRequiredMixin, UserPassesTestMixin, View):
+    def post(self, request, pk, action, *args, **kwargs):
+        proposal = get_object_or_404(Proposal, pk=pk)
+
+        # State Mutation
+        if action == "accept":
+            proposal.status = "accepted"
+            verb = "accept"
+            messages.success(
+                request,
+                f"You accepted the proposal from {proposal.applicant.username}.",
+            )
+        elif action == "reject":
+            proposal.status = "rejected"
+            verb = "reject"
+            messages.error(
+                request,
+                f"You declined the proposal from {proposal.applicant.username}.",
+            )
+        else:
+            return redirect("client_dashboard")
+
+        proposal.save()
+
+        # Alert the Developer of the decision
+        Notification.objects.create(
+            recipient=proposal.applicant,
+            actor=request.user,
+            verb=verb,
+            post=proposal.job,
+        )
+
+        return redirect("client_dashboard")
+
+    def test_func(self):
+        """Strict RBAC Security: Only the actual creator of the job can accept/reject its proposals"""
+        proposal = get_object_or_404(Proposal, pk=self.kwargs["pk"])
+        return self.request.user == proposal.job.author
 
 
 class NotificationListView(LoginRequiredMixin, ListView):
