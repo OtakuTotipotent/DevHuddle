@@ -79,7 +79,7 @@
           <span class="text-xl">💬</span>
           <span class="text-sm font-bold">{{ post.comments.count }}</span>
         </a>
-        <!-- POST REACTION OPTIONS -->
+        <!-- POST REACTION OPTIONS | POST CARD MENU -->
         <div class="relative">
           <button onclick="togglePostMenu('{{ post.pk }}')"
                   class="text-gray-400 hover:text-white p-2 hover:bg-gray-700/50 rounded-full transition cursor-pointer">
@@ -91,11 +91,16 @@
           <div id="post-menu-{{ post.pk }}"
                class="hidden absolute right-0 mt-2 w-36 bg-gray-800 rounded-lg shadow-xl border border-gray-700 z-20 overflow-hidden">
             {% if post.post_type == 'job' and post.author != user %}
-              <a href="{% if post.target_url %} {{ post.target_url }} {% else %} {% url 'user_profile' post.author.username %} {% endif %}"
-                 {% if post.target_url %}target="_blank"{% endif %}
-                 class="border-b border-gray-700 block px-4 py-2 text-sm text-blue-500 hover:bg-gray-700 transition">Apply for Job</a>
+              {% if post.target_url %}
+                <a href="{{ post.target_url }}"
+                   target="_blank"
+                   class="border-b border-gray-700 block px-4 py-2 text-sm text-blue-500 hover:bg-gray-700 transition">Apply Externally</a>
+              {% else %}
+                <a href="{% url 'apply_job' post.pk %}"
+                   class="border-b border-gray-700 block px-4 py-2 text-sm text-blue-500 hover:bg-gray-700 transition">Apply for Job</a>
+              {% endif %}
             {% elif post.post_type == 'ad' and post.author != user %}
-              <a href="{% if post.target_url %} {{ post.target_url }} {% else %} {% url 'user_profile' post.author.username %} {% endif %}"
+              <a href="{% if post.target_url %}{{ post.target_url }}{% else %}{% url 'user_profile' post.author.username %}{% endif %}"
                  {% if post.target_url %}target="_blank"{% endif %}
                  class="border-b border-gray-700 block px-4 py-2 text-sm text-blue-500 hover:bg-gray-700 transition">View Offer</a>
             {% endif %}
