@@ -63,3 +63,4 @@ npx @tailwindcss/cli -i ./static/css/custom.css -o ./static/css/output.css --wat
 - Implement light theme.
 - Add a dedicated page for jobs, projects, gigs \& contests.
 - While posting selecting a category of post, that will display relevant posts to TARGET or ACTIVE audience as well as profile visitors. Also adding options like formatted/HTML like text uploading in post and prohibiting the video uploads.
+- A Network page for showcasing all users with whom the user has collaborated
