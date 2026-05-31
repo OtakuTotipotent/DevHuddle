@@ -123,7 +123,7 @@
        class="py-2 text-xs text-yellow-400/80 hover:bg-yellow-500/10 transition">Subscription</a>
     <a href="{% url 'profile_edit' %}"
        class="py-2 text-xs text-white/80 hover:bg-white/10 transition">Edit Profile</a>
-    <a href="{% if user.role == 'dev' %} {% url 'home' %} {% else %} {% url 'client_dashboard' %} {% endif %}"
+    <a href="{% if user.role == 'dev' %} {% url 'dev_dashboard' %} {% else %} {% url 'client_dashboard' %} {% endif %}"
        class="py-2 text-xs text-green-400/80 hover:bg-green-500/10 transition">Dashboard</a>
     <!-- SignOut & Delete -->
     <form action="{% url 'logout' %}" method="post" class="">

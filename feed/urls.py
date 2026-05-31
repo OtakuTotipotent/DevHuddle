@@ -3,6 +3,7 @@ from .views import (
     ClientDashboardView,
     CommentDeleteView,
     CommentUpdateView,
+    DeveloperDashboardView,
     HomePageView,
     AboutPageView,
     NotificationListView,
@@ -38,4 +39,5 @@ urlpatterns = [
         ProposalActionView.as_view(),
         name="proposal_action",
     ),
+    path("dashboard/dev/", DeveloperDashboardView.as_view(), name="dev_dashboard"),
 ]

@@ -144,6 +144,23 @@ class ClientDashboardView(LoginRequiredMixin, UserPassesTestMixin, ListView):
         )
 
 
+class DeveloperDashboardView(LoginRequiredMixin, UserPassesTestMixin, ListView):
+    template_name = "pages/dev_dashboard.html"
+    context_object_name = "proposals"
+
+    def test_func(self):
+        # RBAC: Only 'dev' roles can access the applicant dashboard
+        return self.request.user.role == "dev"
+
+    def get_queryset(self):
+        """Fetch proposals created by this dev, fetch related Job and Author for performance"""
+        return (
+            Proposal.objects.filter(applicant=self.request.user)
+            .select_related("job", "job__author")
+            .order_by("-created_at")
+        )
+
+
 class PostCreateView(LoginRequiredMixin, CreateView):
     model = Post
     form_class = PostForm
