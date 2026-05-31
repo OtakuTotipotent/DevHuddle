@@ -138,7 +138,7 @@ class Notification(models.Model):
         ("unfollow", "stopped following you"),
         ("block", "has blocked you"),
         ("boost", "boosted you"),
-        ("hire", "wants to hire you"),
+        ("hire", "applied for the job"),
         ("accept", "accepted your job proposal"),
         ("reject", "declined your job proposal"),
         ("visit", "visited your profile"),
