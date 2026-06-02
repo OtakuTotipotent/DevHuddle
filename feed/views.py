@@ -299,7 +299,8 @@ class ProposalCreateView(LoginRequiredMixin, UserPassesTestMixin, CreateView):
 
         form.instance.applicant = self.request.user
         form.instance.job = job
-        proposal = form.save()
+        # proposal = form.save()
+        form.save()
 
         # NOTIFICATION: Notify the Client that a Dev applied
         Notification.objects.create(
