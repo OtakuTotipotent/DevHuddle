@@ -16,13 +16,17 @@
     </title>
     <link rel="stylesheet" href="{% static 'css/output.css' %}" />
   </head>
-  <body class="bg-gray-900 text-gray-100 font-sans antialiased overflow-x-hidden">
-    {% include "sections/navbar.html" %}
-    <main class="container mx-auto p-3 min-h-[80vh]">
+  <body class="bg-gray-900 text-gray-300 font-sans antialiased h-screen overflow-hidden">
+    <nav class="md:h-[6%] h-[6%] border-b border-gray-700 flex items-center justify-center">
+      {% include "sections/navbar.html" %}
+    </nav>
+    <main class="md:h-[90%] h-[88%] container mx-auto overflow-auto">
       {% block content %}
       {% endblock content %}
     </main>
-    {% include "sections/footer.html" %}
+    <footer class="md:h-[4%] h-[6%] border-t border-gray-700 grid place-content-center">
+      {% include "sections/footer.html" %}
+    </footer>
     <script src="{% static 'js/menu_toggle.js' %}"></script>
     {% block scripts %}
     {% endblock scripts %}

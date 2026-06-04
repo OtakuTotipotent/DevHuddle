@@ -17,29 +17,21 @@
 } */
 
 @import "tailwindcss";
-
 @source "../../templates/**/*.html";
 @source "../../**/templates/**/*.html";
 @source "../../**/*.py";
 @source "../js/*.js";
 
-/* UTILITIES */
-body {
-  transition:
-    background-color 0.3s ease,
-    color 0.3s ease;
-}
-
-body::-webkit-scrollbar {
+::-webkit-scrollbar {
   width: 0;
 }
 
-/* Autofill Fix for different browsers */
+/* Autofill fix for different browsers */
 input:-webkit-autofill,
 input:-webkit-autofill:hover,
 input:-webkit-autofill:focus,
 input:-webkit-autofill:active {
-  -webkit-box-shadow: 0 0 0 30px #374151 inset !important;
   -webkit-text-fill-color: #f3f4f6 !important;
   transition: background-color 5000s ease-in-out 0s;
+  -webkit-box-shadow: 0 0 0 30px #374151 inset !important;
 }
