@@ -7,7 +7,7 @@
         <h1 class="text-2xl font-bold text-blue-500 mb-6">Notifications</h1>
         <div class="space-y-3">
             {% for notification in notifications %}
-                <div class="px-4 py-2 rounded-full flex items-center gap-2 hover:scale-105 transition-transform duration-150 border {{ notification.theme.border }} {% if not notification.is_read or notification.id in just_read_ids %}{{ notification.theme.bg }}{% else %}bg-transparent{% endif %}">
+                <div class="px-4 py-2 rounded-lg flex items-center gap-2 border hover:opacity-80 transition-opacity {{ notification.theme.border }} {% if not notification.is_read or notification.id in just_read_ids %}{{ notification.theme.bg }}{% else %}bg-transparent{% endif %}">
                     {% comment %} User Logo {% endcomment %}
                     <a href="{% if notification.verb == 'welcome' or notification.verb == 'premium' %}{% url 'home' %}{% else %}{% url 'user_profile' notification.actor.username %}{% endif %}"
                        class="shrink-0">
