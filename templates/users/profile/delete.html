@@ -9,18 +9,20 @@
         <div class="w-16 h-16 bg-red-900/30 rounded-full flex items-center justify-center mx-auto mb-4 text-3xl pb-2">⚠️</div>
         <h2 class="text-2xl font-semibold text-blue-500">Delete Account?</h2>
         <p class="text-gray-400 text-sm my-2">
-          This action is <span class="text-red-400 font-semibold">permanent</span>. All your posts, images, and data will be erased immediately.
+          This action is <span class="text-red-500 font-semibold">Permanent</span>!
+          <br>
+          All your posts, images, and data will be erased immediately.
         </p>
       </div>
       <form method="post">
         {% csrf_token %}
         <div class="flex flex-col gap-5">
           <button type="submit"
-                  class="w-full bg-red-600 hover:opacity-70 text-white font-semibold py-2 rounded-full transition cursor-pointer">
+                  class="w-full bg-red-500 hover:opacity-70 text-white font-semibold py-2 rounded-lg transition cursor-pointer">
             Yes, Delete My Account
           </button>
           <a href="{% url 'home' %}"
-             class="block text-center w-full bg-gray-700 hover:opacity-70 text-white py-2 rounded-full transition">Cancel, Keep it.</a>
+             class="block text-center w-full bg-gray-700 hover:opacity-70 text-white py-2 rounded-lg transition">Cancel, Keep it.</a>
         </div>
       </form>
     </div>

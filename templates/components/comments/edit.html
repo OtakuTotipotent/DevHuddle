@@ -3,17 +3,17 @@
     Edit Comment
 {% endblock title %}
 {% block content %}
-    <div class="max-w-2xl mx-auto mt-10 bg-gray-800 p-6 rounded-lg border border-gray-700 shadow-xl">
+    <div class="max-w-2xl mx-auto mt-10 p-6 rounded-lg">
         <h2 class="text-xl font-bold text-blue-500 mb-4">Edit Your Comment</h2>
         <form method="post">
             {% csrf_token %}
             <textarea name="body"
                       class="w-full bg-gray-900 text-gray-100 rounded-lg p-3 border border-gray-600 focus:border-blue-500 outline-none"
-                      rows="4">{{ form.body.value }}</textarea>
+                      rows="6">{{ form.body.value }}</textarea>
             <div class="flex justify-end gap-3 mt-4">
                 <a href="{{ request.META.HTTP_REFERER|default:'/' }}"
                    onclick="history.back(); return false;"
-                   class="px-4 py-2 text-sm text-gray-400 hover:text-white transition">Cancel</a>
+                   class="px-4 py-2 text-sm border rounded border-gray-500 hover:border-gray-400">Cancel</a>
                 <button type="submit"
                         class="bg-blue-600 hover:bg-blue-700 text-white px-5 py-2 rounded-lg text-sm font-bold transition">
                     Save Changes

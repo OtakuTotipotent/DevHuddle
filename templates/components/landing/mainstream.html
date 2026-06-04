@@ -1,12 +1,12 @@
 <div class="col-span-1 lg:col-span-2 overflow-auto">
-  <div class="bg-gray-900/70 backdrop-blur-lg sticky top-0 z-40 transition-all duration-300 rounded-b-xl">
+  <div class="bg-gray-900/70 backdrop-blur-lg sticky top-0 z-30 rounded-b-xl">
     <!-- FEATURES & ACTIONS -->
     {% include "components/landing/features.html" %}
     <!-- FEED BUTTONS -->
     {% include "components/feed/feed_tabs.html" %}
   </div>
   <!-- POSTS -->
-  <div class="space-y-6">
+  <div class="space-y-6 px-4">
     {% for post in posts %}
       {% include "components/feed/post_card.html" %}
     {% empty %}
