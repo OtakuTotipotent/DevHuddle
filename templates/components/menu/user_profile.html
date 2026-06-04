@@ -11,6 +11,7 @@
       {{ user.username|slice:":1"|upper }}
     </div>
   {% endif %}
-  <!-- USERNAME TOOLTIP -->
-  <span class="absolute right-full -translate-x-1 md:-right-full md:translate-x-7 bg-blue-700 text-gray-100 text-xs px-2 py-1 rounded opacity-0 group-hover:opacity-100 transition-opacity duration-300 whitespace-nowrap pointer-events-none">@{{ user.username }}</span>
+  <span class="absolute top-full right-0 mt-2 bg-blue-700 text-gray-300 border border-blue-500 shadow-xl text-xs px-2.5 py-1.5 rounded-lg opacity-0 -translate-y-1 group-hover:opacity-100 group-hover:translate-y-0 transition-all duration-200 whitespace-nowrap pointer-events-none z-50">
+    @{{ user.username }}
+  </span>
 </button>
