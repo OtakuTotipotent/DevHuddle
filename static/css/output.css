@@ -277,6 +277,12 @@
   .right-0 {
     right: calc(var(--spacing) * 0);
   }
+  .right-2 {
+    right: calc(var(--spacing) * 2);
+  }
+  .right-4 {
+    right: calc(var(--spacing) * 4);
+  }
   .right-full {
     right: 100%;
   }
@@ -2098,9 +2104,19 @@
       padding-left: calc(var(--spacing) * 5);
     }
   }
+  .md\:relative {
+    @media (width >= 48rem) {
+      position: relative;
+    }
+  }
   .md\:-right-full {
     @media (width >= 48rem) {
       right: -100%;
+    }
+  }
+  .md\:right-0 {
+    @media (width >= 48rem) {
+      right: calc(var(--spacing) * 0);
     }
   }
   .md\:col-span-2 {

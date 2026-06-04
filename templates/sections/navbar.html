@@ -12,12 +12,14 @@
     {% include "components/menu/nav_links.html" %}
     <!-- PROFILE MENU -->
     {% if user.is_authenticated %}
-      <div>
+      <div class="md:relative">
         {% include "components/menu/user_profile.html" %}
         {% include "users/profile/dropdown.html" %}
       </div>
     {% endif %}
     <!-- MOBILE MENU -->
-    <div>{% include "components/menu/mobile_screen.html" %}</div>
+    <div class="relative">
+      <div>{% include "components/menu/mobile_screen.html" %}</div>
+    </div>
   </div>
 </div>
