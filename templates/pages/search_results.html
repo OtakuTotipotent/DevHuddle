@@ -3,9 +3,9 @@
   Search: {{ query }}
 {% endblock title %}
 {% block content %}
-  <div class="max-w-4xl mx-4 lg:mx-auto mt-2">
-    <h1 class="text-2xl font-semibold text-white mb-6">
-      Results for "<span class="text-blue-500 font-bold">{{ query }}</span>"
+  <div class="max-w-4xl mx-4 lg:mx-auto my-6">
+    <h1 class="text-2xl font-semibold text-blue-500 mb-6">
+      Results for "<span class="text-gray-400 font-semibold italic">{{ query }}</span>"
     </h1>
     <div class="grid grid-cols-1 md:grid-cols-3 gap-x-4 gap-y-8">
       <div class="sm::col-span-1 space-y-4">
@@ -13,7 +13,7 @@
           Developers ({{ users.count }})
         </h3>
         {% for found_user in users %}
-          <div class="flex items-center justify-between gap-3 bg-gray-800 p-2 rounded-lg border border-gray-700">
+          <div class="flex items-center justify-between gap-2 bg-gray-800 p-2 rounded-lg border border-gray-700">
             <div class="flex items-center gap-3 truncate">
               {% if found_user.avatar %}
                 <img src="{{ found_user.avatar.url }}"

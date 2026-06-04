@@ -5,10 +5,10 @@
 {% block content %}
     <div class="max-w-3xl mx-2 sm:mx-auto mt-8">
         <div class="bg-gray-800/50 p-6 rounded-t-lg border border-gray-700 border-b-0">
-            <h2 class="text-xs text-gray-500 uppercase tracking-widest font-bold mb-2">
+            <h2 class="text-xs text-gray-500 uppercase font-semibold tracking-widest mb-2">
                 Bidding on Job from @{{ job.author.username }}
             </h2>
-            <p class="text-gray-200 text-lg">{{ job.body }}</p>
+            <p class="text-blue-500 text-lg">{{ job.body }}</p>
             <div class="flex gap-4 mt-4 text-xs text-gray-400">
                 {% if job.deadline %}
                     <span>📅 Deadline: <span class="text-gray-200">{{ job.deadline|date:'d M Y' }}</span></span>
@@ -32,7 +32,7 @@
                 </div>
                 <div class="flex justify-end gap-3 pt-4 border-t border-gray-700">
                     <a href="{% url 'post_detail' job.pk %}"
-                       class="px-4 py-2 text-sm text-gray-400 hover:text-white transition font-semibold">Cancel</a>
+                       class="px-6 py-2 text-sm border border-gray-400 rounded text-gray-400 hover:text-white/70 transition font-semibold">Cancel</a>
                     <button type="submit"
                             class="bg-blue-600 hover:bg-blue-700 text-white px-6 py-2 rounded-lg text-sm font-bold transition">
                         Submit Proposal
