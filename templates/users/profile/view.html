@@ -7,10 +7,11 @@
   <div class="max-w-4xl mx-2 lg:mx-auto my-6">
     <!-- User Info -->
     <div class="bg-gray-800 rounded-xl shadow-lg border border-gray-700 overflow-hidden mb-8">
+      <!-- Profile Banner -->
       <div class="h-32 bg-linear-to-r from-blue-900 to-gray-900"></div>
-      <div class="px-5 pb-8">
+      <div class="md:px-5 px-3 flex flex-col gap-4">
         <!-- Avatar -->
-        <div class="relative -mt-12 mb-3 md:px-8">
+        <div class="relative -mt-12 md:px-8">
           {% if profile_user.avatar %}
             <img src="{{ profile_user.avatar.url }}"
                  width="128"
@@ -23,16 +24,19 @@
             </div>
           {% endif %}
         </div>
-        <!-- Info & Links -->
-        <h1 class="text-2xl text-white">{{ profile_user.first_name }} {{ profile_user.last_name }}</h1>
-        <p class="text-gray-400 font-mono mb-2">@{{ profile_user.username }}</p>
-        {% if profile_user.bio %}<p class="text-blue-400 max-w-2xl mb-1">{{ profile_user.bio }}</p>{% endif %}
+        <!-- Name & Username -->
+        <div class="flex items-center gap-x-4 flex-wrap cursor-default">
+          <h1 class="text-2xl text-gray-300 tracking-wide">{{ profile_user.first_name }} {{ profile_user.last_name }}</h1>
+          <p class="text-blue-500 font-semibold font-sans">(@{{ profile_user.username }})</p>
+        </div>
+        <!-- User bio -->
+        {% if profile_user.bio %}<p class="text-blue-400 max-w-2xl">{{ profile_user.bio }}</p>{% endif %}
         <!-- Links -->
-        <div class="flex flex-wrap gap-x-4 gap-y-1 text-gray-400 mb-4">
+        <div class="flex flex-wrap gap-x-4 gap-y-1 text-gray-400">
           {% if profile_user.portfolio_url %}
             <a href="{{ profile_user.portfolio_url }}"
                target="_blank"
-               class="hover:text-purple-300 transition"
+               class="hover:text-blue-500 transition"
                title="Portfolio">Portfolio</a>
           {% endif %}
           {% if profile_user.github_url %}
@@ -50,7 +54,7 @@
           {% if profile_user.linkedin_url %}
             <a href="{{ profile_user.linkedin_url }}"
                target="_blank"
-               class="hover:text-blue-300 transition"
+               class="hover:text-blue-400 transition"
                title="LinkedIn">LinkedIn</a>
           {% endif %}
           {% if profile_user.stackoverflow_url %}
@@ -62,7 +66,7 @@
           {% if profile_user.upwork_url %}
             <a href="{{ profile_user.upwork_url }}"
                target="_blank"
-               class="hover:text-green-300 transition"
+               class="hover:text-green-500 transition"
                title="Upwork">Upwork</a>
           {% endif %}
           {% if profile_user.fiver_url %}
@@ -72,8 +76,18 @@
                title="Fiverr">Fiverr</a>
           {% endif %}
         </div>
+        <!-- Skills -->
+        {% if profile_user.skills.all %}
+          <div class="flex flex-wrap gap-2">
+            {% for skill in profile_user.skills.all %}
+              <span class="bg-blue-900/20 text-blue-400 border border-blue-700/50 px-4 py-0.5 rounded-full text-sm tracking-wide cursor-default">
+                {{ skill.name }}
+              </span>
+            {% endfor %}
+          </div>
+        {% endif %}
         <!-- Buttons & Actions -->
-        <div class="flex flex-wrap gap-2 mb-2 justify-start">
+        <div class="flex flex-wrap gap-2 justify-start my-2">
           {% if user == profile_user %}
             <!-- SELF Profile -->
             <a href="{% url 'profile_edit' %}"
@@ -128,53 +142,53 @@
           {% endif %}
         </div>
         <!-- Stats -->
-        <div class="flex flex-wrap justify-center gap-8 mt-4 border-t border-gray-700 pt-6 text-white">
+        <div class="flex flex-wrap gap-x-8 gap-y-4 py-3 border-y border-gray-700 text-gray-400">
           <!-- Posts: Total posts count -->
           <div class="text-center">
-            <span class="block text-xl font-bold">{{ profile_user.post_set.count }}</span>
-            <span class="text-xs text-gray-400 uppercase tracking-wide">Posts</span>
+            <span class="block text-lg font-semibold">{{ profile_user.post_set.count }}</span>
+            <span class="text-xs tracking-wide">POSTS</span>
           </div>
           <!-- Followers: one sided connection -->
           <div class="text-center">
-            <span class="block text-xl font-bold" id="followers-count">{{ profile_user.followers.count }}</span>
-            <span class="text-xs text-gray-400 uppercase tracking-wide">Followers</span>
+            <span class="block text-lg font-semibold" id="followers-count">{{ profile_user.followers.count }}</span>
+            <span class="text-xs tracking-wide">FOLLOWERS</span>
           </div>
           <!-- Following: one sided connection -->
           <div class="text-center">
-            <span class="block text-xl font-bold" id="following-count">{{ profile_user.following.count }}</span>
-            <span class="text-xs text-gray-400 uppercase tracking-wide">Following</span>
+            <span class="block text-lg font-semibold" id="following-count">{{ profile_user.following.count }}</span>
+            <span class="text-xs tracking-wide">FOLLOWING</span>
           </div>
           <!-- Connections: two sided mutual connection (both follow each other) -->
           <div class="text-center">
-            <span class="block text-xl font-bold">0</span>
-            <span class="text-xs text-gray-400 uppercase tracking-wide">Connections</span>
+            <span class="block text-lg font-semibold">0</span>
+            <span class="text-xs tracking-wide">CONNECTIONS</span>
           </div>
           <!-- Ranking: on basis of likes + comments + boosts + expertise level got -->
           <div class="text-center">
-            <span class="block text-xl font-bold">786</span>
-            <span class="text-xs text-gray-400 uppercase tracking-wide">Rank</span>
+            <span class="block text-lg font-semibold">786</span>
+            <span class="text-xs tracking-wide">RANK</span>
           </div>
           <!-- Projects: if any | Open source or finished projects -->
           <div class="text-center">
-            <span class="block text-xl font-bold">0</span>
-            <span class="text-xs text-gray-400 uppercase tracking-wide">Projects</span>
+            <span class="block text-lg font-semibold">0</span>
+            <span class="text-xs tracking-wide">PROJECTS</span>
           </div>
           <!-- Active: average time spent on DevHuddle_ -->
           <div class="text-center">
-            <span class="block text-xl font-bold">47%</span>
-            <span class="text-xs text-gray-400 uppercase tracking-wide">Active</span>
+            <span class="block text-lg font-semibold">47%</span>
+            <span class="text-xs tracking-wide">ACTIVE</span>
           </div>
           <!-- Availability: YES/NO (Can someone hire them or not?) -->
           <div class="text-center">
-            <span class="block text-xl font-bold">Yes</span>
-            <span class="text-xs text-gray-400 uppercase tracking-wide">Availability</span>
+            <span class="block text-lg font-semibold">Yes</span>
+            <span class="text-xs tracking-wide">AVAILABLE</span>
           </div>
         </div>
       </div>
     </div>
     <!-- Posts -->
     <div class="grid gap-6">
-      <h2 class="text-xl font-bold text-gray-400 mb-2">Recent Huddles</h2>
+      <h2 class="text-xl font-bold text-blue-500 mb-2">Recent Huddles</h2>
       {% for post in profile_user.post_set.all|dictsortreversed:'created_at' %}
         <div class="bg-gray-800 p-6 rounded-lg border border-gray-700">
           <div class="flex justify-between items-start mb-4">
