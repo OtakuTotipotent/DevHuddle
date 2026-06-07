@@ -208,6 +208,39 @@
             </div>
           </div>
         {% endif %}
+        <!-- Projects -->
+        {% if profile_user.projects.all %}
+          <h3 class="text-lg font-bold text-blue-500 mb-4 pb-2 border-b border-gray-700">Projects</h3>
+          <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+            {% for project in profile_user.projects.all %}
+              <div class="bg-gray-900/50 rounded-xl overflow-hidden transition group">
+                {% if project.image %}
+                  <img src="{{ project.image.url }}"
+                       alt="project"
+                       height="128"
+                       width="100"
+                       class="w-full h-32 object-cover border-b border-gray-800 opacity-80 group-hover:opacity-100 transition">
+                {% endif %}
+                <div class="p-4">
+                  <h4 class="font-semibold text-gray-300 mb-1 truncate">{{ project.title }}</h4>
+                  <p class="text-xs text-gray-400 mb-4 line-clamp-2">{{ project.description }}</p>
+                  <div class="flex gap-4 text-sm font-semibold">
+                    {% if project.live_url %}
+                      <a href="{{ project.live_url }}"
+                         target="_blank"
+                         class="text-blue-400 hover:text-blue-300">Live Demo ↗</a>
+                    {% endif %}
+                    {% if project.github_url %}
+                      <a href="{{ project.github_url }}"
+                         target="_blank"
+                         class="text-gray-400 hover:text-white">Source Code ↗</a>
+                    {% endif %}
+                  </div>
+                </div>
+              </div>
+            {% endfor %}
+          </div>
+        {% endif %}
       </div>
     </div>
     <!-- Posts -->
