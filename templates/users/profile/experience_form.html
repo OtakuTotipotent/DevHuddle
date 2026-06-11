@@ -1,0 +1,45 @@
+{% extends "base.html" %}
+{% block title %}
+    {% if object %}
+        Edit
+    {% else %}
+        New
+    {% endif %}
+    Experience
+{% endblock title %}
+{% block content %}
+    <div class="max-w-2xl mx-2 md:mx-auto mt-4 sm:my-5">
+        <div class="bg-gray-800 p-2 md:p-6 rounded-xl border border-gray-700 shadow-2xl">
+            <div class="mb-6 border-b border-gray-700 pb-4">
+                <h1 class="text-2xl font-semibold text-blue-500">
+                    {% if object %}
+                        Edit
+                    {% else %}
+                        Add
+                    {% endif %}
+                    Your Experience
+                </h1>
+                <p class="text-sm text-gray-400 mt-1">Showcase your technical architecture and impact.</p>
+            </div>
+            <form method="post" enctype="multipart/form-data" class="space-y-4">
+                {% csrf_token %}
+                {% for field in form %}
+                    <div>
+                        <label class="block text-sm font-semibold text-gray-300 mb-2">{{ field.label }}</label>
+                        {{ field }}
+                        {% if field.errors %}<p class="text-red-400 text-xs mt-1">{{ field.errors.0 }}</p>{% endif %}
+                        {% if field.help_text %}<p class="text-gray-500 text-xs mt-1">{{ field.help_text }}</p>{% endif %}
+                    </div>
+                {% endfor %}
+                <div class="flex justify-end gap-3 pt-6 border-t border-gray-700 mt-8">
+                    <a href="{% url 'user_profile' request.user.username %}"
+                       class="px-5 py-2 text-sm text-gray-400 hover:text-white transition font-semibold border rounded-lg">Cancel</a>
+                    <button type="submit"
+                            class="bg-blue-600 hover:bg-blue-700 text-white px-4 py-2 rounded-lg text-sm font-bold transition cursor-pointer">
+                        Save Experience
+                    </button>
+                </div>
+            </form>
+        </div>
+    </div>
+{% endblock content %}
