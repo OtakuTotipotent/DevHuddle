@@ -1,0 +1,28 @@
+{% extends "base.html" %}
+{% block title %}
+    Delete Project
+{% endblock title %}
+{% block content %}
+    <div class="max-w-md mx-2 sm:mx-auto mt-20">
+        <div class="bg-gray-800 p-8 rounded-lg shadow-lg border border-red-900/50 text-center">
+            <div class="w-16 h-16 bg-red-900/30 text-red-500 rounded-full flex items-center justify-center mx-auto mb-4 text-3xl pb-2">
+                ⚠️
+            </div>
+            <h2 class="text-2xl font-bold text-gray-300">Delete Portfolio Project?</h2>
+            <p class="text-gray-400 text-sm mt-2 mb-6">
+                Are you sure you want to permanently delete <strong class="text-gray-300">"{{ object.title }}"</strong>? This cannot be undone.
+            </p>
+            <form method="post">
+                {% csrf_token %}
+                <div class="flex flex-col gap-3">
+                    <button type="submit"
+                            class="w-full bg-red-800 hover:bg-red-700 text-gray-300 font-semibold py-3 rounded-full transition cursor-pointer">
+                        Yes, Delete Project
+                    </button>
+                    <a href="{% url 'user_profile' user.username %}"
+                       class="w-full border border-gray-600 text-gray-400 hover:text-white hover:bg-gray-700 font-bold py-3 rounded-full transition">Cancel</a>
+                </div>
+            </form>
+        </div>
+    </div>
+{% endblock content %}
