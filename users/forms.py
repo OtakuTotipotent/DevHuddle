@@ -1,6 +1,6 @@
 # DevHuddle/users/forms.py
 from django.contrib.auth.forms import UserCreationForm, UserChangeForm
-from .models import CustomUser
+from .models import CustomUser, Skill, Project, Experience
 from django import forms
 
 
@@ -97,3 +97,92 @@ class CustomUserCreationForm(UserCreationForm):
                 field.widget.attrs.update(
                     {"placeholder": "Type again your password here..."}
                 )
+
+
+class ProjectForm(forms.ModelForm):
+    class Meta:
+        model = Project
+        fields = ["title", "description", "live_url", "github_url", "image"]
+        widgets = {
+            "title": forms.TextInput(
+                attrs={
+                    "class": "w-full bg-gray-900 text-white rounded-lg p-3 border border-gray-700 focus:border-blue-500 outline-none",
+                    "placeholder": "e.g. DevHuddle AI Video Editor",
+                }
+            ),
+            "description": forms.Textarea(
+                attrs={
+                    "class": "w-full bg-gray-900 text-white rounded-lg p-3 border border-gray-700 focus:border-blue-500 outline-none",
+                    "rows": 4,
+                    "placeholder": "Describe the architecture and your role...",
+                }
+            ),
+            "live_url": forms.URLInput(
+                attrs={
+                    "class": "w-full bg-gray-900 text-white rounded-lg p-3 border border-gray-700 focus:border-blue-500 outline-none",
+                    "placeholder": "https://...",
+                }
+            ),
+            "github_url": forms.URLInput(
+                attrs={
+                    "class": "w-full bg-gray-900 text-white rounded-lg p-3 border border-gray-700 focus:border-blue-500 outline-none",
+                    "placeholder": "https://github.com/...",
+                }
+            ),
+            "image": forms.FileInput(
+                attrs={
+                    "class": "block w-full text-sm text-gray-400 file:mr-4 file:py-2 file:px-4 file:rounded-lg file:border-0 file:text-sm file:font-semibold file:bg-blue-600 file:text-white hover:file:bg-blue-700 cursor-pointer mt-2"
+                }
+            ),
+        }
+
+
+class ExperienceForm(forms.ModelForm):
+    class Meta:
+        model = Experience
+        fields = [
+            "company",
+            "role",
+            "start_date",
+            "end_date",
+            "is_current",
+            "description",
+        ]
+        widgets = {
+            "company": forms.TextInput(
+                attrs={
+                    "class": "w-full bg-gray-900 text-white rounded-lg p-3 border border-gray-700 focus:border-blue-500 outline-none",
+                    "placeholder": "e.g. Google",
+                }
+            ),
+            "role": forms.TextInput(
+                attrs={
+                    "class": "w-full bg-gray-900 text-white rounded-lg p-3 border border-gray-700 focus:border-blue-500 outline-none",
+                    "placeholder": "e.g. Senior Backend Engineer",
+                }
+            ),
+            "start_date": forms.DateInput(
+                attrs={
+                    "type": "date",
+                    "class": "w-full bg-gray-900 text-white rounded-lg p-3 border border-gray-700 focus:border-blue-500 outline-none",
+                }
+            ),
+            "end_date": forms.DateInput(
+                attrs={
+                    "type": "date",
+                    "class": "w-full bg-gray-900 text-white rounded-lg p-3 border border-gray-700 focus:border-blue-500 outline-none",
+                }
+            ),
+            "is_current": forms.CheckboxInput(
+                attrs={
+                    "class": "w-5 h-5 rounded border-gray-700 text-blue-600 focus:ring-blue-500 bg-gray-900"
+                }
+            ),
+            "description": forms.Textarea(
+                attrs={
+                    "class": "w-full bg-gray-900 text-white rounded-lg p-3 border border-gray-700 focus:border-blue-500 outline-none",
+                    "rows": 4,
+                    "placeholder": "Key achievements...",
+                }
+            ),
+        }

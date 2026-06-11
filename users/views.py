@@ -2,10 +2,15 @@ from django.shortcuts import get_object_or_404
 from django.http import JsonResponse
 from django.contrib.auth.decorators import login_required
 from django.views.generic import CreateView, UpdateView, DeleteView, DetailView
-from django.contrib.auth.mixins import LoginRequiredMixin
-from django.urls import reverse_lazy
-from .forms import CustomUserCreationForm, CustomUserChangeForm
-from .models import CustomUser
+from django.contrib.auth.mixins import LoginRequiredMixin, UserPassesTestMixin
+from django.urls import reverse_lazy, reverse
+from .models import CustomUser, Project, Experience
+from .forms import (
+    CustomUserCreationForm,
+    CustomUserChangeForm,
+    ProjectForm,
+    ExperienceForm,
+)
 
 
 class SignUpView(CreateView):
@@ -14,6 +19,9 @@ class SignUpView(CreateView):
     template_name = "users/auth/signup.html"
 
 
+# ==========================================
+# PROFILE (DASHBOARD)
+# ==========================================
 class ProfileUpdateView(LoginRequiredMixin, UpdateView):
     model = CustomUser
     form_class = CustomUserChangeForm
@@ -63,3 +71,82 @@ def follow_user(request, username):
             "following_count": target_user.following.count(),
         }
     )
+
+
+# ==========================================
+# PORTFOLIO (PROJECTS) WORKSPACE
+# ==========================================
+class ProjectCreateView(LoginRequiredMixin, CreateView):
+    model = Project
+    form_class = ProjectForm
+    template_name = "users/profile/project_form.html"
+
+    def form_valid(self, form):
+        form.instance.user = self.request.user  # Bind to current user
+        return super().form_valid(form)
+
+    def get_success_url(self):
+        return reverse("user_profile", kwargs={"username": self.request.user.username})
+
+
+class ProjectUpdateView(LoginRequiredMixin, UserPassesTestMixin, UpdateView):
+    model = Project
+    form_class = ProjectForm
+    template_name = "users/profile/project_form.html"
+
+    def test_func(self):
+        # Strict RBAC: Only the owner can edit
+        return self.get_object().user == self.request.user
+
+    def get_success_url(self):
+        return reverse("user_profile", kwargs={"username": self.request.user.username})
+
+
+class ProjectDeleteView(LoginRequiredMixin, UserPassesTestMixin, DeleteView):
+    model = Project
+    template_name = "users/profile/project_confirm_delete.html"
+
+    def test_func(self):
+        return self.get_object().user == self.request.user
+
+    def get_success_url(self):
+        return reverse("user_profile", kwargs={"username": self.request.user.username})
+
+
+# ==========================================
+# EXPERIENCE WORKSPACE
+# ==========================================
+class ExperienceCreateView(LoginRequiredMixin, CreateView):
+    model = Experience
+    form_class = ExperienceForm
+    template_name = "users/profile/experience_form.html"
+
+    def form_valid(self, form):
+        form.instance.user = self.request.user
+        return super().form_valid(form)
+
+    def get_success_url(self):
+        return reverse("user_profile", kwargs={"username": self.request.user.username})
+
+
+class ExperienceUpdateView(LoginRequiredMixin, UserPassesTestMixin, UpdateView):
+    model = Experience
+    form_class = ExperienceForm
+    template_name = "users/profile/experience_form.html"
+
+    def test_func(self):
+        return self.get_object().user == self.request.user
+
+    def get_success_url(self):
+        return reverse("user_profile", kwargs={"username": self.request.user.username})
+
+
+class ExperienceDeleteView(LoginRequiredMixin, UserPassesTestMixin, DeleteView):
+    model = Experience
+    template_name = "users/profile/experience_confirm_delete.html"
+
+    def test_func(self):
+        return self.get_object().user == self.request.user
+
+    def get_success_url(self):
+        return reverse("user_profile", kwargs={"username": self.request.user.username})
