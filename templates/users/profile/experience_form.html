@@ -43,3 +43,24 @@
         </div>
     </div>
 {% endblock content %}
+{% block scripts %}
+    <script>
+    document.addEventListener("DOMContentLoaded", function() {
+        const isCurrentCheckbox = document.querySelector('input[name="is_current"]');
+        const endDateInput = document.querySelector('input[name="end_date"]');
+        const endDateContainer = endDateInput.closest('div');
+
+        function toggleEndDate() {
+            if (isCurrentCheckbox.checked) {
+                endDateContainer.style.display = 'none';
+                endDateInput.value = '';
+            } else {
+                endDateContainer.style.display = 'block';
+            }
+        }
+
+        isCurrentCheckbox.addEventListener('change', toggleEndDate);
+        toggleEndDate(); // Run on initial load
+    });
+    </script>
+{% endblock scripts %}

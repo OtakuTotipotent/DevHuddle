@@ -186,3 +186,17 @@ class ExperienceForm(forms.ModelForm):
                 }
             ),
         }
+
+    def clean(self):
+        cleaned_data = super().clean()
+        is_current = cleaned_data.get("is_current")
+        end_date = cleaned_data.get("end_date")
+
+        if is_current:
+            cleaned_data["end_date"] = None
+        elif not is_current and not end_date:
+            self.add_error(
+                "end_date", 'Please provide an end date, or check "is current".'
+            )
+
+        return cleaned_data
