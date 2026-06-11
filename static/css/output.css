@@ -1923,6 +1923,13 @@
       }
     }
   }
+  .hover\:bg-red-500 {
+    &:hover {
+      @media (hover: hover) {
+        background-color: var(--color-red-500);
+      }
+    }
+  }
   .hover\:bg-red-500\/10 {
     &:hover {
       @media (hover: hover) {
