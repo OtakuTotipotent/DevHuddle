@@ -188,7 +188,7 @@
         {% if profile_user.experiences.all %}
           <div class="rounded-xl p-4 border border-gray-700">
             <div class="flex justify-between items-center border-b border-gray-700 pb-2 mb-4">
-              <h3 class="text-lg font-bold text-blue-500">Experience</h3>
+              <h3 class="text-lg font-semibold text-blue-500">Experiences</h3>
               {% if user == profile_user %}
                 <a href="{% url 'experience_create' %}"
                    class="text-sm text-blue-400 hover:text-blue-500 font-semibold px-3">+ Add</a>
@@ -231,38 +231,61 @@
           </div>
         {% endif %}
         <!-- Projects -->
-        {% if profile_user.projects.all %}
-          <h3 class="text-lg font-bold text-blue-500 mb-4 pb-2 border-b border-gray-700">Projects</h3>
-          <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
-            {% for project in profile_user.projects.all %}
-              <div class="bg-gray-900/50 rounded-xl overflow-hidden transition group">
-                {% if project.image %}
-                  <img src="{{ project.image.url }}"
-                       alt="project"
-                       height="128"
-                       width="100"
-                       class="w-full h-32 object-cover border-b border-gray-800 opacity-80 group-hover:opacity-100 transition">
-                {% endif %}
-                <div class="p-4">
-                  <h4 class="font-semibold text-gray-300 mb-1 truncate">{{ project.title }}</h4>
-                  <p class="text-xs text-gray-400 mb-4 line-clamp-2">{{ project.description }}</p>
-                  <div class="flex gap-4 text-sm font-semibold">
-                    {% if project.live_url %}
-                      <a href="{{ project.live_url }}"
-                         target="_blank"
-                         class="text-blue-400 hover:text-blue-300">Live Demo ↗</a>
-                    {% endif %}
-                    {% if project.github_url %}
-                      <a href="{{ project.github_url }}"
-                         target="_blank"
-                         class="text-gray-400 hover:text-white">Source Code ↗</a>
-                    {% endif %}
+        <div>
+          <div class="flex justify-between items-center mb-4 border-b border-gray-700 pb-2 px-2">
+            <h3 class="text-lg font-semibold text-blue-500">Projects</h3>
+            {% if user == profile_user %}
+              <a href="{% url 'project_create' %}"
+                 class="text-sm text-blue-400 hover:text-blue-500 px-3 transition font-semibold">+ Add</a>
+            {% endif %}
+          </div>
+          {% if profile_user.projects.all %}
+            <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+              {% for project in profile_user.projects.all %}
+                <div class="bg-gray-900/50 rounded-xl overflow-hidden group relative">
+                  {% if user == profile_user %}
+                    <div class="absolute top-2 right-4 bg-gray-800 rounded p-2 flex flex-col gap-2 opacity-0 group-hover:opacity-100 transition z-10">
+                      <a href="{% url 'project_edit' project.pk %}"
+                         class="text-xs text-yellow-400 hover:opacity-70">Edit</a>
+                      <span class="h-0 border-b border-gray-600"></span>
+                      <a href="{% url 'project_delete' project.pk %}"
+                         class="text-xs text-red-400 hover:opacity-70">Delete</a>
+                    </div>
+                  {% endif %}
+                  {% if project.image %}
+                    <img src="{{ project.image.url }}"
+                         height="128"
+                         width="100"
+                         alt="project"
+                         class="w-full h-32 object-cover border-b border-gray-700 opacity-80 group-hover:opacity-100 transition">
+                  {% else %}
+                    <div class="w-full h-32 bg-gray-800 flex items-center justify-center rounded-xl border border-b-0 border-gray-700">
+                      <span class="text-gray-600 text-4xl">📁</span>
+                    </div>
+                  {% endif %}
+                  <div class="p-4">
+                    <h4 class="font-bold text-gray-200 mb-1 truncate">{{ project.title }}</h4>
+                    <p class="text-xs text-gray-400 mb-4 line-clamp-2">{{ project.description }}</p>
+                    <div class="flex gap-3 text-sm font-semibold">
+                      {% if project.live_url %}
+                        <a href="{{ project.live_url }}"
+                           target="_blank"
+                           class="text-blue-400 hover:text-blue-300">Live Demo ↗</a>
+                      {% endif %}
+                      {% if project.github_url %}
+                        <a href="{{ project.github_url }}"
+                           target="_blank"
+                           class="text-gray-400 hover:text-white">Source Code</a>
+                      {% endif %}
+                    </div>
                   </div>
                 </div>
-              </div>
-            {% endfor %}
-          </div>
-        {% endif %}
+              {% endfor %}
+            </div>
+          {% else %}
+            <p class="text-sm text-gray-500 italic">No projects uploaded yet.</p>
+          {% endif %}
+        </div>
       </div>
     </div>
     <!-- Posts -->
