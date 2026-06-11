@@ -104,7 +104,7 @@ class ProjectUpdateView(LoginRequiredMixin, UserPassesTestMixin, UpdateView):
 
 class ProjectDeleteView(LoginRequiredMixin, UserPassesTestMixin, DeleteView):
     model = Project
-    template_name = "users/profile/project_confirm_delete.html"
+    template_name = "users/profile/proj_delete.html"
 
     def test_func(self):
         return self.get_object().user == self.request.user
@@ -143,7 +143,7 @@ class ExperienceUpdateView(LoginRequiredMixin, UserPassesTestMixin, UpdateView):
 
 class ExperienceDeleteView(LoginRequiredMixin, UserPassesTestMixin, DeleteView):
     model = Experience
-    template_name = "users/profile/experience_confirm_delete.html"
+    template_name = "users/profile/exp_delete.html"
 
     def test_func(self):
         return self.get_object().user == self.request.user
