@@ -1,0 +1,30 @@
+{% extends "base.html" %}
+{% block title %}
+    Update Tech Stack
+{% endblock title %}
+{% block content %}
+    <div class="max-w-2xl mx-2 sm:mx-auto mt-10">
+        <div class="bg-gray-800 p-8 rounded-xl border border-gray-700 shadow-2xl">
+            <div class="mb-8 border-b border-gray-700 pb-4">
+                <h1 class="text-2xl font-bold text-blue-500">Update Tech Stack</h1>
+                <p class="text-sm text-gray-400 mt-1">List your core technologies. Separate them with commas.</p>
+            </div>
+            <form method="post" class="space-y-5">
+                {% csrf_token %}
+                <div>
+                    <label class="block text-sm font-bold text-gray-300 mb-2">Your Skills</label>
+                    {{ form.skills }}
+                    <p class="text-gray-500 text-xs mt-2">{{ form.skills.help_text }}</p>
+                </div>
+                <div class="flex justify-end gap-3 pt-6 border-t border-gray-700 mt-8">
+                    <a href="{% url 'user_profile' request.user.username %}"
+                       class="px-5 py-2 text-sm text-gray-400 hover:text-white transition font-semibold border border-gray-600 rounded-lg">Cancel</a>
+                    <button type="submit"
+                            class="bg-blue-600 hover:bg-blue-700 text-white px-6 py-2 rounded-lg text-sm font-bold transition">
+                        Update Stack
+                    </button>
+                </div>
+            </form>
+        </div>
+    </div>
+{% endblock content %}

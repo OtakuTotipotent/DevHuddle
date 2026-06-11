@@ -1,15 +1,22 @@
 from django.shortcuts import get_object_or_404
 from django.http import JsonResponse
 from django.contrib.auth.decorators import login_required
-from django.views.generic import CreateView, UpdateView, DeleteView, DetailView
+from django.views.generic import (
+    CreateView,
+    UpdateView,
+    DeleteView,
+    DetailView,
+    FormView,
+)
 from django.contrib.auth.mixins import LoginRequiredMixin, UserPassesTestMixin
 from django.urls import reverse_lazy, reverse
-from .models import CustomUser, Project, Experience
+from .models import CustomUser, Project, Experience, Skill
 from .forms import (
     CustomUserCreationForm,
     CustomUserChangeForm,
     ProjectForm,
     ExperienceForm,
+    SkillUpdateForm,
 )
 
 
@@ -147,6 +154,33 @@ class ExperienceDeleteView(LoginRequiredMixin, UserPassesTestMixin, DeleteView):
 
     def test_func(self):
         return self.get_object().user == self.request.user
+
+    def get_success_url(self):
+        return reverse("user_profile", kwargs={"username": self.request.user.username})
+
+
+# ==========================================
+# USER SKILLS
+# ==========================================
+class SkillUpdateView(LoginRequiredMixin, FormView):
+    template_name = "users/profile/skill_form.html"
+    form_class = SkillUpdateForm
+
+    def get_initial(self):
+        current_skills = self.request.user.skills.all().values_list("name", flat=True)
+        return {"skills": ", ".join(current_skills)}
+
+    def form_valid(self, form):
+        skill_string = form.cleaned_data.get("skills", "")
+        skill_names = [name.strip() for name in skill_string.split(",") if name.strip()]
+        skill_objs = []
+        for name in skill_names:
+            formatted_name = name.title()
+            obj, created = Skill.objects.get_or_create(name=formatted_name)
+            skill_objs.append(obj)
+        self.request.user.skills.set(skill_objs)
+
+        return super().form_valid(form)
 
     def get_success_url(self):
         return reverse("user_profile", kwargs={"username": self.request.user.username})

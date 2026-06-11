@@ -12,6 +12,7 @@ from .views import (
     ExperienceCreateView,
     ExperienceUpdateView,
     ExperienceDeleteView,
+    SkillUpdateView,
 )
 
 
@@ -49,6 +50,11 @@ urlpatterns = [
         "profile/<str:username>/",
         UserProfileView.as_view(),
         name="user_profile",
+    ),
+    path(
+        "profile/skills/edit/",
+        SkillUpdateView.as_view(),
+        name="skill_edit",
     ),
     #
     # Social routes

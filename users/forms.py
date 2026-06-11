@@ -200,3 +200,16 @@ class ExperienceForm(forms.ModelForm):
             )
 
         return cleaned_data
+
+
+class SkillUpdateForm(forms.Form):
+    skills = forms.CharField(
+        widget=forms.TextInput(
+            attrs={
+                "class": "w-full bg-gray-900 text-white rounded-lg p-3 border border-gray-700 focus:border-blue-500 outline-none",
+                "placeholder": "e.g. Python, Django, Docker, ReactJS",
+            }
+        ),
+        help_text="Separate skills with commas. We will format them for you.",
+        required=False,
+    )
