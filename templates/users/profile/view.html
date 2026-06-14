@@ -86,12 +86,12 @@
                 </span>
               {% endfor %}
             </div>
-            {% if user == profile_user %}
-              <a href="{% url 'skill_edit' %}"
-                 class="text-sm bg-gray-600/20 text-blue-400/70 px-3 py-1.5 rounded-md transition font-semibold hover:text-blue-400">✎ Edit Tech Stack</a>
-            {% endif %}
           {% else %}
             <p class="text-sm text-gray-500 italic">No technical skills added yet.</p>
+          {% endif %}
+          {% if user == profile_user %}
+            <a href="{% url 'skill_edit' %}"
+               class="text-sm bg-gray-600/20 text-blue-400/70 px-3 py-1.5 rounded-md transition font-semibold hover:text-blue-400">✎ Edit Tech Stack</a>
           {% endif %}
         </div>
         <!-- Buttons & Actions -->
