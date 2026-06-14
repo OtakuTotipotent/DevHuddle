@@ -45,53 +45,62 @@
             <div class="lg:col-span-3">
                 <div class="grid grid-cols-1 md:grid-cols-3 gap-4 bg-gray-950/20 rounded-xl p-2 md:p-4">
                     {% for dev in developers %}
-                        <div class="rounded-xl border bg-blue-950/20 border-blue-800/50 p-3 flex flex-col items-center text-center shadow-xl hover:border-blue-800 transition group relative overflow-hidden">
-                            <div class="absolute top-0 right-0 bg-green-500/20 text-green-600 text-[11px] font-semibold px-3 py-1 rounded-bl-lg border-b border-l border-green-700/50 cursor-default">
+                        <div class="rounded-xl border bg-blue-950/20 border-blue-800/50 p-3 grid content-between gap-4 hover:border-blue-800 transition group relative overflow-hidden">
+                            {% comment %} *Badge* {% endcomment %}
+                            <div class="absolute top-0 right-0 bg-blue-800/20 text-blue-500 text-[11px] font-semibold px-3 py-1 rounded-bl-lg border-b border-l border-blue-700/50 cursor-default">
                                 Score: {{ dev.dev_score }}
                             </div>
-                            {% comment %} User Avatar {% endcomment %}
-                            <a href="{% url 'user_profile' dev.username %}" class="relative mb-4">
-                                {% if dev.avatar %}
-                                    <img src="{{ dev.avatar.url }}"
-                                         height="80"
-                                         width="80"
-                                         alt="avatar"
-                                         class="w-20 h-20 rounded-full object-cover border-2 border-gray-700/30 group-hover:border-blue-500 transition">
-                                {% else %}
-                                    <div class="w-20 h-20 rounded-full bg-blue-800 flex items-center justify-center font-bold text-gray-400 text-2xl border-2 border-gray-700/30 group-hover:border-blue-500 transition">
-                                        {{ dev.username|slice:":1"|upper }}
-                                    </div>
-                                {% endif %}
-                                <div class="absolute bottom-1 right-1 w-4 h-4 bg-green-500 rounded-full border-2 border-gray-800"></div>
-                            </a>
                             {% comment %} User Info {% endcomment %}
-                            <h2 class="text-lg font-semibold text-gray-400 line-clamp-1">
-                                <a href="{% url 'user_profile' dev.username %}">{{ dev.first_name }} {{ dev.last_name }}</a>
-                            </h2>
-                            <p class="text-sm text-blue-400 mb-3 cursor-default">@{{ dev.username }}</p>
-                            <div class="flex flex-wrap justify-center gap-1 mb-4 overflow-hidden">
+                            <div class="flex flex-col items-center">
+                                {% comment %} User Avatar {% endcomment %}
+                                <a href="{% url 'user_profile' dev.username %}" class="relative">
+                                    {% if dev.avatar %}
+                                        <img src="{{ dev.avatar.url }}"
+                                             height="80"
+                                             width="80"
+                                             alt="avatar"
+                                             class="w-20 h-20 rounded-full object-cover border-2 border-gray-700/30 group-hover:border-blue-500/50 transition">
+                                    {% else %}
+                                        <div class="w-20 h-20 rounded-full bg-blue-800 flex items-center justify-center font-bold text-gray-400 text-2xl border-2 border-gray-700/30 group-hover:border-blue-500/50 transition">
+                                            {{ dev.username|slice:":1"|upper }}
+                                        </div>
+                                    {% endif %}
+                                    <div class="absolute bottom-1 right-1 w-4 h-4 bg-green-500 rounded-full border-2 border-gray-800"></div>
+                                </a>
+                                {% comment %} Username {% endcomment %}
+                                <h2 class="text-lg font-semibold text-gray-400 line-clamp-1">
+                                    <a href="{% url 'user_profile' dev.username %}">{{ dev.first_name }} {{ dev.last_name }}</a>
+                                </h2>
+                                <p class="text-sm text-blue-400 cursor-default">@{{ dev.username }}</p>
+                            </div>
+                            {% comment %} User Skills {% endcomment %}
+                            <div class="flex flex-wrap justify-center items-center gap-2 overflow-hidden">
                                 {% for skill in dev.skills.all|slice:":3" %}
                                     <span class="text-gray-400 border border-gray-700/70 px-2 py-0.5 rounded-full text-xs leading-tight">{{ skill.name }}</span>
                                 {% endfor %}
                                 {% if dev.skills.count > 3 %}
-                                    <span class="text-xs text-gray-500 mt-1">+{{ dev.skills.count|add:"-3" }} more</span>
+                                    <span class="text-xs text-gray-500">+{{ dev.skills.count|add:"-3" }} more</span>
                                 {% endif %}
                             </div>
-                            {% comment %} User Stats {% endcomment %}
-                            <div class="w-full grid grid-cols-2 gap-2 border-t border-gray-700 pt-4 mb-4">
-                                <div>
-                                    <p class="text-xs text-gray-500 uppercase">Projects</p>
-                                    <p class="font-bold text-gray-400">{{ dev.project_count }}</p>
+                            {% comment %} User Stats & Buttons {% endcomment %}
+                            <div class="flex flex-col items-center gap-3 pt-3  border-t border-blue-900">
+                                {% comment %} Stats {% endcomment %}
+                                <div class="w-full grid grid-cols-2 text-center">
+                                    <div>
+                                        <p class="text-xs text-gray-500 uppercase">Projects</p>
+                                        <p class="font-bold text-gray-400">{{ dev.project_count }}</p>
+                                    </div>
+                                    <div>
+                                        <p class="text-xs text-gray-500 uppercase">Followers</p>
+                                        <p class="font-bold text-gray-400">{{ dev.follower_count }}</p>
+                                    </div>
                                 </div>
-                                <div>
-                                    <p class="text-xs text-gray-500 uppercase">Followers</p>
-                                    <p class="font-bold text-gray-400">{{ dev.follower_count }}</p>
-                                </div>
+                                {% comment %} Stats {% endcomment %}
+                                <a href="{% url 'user_profile' dev.username %}"
+                                   class="w-full text-blue-500/70 border border-blue-600/40 hover:border-blue-600/70 hover:text-blue-500 py-1.5 text-center rounded-md text-sm font-semibold transition">
+                                    View Profile
+                                </a>
                             </div>
-                            <a href="{% url 'user_profile' dev.username %}"
-                               class="w-full text-blue-500/70 border border-blue-600/40 hover:border-blue-600/70 hover:text-blue-500 py-2 rounded-md text-sm font-semibold transition">
-                                View Profile
-                            </a>
                         </div>
                     {% empty %}
                         <div class="col-span-full text-center py-20 rounded-xl border border-gray-700">
