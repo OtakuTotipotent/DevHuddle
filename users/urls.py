@@ -13,6 +13,7 @@ from .views import (
     ExperienceUpdateView,
     ExperienceDeleteView,
     SkillUpdateView,
+    DeveloperDirectoryView,
 )
 
 
@@ -55,6 +56,13 @@ urlpatterns = [
         "profile/skills/edit/",
         SkillUpdateView.as_view(),
         name="skill_edit",
+    ),
+    #
+    # Developers on Search
+    path(
+        "developers/",
+        DeveloperDirectoryView.as_view(),
+        name="developer_directory",
     ),
     #
     # Social routes

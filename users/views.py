@@ -1,16 +1,28 @@
 from django.shortcuts import get_object_or_404
 from django.http import JsonResponse
 from django.contrib.auth.decorators import login_required
+from django.db.models import (
+    Count,
+    F,
+    ExpressionWrapper,
+    IntegerField,
+)
 from django.views.generic import (
     CreateView,
     UpdateView,
     DeleteView,
     DetailView,
     FormView,
+    ListView,
 )
 from django.contrib.auth.mixins import LoginRequiredMixin, UserPassesTestMixin
 from django.urls import reverse_lazy, reverse
-from .models import CustomUser, Project, Experience, Skill
+from .models import (
+    CustomUser,
+    Project,
+    Experience,
+    Skill,
+)
 from .forms import (
     CustomUserCreationForm,
     CustomUserChangeForm,
@@ -184,3 +196,53 @@ class SkillUpdateView(LoginRequiredMixin, FormView):
 
     def get_success_url(self):
         return reverse("user_profile", kwargs={"username": self.request.user.username})
+
+
+# ==========================================
+# THE DISCOVERY ENGINE (DEVELOPER DIRECTORY)
+# ==========================================
+class DeveloperDirectoryView(LoginRequiredMixin, ListView):
+    model = CustomUser
+    template_name = "pages/developers.html"
+    context_object_name = "developers"
+    paginate_by = 12
+
+    def get_queryset(self):
+        # Base Query: Only show Developers (hide clients/orgs from this specific list)
+        queryset = CustomUser.objects.filter(role="dev")
+
+        # Filter by Skill (if requested via URL ?skill=Python)
+        skill_filter = self.request.GET.get("skill")
+        if skill_filter:
+            queryset = queryset.filter(skills__name__iexact=skill_filter)
+
+        # The Ranking Algorithm (Calculated at the Database level)
+        queryset = (
+            queryset.annotate(
+                follower_count=Count("followers", distinct=True),
+                project_count=Count("projects", distinct=True),
+            )
+            .annotate(
+                dev_score=ExpressionWrapper(
+                    (F("follower_count") * 5) + (F("project_count") * 10),
+                    output_field=IntegerField(),
+                )
+            )
+            .order_by("-dev_score", "-date_joined")
+        )
+
+        # Prefetch skills to prevent N+1 queries in the template
+        return queryset.prefetch_related("skills")
+
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        # Pass top 15 most popular skills to the template for the filter sidebar
+        context["popular_skills"] = (
+            Skill.objects.annotate(user_count=Count("users"))
+            .filter(user_count__gt=0)
+            .order_by("-user_count")[:15]
+        )
+
+        # Pass the current filter to highlight the active tab
+        context["current_skill"] = self.request.GET.get("skill", "")
+        return context
