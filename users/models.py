@@ -58,7 +58,14 @@ class CustomUser(AbstractUser):
         related_name="followers",
         blank=True,
     )
-
+    is_premium = models.BooleanField(
+        default=False,
+        help_text="Active Premium Subscription",
+    )
+    profile_boosts = models.IntegerField(
+        default=0,
+        help_text="Number of profile boosts purchased",
+    )
     avatar = models.ImageField(
         blank=True,
         null=True,

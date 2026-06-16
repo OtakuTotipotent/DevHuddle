@@ -6,6 +6,8 @@ from django.db.models import (
     F,
     ExpressionWrapper,
     IntegerField,
+    Case,
+    When,
 )
 from django.views.generic import (
     CreateView,
@@ -216,15 +218,25 @@ class DeveloperDirectoryView(LoginRequiredMixin, ListView):
         if skill_filter:
             queryset = queryset.filter(skills__name__iexact=skill_filter)
 
-        # The Ranking Algorithm (Calculated at the Database level)
+        # The Ranking Algorithm
         queryset = (
             queryset.annotate(
                 follower_count=Count("followers", distinct=True),
                 project_count=Count("projects", distinct=True),
             )
             .annotate(
+                premium_bonus=Case(
+                    When(is_premium=True, then=20),
+                    default=0,
+                    output_field=IntegerField(),
+                )
+            )
+            .annotate(
                 dev_score=ExpressionWrapper(
-                    (F("follower_count") * 5) + (F("project_count") * 10),
+                    (F("follower_count") * 2)
+                    + (F("project_count") * 3)
+                    + (F("profile_boosts") * 7)
+                    + F("premium_bonus"),
                     output_field=IntegerField(),
                 )
             )
@@ -237,10 +249,11 @@ class DeveloperDirectoryView(LoginRequiredMixin, ListView):
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
         # Pass top 15 most popular skills to the template for the filter sidebar
+        context = super().get_context_data(**kwargs)
         context["popular_skills"] = (
             Skill.objects.annotate(user_count=Count("users"))
             .filter(user_count__gt=0)
-            .order_by("-user_count")[:15]
+            .order_by("-user_count")[:10]
         )
 
         # Pass the current filter to highlight the active tab
