@@ -49,9 +49,13 @@
                     {% for dev in developers %}
                         <div class="rounded-xl border bg-blue-950/20 border-blue-800/50 p-3 grid content-between gap-4 hover:border-blue-800 transition group relative overflow-hidden">
                             {% comment %} *Badge* {% endcomment %}
-                            <div class="absolute top-0 right-0 bg-blue-800/20 text-blue-500 text-[11px] font-semibold px-3 py-1 rounded-bl-lg border-b border-l border-blue-700/50 cursor-default">
+                            <div class="absolute top-0 right-0 bg-blue-800/20 text-blue-500 text-xs font-semibold px-3 py-1 rounded-bl-lg border-b border-l border-blue-700/50 cursor-default">
                                 Score: {{ dev.dev_score }}
                             </div>
+                            {% if dev.is_premium %}
+                                <div class="absolute top-0 left-0 bg-blue-800/20 text-blue-500 text-xs font-semibold px-3 py-1 rounded-br-lg border-r border-b border-blue-700/50 cursor-default"
+                                     title="Premium Developer">⚡ PRO</div>
+                            {% endif %}
                             {% comment %} User Info {% endcomment %}
                             <div class="flex flex-col items-center">
                                 {% comment %} User Avatar {% endcomment %}
