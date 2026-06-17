@@ -74,13 +74,15 @@
                                     <div class="absolute bottom-1 right-1 w-4 h-4 bg-green-500 rounded-full border-2 border-gray-800"></div>
                                 </a>
                                 {% comment %} Username {% endcomment %}
-                                <h2 class="text-lg font-semibold text-gray-400 line-clamp-1">
-                                    <a href="{% url 'user_profile' dev.username %}">{{ dev.first_name }} {{ dev.last_name }}</a>
+                                <h2 class="text-lg font-semibold text-gray-400 line-clamp-1 cursor-default">
+                                    {{ dev.first_name }} {{ dev.last_name }}
                                 </h2>
-                                <p class="text-sm text-blue-400 cursor-default">@{{ dev.username }}</p>
+                                <p class="text-sm text-blue-400">
+                                    <a href="{% url 'user_profile' dev.username %}">@{{ dev.username }}</a>
+                                </p>
                             </div>
                             {% comment %} User Skills {% endcomment %}
-                            <div class="flex flex-wrap justify-center items-center gap-2 overflow-hidden">
+                            <div class="flex flex-wrap justify-center items-center gap-2 overflow-hidden cursor-default">
                                 {% for skill in dev.skills.all|slice:":3" %}
                                     <span class="text-gray-400 border border-gray-700/70 px-2 py-0.5 rounded-full text-xs leading-tight">{{ skill.name }}</span>
                                 {% endfor %}
@@ -89,7 +91,7 @@
                                 {% endif %}
                             </div>
                             {% comment %} User Stats & Buttons {% endcomment %}
-                            <div class="flex flex-col items-center gap-3 pt-3  border-t border-blue-900">
+                            <div class="flex flex-col items-center gap-3 pt-3  border-t border-blue-900 cursor-default">
                                 {% comment %} Stats {% endcomment %}
                                 <div class="w-full grid grid-cols-2 text-center">
                                     <div>
