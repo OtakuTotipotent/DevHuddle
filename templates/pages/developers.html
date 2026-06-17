@@ -93,14 +93,18 @@
                             {% comment %} User Stats & Buttons {% endcomment %}
                             <div class="flex flex-col items-center gap-3 pt-3  border-t border-blue-900 cursor-default">
                                 {% comment %} Stats {% endcomment %}
-                                <div class="w-full grid grid-cols-2 text-center">
+                                <div class="w-full grid grid-cols-3 text-center">
                                     <div>
-                                        <p class="text-xs text-gray-500 uppercase">Projects</p>
+                                        <p class="text-xs text-gray-400">Projects</p>
                                         <p class="font-bold text-gray-400">{{ dev.project_count }}</p>
                                     </div>
                                     <div>
-                                        <p class="text-xs text-gray-500 uppercase">Followers</p>
+                                        <p class="text-xs text-gray-400">Followers</p>
                                         <p class="font-bold text-gray-400">{{ dev.follower_count }}</p>
+                                    </div>
+                                    <div>
+                                        <p class="text-xs text-gray-400">Boosts</p>
+                                        <p class="font-bold text-gray-400">{{ dev.profile_boosts }}</p>
                                     </div>
                                 </div>
                                 {% comment %} Stats {% endcomment %}
