@@ -1,3 +1,5 @@
+# /feed/views.py
+
 from django.views.generic import (
     ListView,
     TemplateView,

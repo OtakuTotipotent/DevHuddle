@@ -1,4 +1,4 @@
-# DevHuddle/users/forms.py
+# /users/forms.py
 from django.contrib.auth.forms import UserCreationForm, UserChangeForm
 from .models import CustomUser, Skill, Project, Experience
 from django import forms
