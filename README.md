@@ -55,6 +55,7 @@ npx @tailwindcss/cli -i ./static/css/custom.css -o ./static/css/output.css --wat
 - Add favicon
 - Add user guides for DevHuddle
 - Apply SEO
+- Add 'about', 'help & support', 'Jobs & Clients' page links into footer
 
 ## Improvements \& Suggestions
 
