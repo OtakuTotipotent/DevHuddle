@@ -47,8 +47,8 @@
                             <a href="{% url 'profile_edit' %}"
                                class="text-xs px-4 py-2 rounded-full transition border {{ notification.theme.border }} {{ notification.theme.text }} hover:opacity-80">Setup Profile</a>
                         {% elif notification.verb == 'premium' %}
-                            <a href="#"
-                               class="text-xs px-4 py-2 rounded-full transition border {{ notification.theme.border }} {{ notification.theme.text }} hover:opacity-80">Go Premium</a>
+                            <a href="{% url 'store' %}"
+                               class="text-xs px-4 py-2 rounded-full transition border {{ notification.theme.border }} {{ notification.theme.text }} hover:opacity-80">Checkout</a>
                         {% elif notification.post %}
                             {% if notification.post.image %}
                                 <a href="{% url 'post_detail' notification.post.pk %}">

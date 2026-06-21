@@ -127,7 +127,7 @@ class Notification(models.Model):
 
     VERB_CHOICES = (
         ("welcome", "Welcome! You can now update your profile in settings"),
-        ("premium", "Upgrade to Premium for exclusive tools & opportunities!"),
+        ("premium", "Congrats on activating Premium profile!"),
         ("congrats", "Congrats! You are ranking among the top members"),
         ("beware", "Beware! Your are demoting from your higher ranking"),
         ("alert", "Alert! System is under maintenance. Please be patient"),
@@ -200,10 +200,10 @@ class Notification(models.Model):
             "delete": "danger",
             "reject": "danger",
             # brand
-            "premium": "brand",
             "boost": "brand",
             "welcome": "brand",
             # success
+            "premium": "success",
             "congrats": "success",
             "hire": "success",
             "accept": "success",
