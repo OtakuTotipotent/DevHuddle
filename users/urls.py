@@ -16,6 +16,8 @@ from .views import (
     ExperienceDeleteView,
     SkillUpdateView,
     DeveloperDirectoryView,
+    StoreView,
+    MockCheckoutView,
 )
 
 
@@ -107,4 +109,8 @@ urlpatterns = [
         ExperienceDeleteView.as_view(),
         name="experience_delete",
     ),
+    #
+    # Monetization
+    path("store/", StoreView.as_view(), name="store"),
+    path("store/checkout/", MockCheckoutView.as_view(), name="checkout"),
 ]

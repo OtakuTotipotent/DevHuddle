@@ -1,8 +1,12 @@
 # /users/views.py
 
-from django.shortcuts import get_object_or_404
+from django.views import View
+from django.contrib import messages
 from django.http import JsonResponse
+from django.urls import reverse_lazy, reverse
+from django.shortcuts import get_object_or_404, redirect
 from django.contrib.auth.decorators import login_required
+from django.contrib.auth.mixins import LoginRequiredMixin, UserPassesTestMixin
 from django.db.models import (
     Count,
     F,
@@ -18,9 +22,9 @@ from django.views.generic import (
     DetailView,
     FormView,
     ListView,
+    TemplateView,
 )
-from django.contrib.auth.mixins import LoginRequiredMixin, UserPassesTestMixin
-from django.urls import reverse_lazy, reverse
+from feed.models import Notification
 from .models import (
     CustomUser,
     Project,
@@ -261,3 +265,52 @@ class DeveloperDirectoryView(LoginRequiredMixin, ListView):
         # Pass the current filter to highlight the active tab
         context["current_skill"] = self.request.GET.get("skill", "")
         return context
+
+
+# ==========================================
+# THE MONETIZATION STOREFRONT
+# ==========================================
+class StoreView(LoginRequiredMixin, TemplateView):
+    template_name = "pages/store.html"
+
+
+class MockCheckoutView(LoginRequiredMixin, View):
+    def post(self, request, *args, **kwargs):
+        item = request.POST.get("item")
+        user = request.user
+
+        # Premium Subscription
+        if item == "premium":
+            if user.is_premium:
+                messages.warning(
+                    request, "You already have an active Premium subscription."
+                )
+            else:
+                user.is_premium = True
+                user.save()
+                messages.success(
+                    request, "Welcome to DevHuddle Pro! Your crown has been equipped."
+                )
+                Notification.objects.create(recipient=user, actor=user, verb="premium")
+
+        # Single Profile Boost
+        elif item == "boost_1":
+            user.profile_boosts += 1
+            user.save()
+            messages.success(request, "One boost added overall.")
+            Notification.objects.create(recipient=user, actor=user, verb="boost")
+
+        # Five Profile Boosts (Bundle)
+        elif item == "boost_5":
+            user.profile_boosts += 5
+            user.save()
+            messages.success(
+                request,
+                "Five boosts added overall.",
+            )
+            Notification.objects.create(recipient=user, actor=user, verb="boost")
+
+        else:
+            messages.error(request, "Invalid item selected.")
+
+        return redirect("user_profile", username=user.username)
