@@ -52,6 +52,9 @@ npx @tailwindcss/cli -i ./static/css/custom.css -o ./static/css/output.css --wat
 ## Major Fixes
 
 - On same web browser, logging in/out should not interfere with each other for multiple tabs.
+- Add favicon
+- Add user guides for DevHuddle
+- Apply SEO
 
 ## Improvements \& Suggestions
 
