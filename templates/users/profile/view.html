@@ -176,9 +176,9 @@
           <div class="text-center">
             <span class="block text-lg font-semibold">
               {% if profile_user.profile_boosts > 0 %}
-                ⚡ {{ profile_user.profile_boosts }}
+                {{ profile_user.profile_boosts }}
               {% else %}
-                1
+                0
               {% endif %}
             </span>
             <span class="text-xs tracking-wide">Boosts</span>
