@@ -1,4 +1,4 @@
-<div class="hidden md:flex items-center gap-6">
+<div class="hidden md:flex items-center gap-4">
    <!-- USER PROFILE ICON -->
    {% if user.is_authenticated %}
       <a href="{% url 'home' %}"
@@ -6,7 +6,7 @@
       <a href="{% url 'developer_directory' %}"
          class="text-gray-400 hover:text-blue-500 transition">Devs</a>
       <a href="{% url 'home' %}"
-         class="text-gray-400 hover:text-blue-500 transition">Trends</a>
+         class="text-gray-400 hover:text-blue-500 transition">Inbox</a>
    {% else %}
       <a href="{% url 'about' %}"
          class="text-gray-100 hover:text-blue-500 transition">About</a>
