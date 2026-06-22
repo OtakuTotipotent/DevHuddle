@@ -47,24 +47,45 @@ def like_post(request, pk):
 
 @login_required
 def search_results(request):
-    query = request.GET.get("q")
+    query = request.GET.get("q", "").strip()
 
     users = []
-    posts = []
+    huddles = []
+    jobs = []
 
     if query:
-        users = CustomUser.objects.filter(
-            Q(username__icontains=query)
-            | Q(first_name__icontains=query)
-            | Q(last_name__icontains=query)
-            | Q(tech_stack__icontains=query)
-            | Q(bio__icontains=query)
-        ).distinct()
+        users = (
+            CustomUser.objects.annotate(
+                follower_count=Count("followers", distinct=True)
+            )
+            .filter(
+                Q(username__icontains=query)
+                | Q(first_name__icontains=query)
+                | Q(last_name__icontains=query)
+                | Q(bio__icontains=query)
+                | Q(skills__name__icontains=query)
+            )
+            .distinct()
+            .order_by("-follower_count")[:10]
+        )
 
-        posts = Post.objects.filter(Q(body__icontains=query)).order_by("-created_at")
+        base_posts = (
+            Post.objects.filter(Q(body__icontains=query) | Q(tags__icontains=query))
+            .select_related("author")
+            .annotate(like_count=Count("likes", distinct=True))
+        )
 
-    context = {"query": query, "users": users, "posts": posts}
+        huddles = base_posts.filter(post_type="huddle").order_by(
+            "-like_count", "-created_at"
+        )[:15]
+        jobs = base_posts.filter(post_type="job").order_by("-created_at")[:10]
 
+    context = {
+        "query": query,
+        "users": users,
+        "huddles": huddles,
+        "jobs": jobs,
+    }
     return render(request, "pages/search_results.html", context)
 
 
