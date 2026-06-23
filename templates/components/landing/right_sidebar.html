@@ -1,48 +1,57 @@
-<!-- RIGHT: TRENDING ACCOUNTS + AI-CHAT-SECTION -->
-<div class="hidden lg:block col-span-1 bg-gray-800/60 border border-gray-700 h-fit p-4 shadow-sm rounded-xl overflow-hidden mt-4">
-  <h3 class="flex gap-4 items-center mb-2 border-b pb-2 border-gray-700">
-    <span class="font-semibold text-blue-500">Popular Devs</span>
-    <span class="text-[10px] bg-gray-900/50 text-green-400 py-1 px-2 rounded-full">Recommended</span>
+<div class="hidden lg:block col-span-1 bg-gray-800/50 border border-gray-700 h-fit p-4 shadow-sm rounded-xl mt-4">
+  <h3 class="flex gap-4 items-center mb-3 border-b pb-2 border-gray-700">
+    <span class="font-semibold text-blue-500">Leaderboard</span>
+    <span class="text-[10px] bg-gray-900/80 text-green-400 py-1 px-2 rounded-full">Recommended</span>
   </h3>
   <div class="space-y-4">
-    {% for suggestion in who_to_follow %}
-      <div class="flex gap-y-2 items-center justify-between">
-        <div class="flex items-center justify-center gap-2 flex-wrap">
-          {% if suggestion.avatar %}
-            <img src="{{ suggestion.avatar.url }}"
-                 alt="@{{ suggestion.username }}"
-                 width="28"
-                 height="28"
-                 class="w-7 h-7 rounded-full object-cover" />
-          {% else %}
-            <div class="w-7 h-7 rounded-full bg-gray-900 flex items-center justify-center font-bold text-blue-500 text-xs">
-              {{ suggestion.username|slice:':1'|upper }}
+    {% for dev in who_to_follow %}
+      <div class="flex items-center justify-between group">
+        <div class="flex items-center gap-3 overflow-hidden pr-2">
+          <a href="{% url 'user_profile' dev.username %}"
+             class="shrink-0 relative">
+            {% if dev.avatar %}
+              <img src="{{ dev.avatar.url }}"
+                   height="40"
+                   width="40"
+                   alt="avatar"
+                   class="w-10 h-10 rounded-full object-cover border-2 {% if dev.is_premium %}border-yellow-500{% else %}border-gray-600{% endif %} transition group-hover:scale-105" />
+            {% else %}
+              <div class="w-10 h-10 rounded-full flex items-center justify-center font-bold text-white text-lg border-2 {% if dev.is_premium %}border-yellow-500 bg-linear-to-br from-yellow-600 to-yellow-500 text-black{% else %}border-gray-600 bg-blue-600{% endif %} transition group-hover:scale-105">
+                {{ dev.username|slice:':1'|upper }}
+              </div>
+            {% endif %}
+            {% if dev.is_premium %}
+              <div class="absolute -bottom-1 -right-1 bg-gray-900 rounded-full p-0.5 shadow-lg">
+                <span class="text-[10px] leading-none block">👑</span>
+              </div>
+            {% endif %}
+          </a>
+          <div class="flex flex-col overflow-hidden">
+            <a href="{% url 'user_profile' dev.username %}"
+               class="font-semibold text-sm text-gray-400 hover:text-blue-400 truncate transition">
+              {{ dev.first_name|default:dev.username }}
+            </a>
+            <div class="flex items-center gap-1.5 mt-0.5 text-[10px] font-mono">
+              <span class="text-blue-400 font-bold bg-blue-900/30 px-1 rounded border border-blue-800/50">Score: {{ dev.dev_score }}</span>
+              {% if dev.profile_boosts > 0 %}
+                <span class="text-orange-400 font-bold bg-orange-900/30 px-2 text-center rounded border border-orange-800/50">⚡{{ dev.profile_boosts }}</span>
+              {% endif %}
             </div>
-          {% endif %}
-          <div class="overflow-hidden">
-            <a href="{% url 'user_profile' suggestion.username %}"
-               class="block font-semibold text-xs text-gray-400 hover:text-blue-500 truncate w-24">@{{ suggestion.username }}</a>
-            <p class="text-[10px] text-blue-500 truncate w-24">{{ suggestion.tech_stack|default:'Developer' }}</p>
           </div>
-          <!-- Rating: on basis of performance -->
-          <div class="text-xs text-yellow-400">⭐5</div>
-          <!-- Rating: on basics of public boosts -->
-          <div class="text-xs text-orange-500">⚡3</div>
         </div>
-        <a href="{% url 'user_profile' suggestion.username %}"
-           class="text-xs border border-gray-700 text-blue-500 hover:bg-gray-900 hover:text-gray-400 px-2 py-1 rounded-full transition">View</a>
+        <a href="{% url 'user_profile' dev.username %}"
+           class="shrink-0 text-xs font-bold border border-blue-700 text-blue-500 hover:bg-gray-700 px-3 py-1.5 rounded-full transition shadow-sm">
+          View
+        </a>
       </div>
     {% empty %}
-      <p class="text-xs text-blue-500 italic">No suggestions right now.</p>
+      <div class="text-center py-4">
+        <p class="text-xs text-gray-500 italic mb-2">No popular developers yet...</p>
+      </div>
     {% endfor %}
   </div>
-  <!-- TODO: the show more is buggy; it does not show more users on next page -->
-  <div class="flex items-center justify-between gap-2 mt-4 pt-2 border-t border-gray-700 flex-wrap">
-    <a href="{% url 'search' %}"
-       class="text-xs text-blue-500 hover:underline">Show more</a>
-    <div class="flex items-center gap-4 text-xs flex-wrap">
-      <span class="text-yellow-400">Rating ⭐</span>
-      <span class="text-orange-500">Boosting ⚡</span>
-    </div>
+  <div class="flex items-center justify-center mt-5 pt-3 border-t border-gray-700">
+    <a href="{% url 'developer_directory' %}"
+       class="text-xs font-bold text-blue-500 hover:text-blue-400 hover:underline transition">View Full Directory →</a>
   </div>
 </div>
