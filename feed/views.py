@@ -9,7 +9,7 @@ from django.views.generic import (
     DetailView,
 )
 from django.contrib.auth.mixins import LoginRequiredMixin, UserPassesTestMixin
-from django.db.models import Q, Count, ExpressionWrapper, IntegerField, F
+from django.db.models import Q, F, Count, ExpressionWrapper, IntegerField, Case, When
 from django.shortcuts import get_object_or_404, render, redirect
 from django.contrib.auth.decorators import login_required
 from django.contrib import messages
@@ -17,7 +17,7 @@ from django.views.generic.edit import FormMixin
 from django.urls import reverse, reverse_lazy
 from django.http import JsonResponse
 from django.views import View
-from users.models import CustomUser
+from users.models import CustomUser, Project
 from .models import Comment, Post, Notification, Proposal
 from .forms import PostForm, CommentForm, ProposalForm
 
@@ -144,16 +144,48 @@ class HomePageView(ListView):
         current_feed = self.request.GET.get("feed", "fellows")
         context["current_feed"] = current_feed
 
+        # LEFT SIDEBAR: Available Jobs
+        context["sidebar_jobs"] = (
+            Post.objects.filter(post_type="job")
+            .select_related("author")
+            .order_by("-created_at")[:5]
+        )
+
+        # LEFT SIDEBAR: Explore Projects
+        context["sidebar_projects"] = (
+            Project.objects.select_related("user")
+            .prefetch_related("user__skills")
+            .order_by("-created_at")[:4]
+        )
+
+        # RIGHT SIDEBAR: Popular Developers
         if self.request.user.is_authenticated:
             my_following = self.request.user.following.values_list("id", flat=True)
             context["who_to_follow"] = (
                 CustomUser.objects.exclude(id__in=my_following)
+                .annotate(
+                    follower_count=Count("followers", distinct=True),
+                    project_count=Count("projects", distinct=True),
+                    premium_bonus=Case(
+                        When(is_premium=True, then=50),
+                        default=0,
+                        output_field=IntegerField(),
+                    ),
+                )
+                .annotate(
+                    dev_score=ExpressionWrapper(
+                        (F("follower_count") * 2)
+                        + (F("project_count") * 3)
+                        + (F("profile_boosts") * 7)
+                        + F("premium_bonus"),
+                        output_field=IntegerField(),
+                    )
+                )
                 .exclude(id=self.request.user.id)
-                .annotate(follower_count=Count("followers"))
-                .order_by("-follower_count")[:10]
+                .order_by("-dev_score", "-date_joined")[:5]
             )
 
-            return context
+        return context
 
 
 class AboutPageView(TemplateView):
