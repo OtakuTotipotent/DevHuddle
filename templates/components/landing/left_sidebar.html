@@ -5,23 +5,22 @@
       <span class="font-semibold text-blue-500">Available Jobs</span>
       <span class="text-[10px] bg-gray-900/80 text-green-400 py-1 px-2 rounded-full">Recommended</span>
     </h3>
-    <ul class="flex flex-col gap-1 text-sm">
+    <ul class="flex flex-col gap-0.5 text-sm">
       {% for job in sidebar_jobs %}
         <li>
           <a href="{% url 'post_detail' job.pk %}"
-             class="flex flex-col gap-1 px-2 py-1 rounded-sm truncate text-gray-400 hover:text-blue-500 bg-gray-900">
+             class="flex flex-col gap-0.5 px-2 py-1 rounded-sm truncate text-gray-400 hover:text-blue-500 bg-gray-900">
             <div class="truncate">{{ job.body }}</div>
-            <div class="truncate text-xs flex gap-1">
-              {% if job.tags %}
-                <span class="px-1 py-0.5 rounded bg-gray-900/50 text-blue-500">{{ job.tags }}</span>
-              {% else %}
-                <span class="px-1 py-0.5 rounded bg-gray-900/50 text-blue-500">No tags attached</span>
-              {% endif %}
-            </div>
+            {% if job.tags %}
+              <span class="px-1 py-0.5 text-blue-500 truncate">{{ job.tags }}</span>
+            {% else %}
+              <span class="px-1 py-0.5 text-blue-500">No tags attached</span>
+            {% endif %}
           </a>
         </li>
+        {% if not forloop.last %}<div class="h-px bg-gray-700/50 my-1 mx-2"></div>{% endif %}
       {% empty %}
-        <p class="text-xs text-gray-500 italic p-2">No jobs available right now.</p>
+        <p class="text-xs text-gray-400 italic p-2">No jobs available right now.</p>
       {% endfor %}
     </ul>
   </div>
@@ -31,21 +30,21 @@
       <span class="font-semibold text-blue-500">Explore Projects</span>
       <span class="text-[10px] bg-gray-900/50 text-green-400 py-1 px-2 rounded-full">Recommended</span>
     </h3>
-    <ul class="flex flex-col text-sm">
-      <li>
-        <a href="#"
-           class="flex flex-col gap-1 px-2 py-1 rounded-lg truncate text-gray-400 hover:text-blue-500 hover:bg-gray-900">
-          <div class="truncate">DevHuddle_ Open Source Project for Experts</div>
-          <div class="truncate text-xs flex gap-1.5">
-            <span class="px-1 py-0.5 rounded bg-gray-900/50 text-blue-500">Typescript</span>
-            <span class="px-1 py-0.5 rounded bg-gray-900/50 text-blue-500">React</span>
-            <span class="px-1 py-0.5 rounded bg-gray-900/50 text-blue-500">JS</span>
-            <span class="px-1 py-0.5 rounded bg-gray-900/50 text-blue-500">HTML/CSS</span>
-            <span class="px-1 py-0.5 rounded bg-gray-900/50 text-blue-500">Django</span>
-          </div>
-        </a>
-      </li>
-      <div class="h-px bg-gray-700 my-1"></div>
+    <ul class="flex flex-col gap-0.5 text-sm">
+      {% for project in sidebar_projects %}
+        <li>
+          <a href="{% url 'user_profile' project.user.username %}"
+             class="flex flex-col gap-1 px-2 py-1 rounded-lg truncate text-gray-400 hover:text-blue-500 bg-gray-900">
+            <div class="truncate">{{ project.title }}</div>
+            <div class="truncate flex gap-1">
+              {% for skill in project.user.skills.all %}<span class="px-1 py-0.5 text-blue-500">{{ skill.name }}</span>{% endfor %}
+            </div>
+          </a>
+        </li>
+        {% if not forloop.last %}<div class="h-px bg-gray-700/50 my-1 mx-2"></div>{% endif %}
+      {% empty %}
+        <p class="text-xs text-gray-400 italic p-2">No projects uploaded yet.</p>
+      {% endfor %}
     </ul>
   </div>
 </div>
