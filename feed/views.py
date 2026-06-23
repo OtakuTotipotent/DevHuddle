@@ -160,10 +160,8 @@ class HomePageView(ListView):
 
         # RIGHT SIDEBAR: Popular Developers
         if self.request.user.is_authenticated:
-            my_following = self.request.user.following.values_list("id", flat=True)
             context["who_to_follow"] = (
-                CustomUser.objects.exclude(id__in=my_following)
-                .annotate(
+                CustomUser.objects.annotate(
                     follower_count=Count("followers", distinct=True),
                     project_count=Count("projects", distinct=True),
                     premium_bonus=Case(
@@ -181,7 +179,6 @@ class HomePageView(ListView):
                         output_field=IntegerField(),
                     )
                 )
-                .exclude(id=self.request.user.id)
                 .order_by("-dev_score", "-date_joined")[:5]
             )
 
