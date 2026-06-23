@@ -179,7 +179,7 @@ class HomePageView(ListView):
                         output_field=IntegerField(),
                     )
                 )
-                .order_by("-dev_score", "-date_joined")[:5]
+                .order_by("-dev_score", "-date_joined")[:10]
             )
 
         return context
