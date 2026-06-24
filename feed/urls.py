@@ -17,29 +17,95 @@ from .views import (
     like_post,
     PostDetailView,
     search_results,
+    InboxView,
+    ChatThreadView,
 )
 
 
 urlpatterns = [
-    path("", HomePageView.as_view(), name="home"),
-    path("about/", AboutPageView.as_view(), name="about"),
-    path("post/new/", PostCreateView.as_view(), name="post_new"),
-    path("post/<int:pk>/edit/", PostUpdateView.as_view(), name="post_edit"),
-    path("post/<int:pk>/delete/", PostDeleteView.as_view(), name="post_delete"),
-    path("post/like/<int:pk>/", like_post, name="like_post"),
-    path("post/<int:pk>/", PostDetailView.as_view(), name="post_detail"),
-    path("search/", search_results, name="search"),
-    path("notifications/", NotificationListView.as_view(), name="notifications"),
-    path("comment/<int:pk>/edit/", CommentUpdateView.as_view(), name="comment_edit"),
     path(
-        "comment/<int:pk>/delete/", CommentDeleteView.as_view(), name="comment_delete"
+        "",
+        HomePageView.as_view(),
+        name="home",
     ),
-    path("job/<int:pk>/apply/", ProposalCreateView.as_view(), name="apply_job"),
-    path("dashboard/client/", ClientDashboardView.as_view(), name="client_dashboard"),
+    path(
+        "about/",
+        AboutPageView.as_view(),
+        name="about",
+    ),
+    path(
+        "post/new/",
+        PostCreateView.as_view(),
+        name="post_new",
+    ),
+    path(
+        "post/<int:pk>/edit/",
+        PostUpdateView.as_view(),
+        name="post_edit",
+    ),
+    path(
+        "post/<int:pk>/delete/",
+        PostDeleteView.as_view(),
+        name="post_delete",
+    ),
+    path(
+        "post/<int:pk>/",
+        PostDetailView.as_view(),
+        name="post_detail",
+    ),
+    path(
+        "post/like/<int:pk>/",
+        like_post,
+        name="like_post",
+    ),
+    path(
+        "comment/<int:pk>/edit/",
+        CommentUpdateView.as_view(),
+        name="comment_edit",
+    ),
+    path(
+        "comment/<int:pk>/delete/",
+        CommentDeleteView.as_view(),
+        name="comment_delete",
+    ),
+    path(
+        "search/",
+        search_results,
+        name="search",
+    ),
+    path(
+        "notifications/",
+        NotificationListView.as_view(),
+        name="notifications",
+    ),
+    path(
+        "job/<int:pk>/apply/",
+        ProposalCreateView.as_view(),
+        name="apply_job",
+    ),
     path(
         "proposal/<int:pk>/<str:action>/",
         ProposalActionView.as_view(),
         name="proposal_action",
     ),
-    path("dashboard/dev/", DeveloperDashboardView.as_view(), name="dev_dashboard"),
+    path(
+        "dashboard/client/",
+        ClientDashboardView.as_view(),
+        name="client_dashboard",
+    ),
+    path(
+        "dashboard/dev/",
+        DeveloperDashboardView.as_view(),
+        name="dev_dashboard",
+    ),
+    path(
+        "inbox/",
+        InboxView.as_view(),
+        name="inbox",
+    ),
+    path(
+        "inbox/<str:username>/",
+        ChatThreadView.as_view(),
+        name="chat_thread",
+    ),
 ]

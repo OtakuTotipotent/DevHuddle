@@ -18,7 +18,7 @@ from django.urls import reverse, reverse_lazy
 from django.http import JsonResponse
 from django.views import View
 from users.models import CustomUser, Project
-from .models import Comment, Post, Notification, Proposal
+from .models import Comment, Post, Notification, Proposal, Message
 from .forms import PostForm, CommentForm, ProposalForm
 
 
@@ -451,3 +451,72 @@ class NotificationListView(LoginRequiredMixin, ListView):
         context = super().get_context_data(**kwargs)
         context["just_read_ids"] = self.just_read_ids
         return context
+
+
+# ==========================================
+# Messaging System
+# ==========================================
+
+
+class InboxView(LoginRequiredMixin, TemplateView):
+    template_name = "pages/inbox.html"
+
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        user = self.request.user
+
+        all_messages = (
+            Message.objects.filter(Q(sender=user) | Q(recipient=user))
+            .order_by("-created_at")
+            .select_related("sender", "recipient")
+        )
+
+        conversations = []
+        seen_users = set()
+
+        for msg in all_messages:
+            contact = msg.recipient if msg.sender == user else msg.sender
+            if contact not in seen_users:
+                seen_users.add(contact)
+                conversations.append(
+                    {
+                        "contact": contact,
+                        "last_message": msg,
+                        "unread": not msg.is_read and msg.recipient == user,
+                    }
+                )
+
+        context["conversations"] = conversations
+        return context
+
+
+class ChatThreadView(LoginRequiredMixin, View):
+    def get(self, request, username):
+        contact = get_object_or_404(CustomUser, username=username)
+
+        Message.objects.filter(
+            sender=contact, recipient=request.user, is_read=False
+        ).update(is_read=True)
+
+        messages = Message.objects.filter(
+            Q(sender=request.user, recipient=contact)
+            | Q(sender=contact, recipient=request.user)
+        ).order_by("created_at")
+
+        return render(
+            request,
+            "pages/chat_thread.html",
+            {"contact": contact, "messages": messages},
+        )
+
+    def post(self, request, username):
+        contact = get_object_or_404(CustomUser, username=username)
+        body = request.POST.get("body", "").strip()
+
+        if body:
+            Message.objects.create(sender=request.user, recipient=contact, body=body)
+            Notification.objects.create(
+                recipient=contact, actor=request.user, verb="dm"
+            )
+
+        return redirect("chat_thread", username=username)

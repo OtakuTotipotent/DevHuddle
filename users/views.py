@@ -39,6 +39,10 @@ from .forms import (
     SkillUpdateForm,
 )
 
+# ==========================================
+# ACCOUNTS HANDLING
+# ==========================================
+
 
 class SignUpView(CreateView):
     form_class = CustomUserCreationForm
@@ -314,3 +318,28 @@ class MockCheckoutView(LoginRequiredMixin, View):
             messages.error(request, "Invalid item selected.")
 
         return redirect("user_profile", username=user.username)
+
+
+class BoostUserView(LoginRequiredMixin, View):
+    def post(self, request, username):
+        target_user = get_object_or_404(CustomUser, username=username)
+
+        if request.user == target_user:
+            messages.error(request, "You cannot boost yourself here. Use the Store.")
+        elif request.user.profile_boosts > 0:
+            # Transfer the boost
+            request.user.profile_boosts -= 1
+            request.user.save()
+            target_user.profile_boosts += 1
+            target_user.save()
+
+            messages.success(
+                request, f"You used 1 Boost to amplify {target_user.username}!"
+            )
+            Notification.objects.create(
+                recipient=target_user, actor=request.user, verb="boost"
+            )
+        else:
+            messages.error(request, "You have 0 Boosts. Buy more in the Store!")
+
+        return redirect("user_profile", username=username)

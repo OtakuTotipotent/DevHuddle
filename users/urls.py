@@ -18,11 +18,13 @@ from .views import (
     DeveloperDirectoryView,
     StoreView,
     MockCheckoutView,
+    BoostUserView,
 )
 
 
 urlpatterns = [
     path(
+        # Accounts
         "login/",
         auth_views.LoginView.as_view(template_name="users/auth/login.html"),
         name="login",
@@ -111,6 +113,19 @@ urlpatterns = [
     ),
     #
     # Monetization
-    path("store/", StoreView.as_view(), name="store"),
-    path("store/checkout/", MockCheckoutView.as_view(), name="checkout"),
+    path(
+        "store/",
+        StoreView.as_view(),
+        name="store",
+    ),
+    path(
+        "store/checkout/",
+        MockCheckoutView.as_view(),
+        name="checkout",
+    ),
+    path(
+        "profile/<str:username>/boost/",
+        BoostUserView.as_view(),
+        name="boost_user",
+    ),
 ]
