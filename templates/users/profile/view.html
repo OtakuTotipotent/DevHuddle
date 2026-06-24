@@ -128,18 +128,21 @@
             </a>
           {% else %}
             <!-- OTHERS Profile -->
-            <a href=""
-               class="text-black bg-blue-500 text-sm font-semibold px-2 rounded-full hover:opacity-80 cursor-pointer transition">
-              Send DM
+            <a href="{% url 'chat_thread' profile_user.username %}"
+               class="text-black bg-blue-500 font-semibold text-sm px-2 py-0.5 rounded-full hover:opacity-80 cursor-pointer transition">
+              Message
             </a>
-            <a href=""
-               class="text-green-400 border border-green-400 text-sm px-2 py-0.5 rounded-full hover:opacity-80 cursor-pointer transition">
-              Connect
-            </a>
-            <a href=""
-               class="text-purple-400 border border-purple-400 text-sm px-2 py-0.5 rounded-full hover:opacity-80 cursor-pointer transition">
-              Hire
-            </a>
+            {% if profile_user.role == 'dev' %}
+              <a href="{% url 'chat_thread' profile_user.username %}?intent=hire"
+                 class="text-purple-400 border border-purple-400 text-sm px-2 py-0.5 rounded-full hover:opacity-80 cursor-pointer transition">
+                Hire
+              </a>
+            {% else %}
+              <a href="{% url 'chat_thread' profile_user.username %}?intent=getHired"
+                 class="text-purple-400 border border-purple-400 text-sm px-2 py-0.5 rounded-full hover:opacity-80 cursor-pointer transition">
+                Apply
+              </a>
+            {% endif %}
             <a href=""
                onclick="toggleFollow('{{ profile_user.username }}')"
                id="follow-btn"

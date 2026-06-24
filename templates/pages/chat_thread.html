@@ -1,0 +1,62 @@
+{% extends "base.html" %}
+{% block title %}
+    Chat with {{ contact.username }}
+{% endblock title %}
+{% block content %}
+    <div class="max-w-3xl mx-auto mt-6">
+        <div class="bg-gray-800 rounded-xl border border-gray-700 shadow-xl flex flex-col h-[75vh]">
+            <div class="p-4 border-b border-gray-700 bg-gray-900/50 rounded-t-xl flex items-center gap-3">
+                <a href="{% url 'inbox' %}" class="text-gray-400 hover:text-white mr-2">← Back</a>
+                <a href="{% url 'user_profile' contact.username %}"
+                   class="font-bold text-lg text-white hover:text-blue-400 transition">{{ contact.first_name }} {{ contact.last_name }} (@{{ contact.username }})</a>
+                {% if contact.is_premium %}
+                    <span class="text-[10px] bg-yellow-500/20 text-yellow-500 px-2 py-0.5 rounded border border-yellow-500/50">PRO</span>
+                {% endif %}
+            </div>
+            <div class="grow p-4 overflow-y-auto space-y-4" id="chat-box">
+                {% for msg in messages %}
+                    <div class="flex {% if msg.sender == request.user %}justify-end{% else %}justify-start{% endif %}">
+                        <div class="max-w-[70%] rounded-2xl p-3 {% if msg.sender == request.user %}bg-blue-600 text-white rounded-br-none{% else %}bg-gray-700 text-gray-100 rounded-bl-none border border-gray-600{% endif %} shadow-sm">
+                            <p class="text-sm whitespace-pre-wrap">{{ msg.body }}</p>
+                            <span class="text-[9px] mt-1 block {% if msg.sender == request.user %}text-blue-200 text-right{% else %}text-gray-400 text-left{% endif %}">{{ msg.created_at|date:"h:i A" }}</span>
+                        </div>
+                    </div>
+                {% empty %}
+                    <div class="text-center text-gray-500 text-sm mt-10">Start the conversation with @{{ contact.username }}.</div>
+                {% endfor %}
+            </div>
+            <div class="p-4 border-t border-gray-700 bg-gray-900/50 rounded-b-xl">
+                <form method="post" class="flex gap-3">
+                    {% csrf_token %}
+                    <textarea name="body"
+                              id="chat-input"
+                              rows="2"
+                              class="w-full bg-gray-900 text-white border border-gray-600 rounded-xl p-3 focus:outline-none focus:border-blue-500 resize-none text-sm"
+                              placeholder="Type a message..."
+                              required></textarea>
+                    <button type="submit"
+                            class="bg-blue-600 hover:bg-blue-700 text-white px-6 font-bold rounded-xl transition shadow-lg shrink-0">
+                        Send
+                    </button>
+                </form>
+            </div>
+        </div>
+    </div>
+{% endblock content %}
+{% block scripts %}
+    <script>
+    // Auto-scroll chat to bottom
+    const chatBox = document.getElementById('chat-box');
+    chatBox.scrollTop = chatBox.scrollHeight;
+
+    // Intents handling for drafting messages
+    const urlParams = new URLSearchParams(window.location.search);
+    if(urlParams.get('intent') === 'hire') {
+        document.getElementById('chat-input').value = "Hello @{{ contact.username }},\nI reviewed your profile and projects. I'd like to discuss a potential opportunity with you.";
+    } if (urlParams.get('intent') === 'getHired') {
+        document.getElementById('chat-input').value = "Hello @{{ contact.username }},\nI just saw your profile and work. I'm available as a skilled professional for hiring. If possible, I would like to avail any opportunities.";
+    } else {
+        document.getElementById('chat-input').value = "Hello @{{ contact.username }},\n"
+    }
+    </script>
+{% endblock scripts %}

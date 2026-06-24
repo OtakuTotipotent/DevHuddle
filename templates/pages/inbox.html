@@ -1,0 +1,51 @@
+{% extends "base.html" %}
+{% block title %}
+    Inbox
+{% endblock title %}
+{% block content %}
+    <div class="max-w-4xl mx-auto mt-6">
+        <div class="flex justify-between items-center mb-6">
+            <h1 class="text-2xl font-bold text-white">Direct Messages</h1>
+        </div>
+        <div class="bg-gray-800 rounded-xl border border-gray-700 shadow-xl overflow-hidden">
+            {% for conv in conversations %}
+                <a href="{% url 'chat_thread' conv.contact.username %}"
+                   class="flex items-center gap-4 p-4 border-b border-gray-700 hover:bg-gray-700/50 transition relative">
+                    {% if conv.unread %}<div class="absolute left-0 top-0 bottom-0 w-1 bg-blue-500"></div>{% endif %}
+                    <div class="shrink-0 relative">
+                        {% if conv.contact.avatar %}
+                            <img src="{{ conv.contact.avatar.url }}"
+                                 width="48"
+                                 height="48"
+                                 alt="avatar"
+                                 class="w-12 h-12 rounded-full object-cover">
+                        {% else %}
+                            <div class="w-12 h-12 rounded-full bg-blue-600 flex items-center justify-center font-bold text-white">
+                                {{ conv.contact.username|slice:":1"|upper }}
+                            </div>
+                        {% endif %}
+                        {% if conv.contact.is_premium %}<div class="absolute -bottom-1 -right-1 text-xs">👑</div>{% endif %}
+                    </div>
+                    <div class="grow overflow-hidden">
+                        <div class="flex justify-between items-baseline mb-1">
+                            <h3 class="font-bold {% if conv.unread %}text-white{% else %}text-gray-300{% endif %} truncate">
+                                {{ conv.contact.first_name }} {{ conv.contact.last_name }}
+                            </h3>
+                            <span class="text-[10px] text-gray-500 shrink-0">{{ conv.last_message.created_at|timesince }} ago</span>
+                        </div>
+                        <p class="text-sm {% if conv.unread %}text-blue-400 font-semibold{% else %}text-gray-500{% endif %} truncate">
+                            {% if conv.last_message.sender == request.user %}You:{% endif %}
+                            {{ conv.last_message.body }}
+                        </p>
+                    </div>
+                </a>
+            {% empty %}
+                <div class="text-center py-16">
+                    <span class="text-5xl">📫</span>
+                    <h3 class="text-lg font-bold text-gray-300 mt-4">Your inbox is empty.</h3>
+                    <p class="text-sm text-gray-500 mt-2">Connect with developers and clients to start a conversation.</p>
+                </div>
+            {% endfor %}
+        </div>
+    </div>
+{% endblock content %}
