@@ -34,8 +34,14 @@
               {{ dev.first_name|default:dev.username }}
             </a>
             {% comment %} Stats {% endcomment %}
-            <div class="flex items-center gap-2 text-xs font-mono">
-              {% if dev.profile_boosts > 0 %}<span class="text-orange-400 font-semibold">⚡{{ dev.profile_boosts }}</span>{% endif %}
+            <div class="flex items-center gap-1 text-xs font-mono">
+              <span class="text-orange-400 font-semibold flex bg-orange-800/20 px-1 rounded-full">⚡
+                {% if dev.profile_boosts > 0 %}
+                  {{ dev.profile_boosts }}
+                {% else %}
+                  0
+                {% endif %}
+              </span>
               <span class="text-blue-400 font-semibold bg-blue-900/30 px-1 rounded-full border border-blue-800/50">Score: {{ dev.dev_score }}</span>
             </div>
           </div>
