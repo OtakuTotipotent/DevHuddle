@@ -122,7 +122,7 @@
                class="border border-indigo-400 hover:opacity-80 cursor-pointer text-indigo-400 text-sm px-2 py-0.5 rounded-full transition">
               Projects
             </a>
-            <a href="#"
+            <a href="{% url 'ai_analyze_profile' profile_user.username %}"
                class="border border-orange-400 hover:opacity-80 cursor-pointer text-orange-400 text-sm px-2 py-0.5 rounded-full transition">
               AI Profile Helper
             </a>
@@ -168,9 +168,9 @@
                 Boost
               </button>
             </form>
-            <a href=""
+            <a href="{% url 'ai_analyze_profile' profile_user.username %}"
                class="text-orange-400 border border-orange-400 text-sm px-2 py-0.5 rounded-full hover:opacity-80 cursor-pointer transition">
-              AI Profile Checker
+              AI Profile Analyzer
             </a>
           {% endif %}
         </div>
