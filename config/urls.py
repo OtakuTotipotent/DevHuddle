@@ -5,13 +5,28 @@ from django.conf.urls.static import static
 
 urlpatterns = [
     # Only for ADMIN users
-    path("admin/", admin.site.urls),
+    path(
+        "admin/",
+        admin.site.urls,
+    ),
     #
     # Users (Login, Signup, Profiles, Edit/New)
-    path("users/", include("users.urls")),
+    path(
+        "users/",
+        include("users.urls"),
+    ),
     #
     # Feed (Home, Posts, ...)
-    path("", include("feed.urls")),
+    path(
+        "",
+        include("feed.urls"),
+    ),
+    #
+    # Intelligence (AI)
+    path(
+        "ai/",
+        include("intelligence.urls"),
+    ),
 ]
 
 # ONLY FOR DEVELOPMENT PURPOSES
