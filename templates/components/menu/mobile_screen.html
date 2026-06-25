@@ -1,3 +1,4 @@
+{% comment %} Toggle Button {% endcomment %}
 <button onclick="toggleMobileMenu()"
         class="md:hidden flex items-center z-50 text-blue-500 hover:text-blue-400 focus:outline-none cursor-pointer">
    <svg id="mobile-icon-open"
@@ -31,23 +32,23 @@
          </div>
       {% endif %}
    </div>
-   <div class="px-3 pb-2">
-      <div class="h-px bg-gray-700 my-1 mx-2"></div>
+   <div class="px-3 pb-2 flex flex-col gap-1">
+      <div class="h-px bg-gray-700 mb-1"></div>
       <a href="{% url 'home' %}"
-         class="block px-4 py-2 text-gray-100 hover:bg-gray-900 hover:text-blue-500 rounded-lg transition"
+         class="block px-4 py-2 {% if request.resolver_match.url_name == 'home' %} text-blue-500 bg-gray-900 {% else %} text-gray-100 hover:bg-gray-900 hover:text-blue-500 {% endif %} rounded-lg transition"
          onclick="toggleMobileMenu()">Home</a>
-      <a href="{% url 'developer_directory' %}"
-         class="block px-4 py-2 text-gray-100 hover:bg-gray-900 hover:text-blue-500 rounded-lg transition"
-         onclick="toggleMobileMenu()">Devs</a>
       <a href="{% url 'inbox' %}"
-         class="block px-4 py-2 text-gray-100 hover:bg-gray-900 hover:text-blue-500 rounded-lg transition"
+         class="block px-4 py-2 {% if request.resolver_match.url_name == 'inbox' %} text-blue-500 bg-gray-900 {% else %} text-gray-100 hover:bg-gray-900 hover:text-blue-500 {% endif %} rounded-lg transition"
          onclick="toggleMobileMenu()">Inbox</a>
-      <a href="{% url 'home' %}"
-         class="block px-4 py-2 text-gray-100 hover:bg-gray-900 hover:text-blue-500 rounded-lg transition"
+      <a href="{% url 'developer_directory' %}"
+         class="block px-4 py-2 {% if request.resolver_match.url_name == 'developer_directory' %} text-blue-500 bg-gray-900 {% else %} text-gray-100 hover:bg-gray-900 hover:text-blue-500 {% endif %} rounded-lg transition"
+         onclick="toggleMobileMenu()">Developers</a>
+      <a href=""
+         class="block px-4 py-2 {% if request.resolver_match.url_name == '' %} text-blue-500 bg-gray-900 {% else %} text-gray-100 hover:bg-gray-900 hover:text-blue-500 {% endif %} rounded-lg transition"
          onclick="toggleMobileMenu()">Jobs & Clients</a>
       <div class="h-px bg-gray-700 my-1 mx-2"></div>
-      <a href="{% url 'home' %}"
-         class="block px-4 py-2 text-gray-100 hover:bg-gray-900 hover:text-blue-500 rounded-lg transition"
+      <a href=""
+         class="block px-4 py-2 {% if request.resolver_match.url_name == '' %} text-blue-500 bg-gray-900 {% else %} text-gray-100 hover:bg-gray-900 hover:text-blue-500 {% endif %} rounded-lg transition"
          onclick="toggleMobileMenu()">Help & Support</a>
    </div>
 </div>
