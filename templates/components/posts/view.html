@@ -10,22 +10,32 @@
     <!-- POST CONTENT -->
     <div class="bg-gray-800 p-4 rounded-lg border border-gray-700 shadow-xl mb-6">
       <!-- AUTHOR'S INFO & LOGO -->
-      <div class="flex items-center gap-3 mb-3">
-        {% if post.author.avatar %}
-          <img src="{{ post.author.avatar.url }}"
-               class="w-10 h-10 rounded-full object-cover"
-               width="40"
-               height="40"
-               alt="{{ post.author.username }}'s avatar" />
-        {% else %}
-          <div class="w-10 h-10 rounded-full bg-blue-600 flex items-center justify-center font-bold text-white">
-            {{ post.author.username|slice:':1'|upper }}
+      <div class="flex justify-between items-center mb-4">
+        <div class="flex items-center gap-3">
+          {% if post.author.avatar %}
+            <img src="{{ post.author.avatar.url }}"
+                 class="w-10 h-10 rounded-full object-cover"
+                 width="40"
+                 height="40"
+                 alt="{{ post.author.username }}'s avatar" />
+          {% else %}
+            <div class="w-10 h-10 rounded-full bg-blue-600 flex items-center justify-center font-bold text-white">
+              {{ post.author.username|slice:':1'|upper }}
+            </div>
+          {% endif %}
+          <div>
+            <span class="block font-bold text-gray-200">@{{ post.author.username }}</span>
+            <span class="block text-xs text-gray-500">{{ post.created_at|date:'d M Y • h:i A' }}</span>
+          </div>
+        </div>
+        {% if request.user == post.author %}
+          <div class="flex items-center gap-2">
+            <a href="{% url 'post_edit' post.pk %}"
+               class="text-xs text-yellow-400 font-semibold pr-2 border-r-2 border-gray-600">Edit</a>
+            <a href="{% url 'post_delete' post.pk %}"
+               class="text-xs text-red-400 font-semibold">Delete</a>
           </div>
         {% endif %}
-        <div>
-          <span class="block font-bold text-gray-200">@{{ post.author.username }}</span>
-          <span class="block text-xs text-gray-500">{{ post.created_at|date:'d M Y • h:i A' }}</span>
-        </div>
       </div>
       <!-- BODY -->
       <p class="text-gray-100 text-lg leading-relaxed">{{ post.body }}</p>
