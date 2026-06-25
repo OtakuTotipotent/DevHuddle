@@ -143,16 +143,15 @@
                 Apply
               </a>
             {% endif %}
-            <a href=""
-               onclick="toggleFollow('{{ profile_user.username }}')"
-               id="follow-btn"
-               class="text-blue-400 border border-blue-400 text-sm px-2 py-0.5 rounded-full hover:opacity-80 cursor-pointer  transition">
+            <button onclick="toggleFollow('{{ profile_user.username }}')"
+                    id="follow-btn"
+                    class="text-blue-400 border border-blue-400 text-sm px-2 py-0.5 rounded-full hover:opacity-80 cursor-pointer  transition">
               {% if user in profile_user.followers.all %}
                 Unfollow
               {% else %}
                 Follow
               {% endif %}
-            </a>
+            </button>
             <a href=""
                class="text-red-400 border border-red-400 text-sm px-2 py-0.5 rounded-full hover:opacity-80 cursor-pointer transition">
               Block
@@ -161,10 +160,14 @@
                class="text-indigo-400 border border-indigo-400 text-sm px-2 py-0.5 rounded-full hover:opacity-80 cursor-pointer transition">
               Projects
             </a>
-            <a href=""
-               class="text-yellow-400 border border-yellow-400 text-sm px-2 py-0.5 rounded-full hover:opacity-80 cursor-pointer transition">
-              Boost
-            </a>
+            <form action="{% url 'boost_user' profile_user.username %}" method="post">
+              {% csrf_token %}
+              <button type="submit"
+                      title="Spend 1 of your boosts to amplify this user"
+                      class="text-yellow-400 border border-yellow-400 text-sm px-2 py-0.5 rounded-full hover:opacity-80 cursor-pointer transition">
+                Boost
+              </button>
+            </form>
             <a href=""
                class="text-orange-400 border border-orange-400 text-sm px-2 py-0.5 rounded-full hover:opacity-80 cursor-pointer transition">
               AI Profile Checker
