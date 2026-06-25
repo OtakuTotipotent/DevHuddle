@@ -15,6 +15,7 @@ INSTALLED_APPS = [
     # My Apps
     "users",
     "feed",
+    "intelligence"
 ]
 
 MIDDLEWARE = [
