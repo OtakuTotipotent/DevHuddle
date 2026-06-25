@@ -2,19 +2,19 @@
    <!-- USER PROFILE ICON -->
    {% if user.is_authenticated %}
       <a href="{% url 'home' %}"
-         class="text-gray-400 hover:text-blue-500 transition">Home</a>
+         class="font-medium transition {% if request.resolver_match.url_name == 'home' %}text-blue-500{% else %}text-gray-400 hover:text-blue-500 {% endif %}">Home</a>
       <a href="{% url 'developer_directory' %}"
-         class="text-gray-400 hover:text-blue-500 transition">Devs</a>
+         class="font-medium transition {% if request.resolver_match.url_name == 'developer_directory' %}text-blue-500{% else %}text-gray-400 hover:text-blue-500 {% endif %}">Devs</a>
       <a href="{% url 'inbox' %}"
-         class="text-gray-400 hover:text-blue-500 transition">Inbox</a>
+         class="font-medium transition {% if request.resolver_match.url_name == 'inbox' %}text-blue-500{% else %}text-gray-400 hover:text-blue-500 {% endif %}">Inbox</a>
    {% else %}
       <a href="{% url 'about' %}"
-         class="text-gray-100 hover:text-blue-500 transition">About</a>
+         class="font-medium transition {% if request.resolver_match.url_name == 'about' %}text-blue-500{% else %}text-gray-400 hover:text-blue-500 {% endif %}">About</a>
       <div class="flex items-center gap-4 border-l border-gray-700 pl-4 font-medium">
          <a href="{% url 'login' %}"
-            class="text-blue-500 hover:text-blue-700 transition">Login</a>
+            class="font-medium transition {% if request.resolver_match.url_name == 'login' %}text-blue-500{% else %}text-gray-400 hover:text-blue-500 {% endif %}">Login</a>
          <a href="{% url 'signup' %}"
-            class="text-blue-500 hover:text-blue-700 transition">Join Now</a>
+            class="font-medium transition {% if request.resolver_match.url_name == 'signup' %}text-blue-500{% else %}text-gray-400 hover:text-blue-500{% endif %}">Join Now</a>
       </div>
    {% endif %}
 </div>
