@@ -55,7 +55,10 @@ npx @tailwindcss/cli -i ./static/css/custom.css -o ./static/css/output.css --wat
 - Add favicon
 - Add user guides for DevHuddle
 - Apply SEO
-- Add 'about', 'help & support', 'Jobs & Clients' page links into footer
+- Add 'about', 'help & support', 'Jobs & Clients' page links into footer for large screens
+- Delete profiles/user accounts only after 3 days, not immediately
+- Add Recycle bin page for recovering data within 3 days
+- Add Notifications tone/music
 
 ## Improvements \& Suggestions
 
