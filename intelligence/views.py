@@ -5,6 +5,7 @@ from users.models import CustomUser
 from feed.models import Post
 from .services import DevHuddleAIEngine
 from .models import AIReport
+import markdown
 
 
 class ProfileAnalyzerView(LoginRequiredMixin, View):
@@ -12,10 +13,11 @@ class ProfileAnalyzerView(LoginRequiredMixin, View):
         target_user = get_object_or_404(CustomUser, username=username)
         report = DevHuddleAIEngine.analyze_profile(target_user, request.user)
 
+        html_content = markdown.markdown(report.content)
         return render(
             request,
             "intelligence/report.html",
-            {"report": report, "target": target_user},
+            {"report": report, "html_content": html_content, "target": target_user},
         )
 
 
@@ -24,10 +26,11 @@ class PostAnalyzerView(LoginRequiredMixin, View):
         target_post = get_object_or_404(Post, pk=pk)
         report = DevHuddleAIEngine.analyze_post(target_post, request.user)
 
+        html_content = markdown.markdown(report.content)
         return render(
             request,
             "intelligence/report.html",
-            {"report": report, "target": target_post},
+            {"report": report, "html_content": html_content, "target": target_post},
         )
 
 

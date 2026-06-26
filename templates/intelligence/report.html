@@ -18,7 +18,7 @@
         <div class="relative">
             <div class="absolute top-0 right-0 w-64 h-64 bg-blue-800/20 rounded-full blur-3xl pointer-events-none"></div>
             <div class="prose prose-invert prose-purple max-w-none font-medium px-2 py-6 md:px-6 text-gray-400">
-                {{ report.content|linebreaks|safe }}
+                {{ html_content|safe }}
             </div>
         </div>
         {% comment %} Footer {% endcomment %}
