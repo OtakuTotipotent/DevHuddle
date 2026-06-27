@@ -4,7 +4,8 @@
   "description": "",
   "main": "tailwind.config.js",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "tailwind": "npx tailwindcss -i ./static/css/input.css -o ./static/css/output.css --watch"
   },
   "repository": {
     "type": "git",
@@ -18,8 +19,11 @@
     "url": "https://github.com/OtakuTotipotent/DevHuddle/issues"
   },
   "homepage": "https://github.com/OtakuTotipotent/DevHuddle#readme",
-  "dependencies": {
-    "@tailwindcss/cli": "^4.2.4",
-    "tailwindcss": "^4.2.4"
+  "devDependencies": {
+    "@tailwindcss/aspect-ratio": "^0.4.2",
+    "@tailwindcss/cli": "^4.3.1",
+    "@tailwindcss/forms": "^0.5.11",
+    "@tailwindcss/typography": "^0.5.20",
+    "tailwindcss": "^4.3.1"
   }
 }
