@@ -1,44 +1,15 @@
-import json
-from google import genai
-from django.conf import settings
 from .models import AIReport
-
-# Initialize the key from configs
-client = genai.Client(api_key=settings.GEMINI_API_KEY)
-
-if client:
-    print("Genai client received")
-else:
-    print("Genai client not received")
+from .providers.gemini import gemini_response
 
 
 class DevHuddleAIEngine:
     """
-    Facade for Google Gemini interactions.
+    Facade for Intelligent System interactions.
     """
 
     @staticmethod
     def _call_llm(system_prompt, user_data):
-        try:
-            # Combine the prompt and the JSON data
-            combined_prompt = f"{system_prompt}\n\nHere is the data:\n{json.dumps(user_data, indent=2)}"
-
-            # API Cal
-            response = client.interactions.create(
-                model="gemini-3.5-flash",
-                input=combined_prompt,
-            )
-
-            if response:
-                print("Genai response received")
-            else:
-                print("Genai response not received")
-
-            return response.output_text
-
-        except Exception as e:
-            # Fallback in case API fails, internet drops, or quota runs out
-            return f"**Error connecting to AI Provider:** {str(e)}\n\nPlease try again later."
+        return gemini_response(system_prompt, user_data)
 
     @classmethod
     def analyze_profile(cls, target_user, requester):
