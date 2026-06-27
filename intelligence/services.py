@@ -1,51 +1,55 @@
 import json
+from google import genai
+from django.conf import settings
 from .models import AIReport
+
+# Initialize the key from configs
+client = genai.Client(api_key=settings.GEMINI_API_KEY)
+
+if client:
+    print("Genai client received")
+else:
+    print("Genai client not received")
 
 
 class DevHuddleAIEngine:
     """
-    Facade for all AI interactions.
-    Swap the implementation inside _call_llm() to change AI providers.
+    Facade for Google Gemini interactions.
     """
 
     @staticmethod
     def _call_llm(system_prompt, user_data):
-        # -------------------------------------------------------------
-        # 🔌 AI INTEGRATION POINT
-        # Replace this logic with your free open-source AI package.
-        # Example using g4f (GPT4Free) or Gemini Free Tier API:
-        # response = g4f.ChatCompletion.create(model="gpt-3.5", messages=[...])
-        # -------------------------------------------------------------
+        try:
+            # Combine the prompt and the JSON data
+            combined_prompt = f"{system_prompt}\n\nHere is the data:\n{json.dumps(user_data, indent=2)}"
 
-        # Simulated intelligent response for current testing phase:
-        return f"""
-### 🧠 DevHuddle AI Analysis
+            # API Call
+            response = client.interactions.create(
+                model="gemini-3.5-flash",
+                input=combined_prompt,
+            )
 
-Based on the provided telemetry, here is the architectural breakdown.
+            if response:
+                print("Genai response received")
+            else:
+                print("Genai response not received")
 
-**Strengths:**
-* High density of backend logic.
-* Demonstrated capability in `{user_data.get("role", "Development")}`.
+            return response.output_text
 
-**Areas for Improvement:**
-* Expand Open-Source contributions.
-* Increase cross-functional skill tagging.
-
-**Market Viability:**
-Highly competitive for Mid-to-Senior level enterprise roles. 
-        """
+        except Exception as e:
+            # Fallback in case API fails, internet drops, or quota runs out
+            return f"**Error connecting to AI Provider:** {str(e)}\n\nPlease try again later."
 
     @classmethod
     def analyze_profile(cls, target_user, requester):
-        # Check Cache
+        # Check Cache if report already exists
         recent_report = AIReport.objects.filter(
             report_type="profile", target_user=target_user
         ).first()
-
         if recent_report:
             return recent_report
 
-        # Extract & Encapsulate Context
+        # User data
         context = {
             "username": target_user.username,
             "role": target_user.role,
@@ -53,13 +57,21 @@ Highly competitive for Mid-to-Senior level enterprise roles.
             "skills": list(target_user.skills.values_list("name", flat=True)),
             "projects_count": target_user.projects.count(),
             "experience_count": target_user.experiences.count(),
+            "follower_count": target_user.followers.count(),
         }
 
         # Prompt Engineering
-        sys_prompt = "You are DevHuddle's elite AI career coach. Analyze this developer's JSON profile and output a harsh but constructive Markdown report."
+        sys_prompt = """
+        You are an elite Technical Recruiter and Career Coach for an app called DevHuddle. 
+        Analyze the provided JSON profile of this developer.
+        Write a professional, formatted Markdown report with three sections:
+        1. 🌟 Core Strengths (Based on their skills/projects)
+        2. 📈 Areas for Growth (What are they missing?)
+        3. 💼 Market Viability (How employable are they?)
+        Keep it concise, highly technical, and use markdown bullet points. Do not wrap the response in ```markdown tags.
+        """
 
         raw_markdown = cls._call_llm(sys_prompt, context)
-
         return AIReport.objects.create(
             report_type="profile",
             requester=requester,
@@ -69,7 +81,7 @@ Highly competitive for Mid-to-Senior level enterprise roles.
 
     @classmethod
     def analyze_post(cls, target_post, requester):
-        # Check Cache
+        # Check Cache if post already exists
         recent_report = AIReport.objects.filter(
             report_type="post", target_post=target_post
         ).first()
@@ -80,14 +92,19 @@ Highly competitive for Mid-to-Senior level enterprise roles.
         context = {
             "post_body": target_post.body,
             "post_type": target_post.post_type,
-            "author": target_post.author.username,
-            "likes": target_post.likes.count(),
+            "author_role": target_post.author.role,
+            "likes_count": target_post.likes.count(),
         }
 
-        # Generate
-        sys_prompt = "You are DevHuddle's senior technical architect. Review this post/code snippet and provide technical feedback, security risks, or praise."
+        sys_prompt = """
+        You are a Senior Software Architect reviewing a post from a developer community called DevHuddle.
+        Analyze the post content. Provide a Markdown report containing:
+        1. Technical Breakdown (What is the core subject?)
+        2. Sentiment & Tone
+        3. Potential follow-up questions to ask the author to spark discussion.
+        Keep it concise and technical.
+        """
         raw_markdown = cls._call_llm(sys_prompt, context)
-
         return AIReport.objects.create(
             report_type="post",
             requester=requester,

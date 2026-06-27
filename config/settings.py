@@ -96,3 +96,6 @@ EMAIL_BACKEND = "django.core.mail.backends.console.EmailBackend"
 # PRODUCTION MODE
 # EMAIL_BACKEND = 'django.core.mail.backends.smtp.EmailBackend'
 # EMAIL_HOST = 'smtp.gmail.com' ...
+
+# EXTERNAL APIs
+GEMINI_API_KEY = "AQ.Ab8RN6Jlvj-ZNALnS2TLHIlW264GltgF-sI13nRPIlzZSpvRSw"
