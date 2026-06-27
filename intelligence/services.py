@@ -23,7 +23,7 @@ class DevHuddleAIEngine:
             # Combine the prompt and the JSON data
             combined_prompt = f"{system_prompt}\n\nHere is the data:\n{json.dumps(user_data, indent=2)}"
 
-            # API Call
+            # API Cal
             response = client.interactions.create(
                 model="gemini-3.5-flash",
                 input=combined_prompt,

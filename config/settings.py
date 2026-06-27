@@ -1,9 +1,15 @@
+import os
+import environ
 from pathlib import Path
 
 BASE_DIR = Path(__file__).resolve().parent.parent
 SECRET_KEY = "django-insecure-x$vg*0_ylw(w!gi7rf*$(dzw$&(m01!r5ny7(dv5_$+f-mf5s8"
 DEBUG = True
 ALLOWED_HOSTS = []
+
+env = environ.Env()
+environ.Env.read_env(os.path.join(BASE_DIR, ".env"))
+
 
 INSTALLED_APPS = [
     "django.contrib.admin",
@@ -15,7 +21,7 @@ INSTALLED_APPS = [
     # My Apps
     "users",
     "feed",
-    "intelligence"
+    "intelligence",
 ]
 
 MIDDLEWARE = [
@@ -97,5 +103,6 @@ EMAIL_BACKEND = "django.core.mail.backends.console.EmailBackend"
 # EMAIL_BACKEND = 'django.core.mail.backends.smtp.EmailBackend'
 # EMAIL_HOST = 'smtp.gmail.com' ...
 
-# EXTERNAL APIs
-GEMINI_API_KEY = "AQ.Ab8RN6Jlvj-ZNALnS2TLHIlW264GltgF-sI13nRPIlzZSpvRSw"
+
+# EXTERNAL APIs from ENVIRONMENT VARIABLES
+GEMINI_API_KEY = env("GEMINI_API_KEY")
