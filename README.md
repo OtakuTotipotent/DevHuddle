@@ -2,26 +2,32 @@
 
 This document contains various notes and ~~observations~~/guidelines regarding "DevHuddle" platform, including future improvements, new features, fixes, and general concepts.
 
+## Live ?
+
+- [Click here to jump to the Previews section.](#preview)
+- Project is under maintenance.
+- Discuss in private? DM [@LinkedIn](https://www.linkedin.com/in/afnanmuhammad "linkedin/afnanmuhammad")
+
 ## Setup & Installations
 
 - Install **Python** if not already
 - Open project in IDE/Terminal ~~(like VSCode/Powershell)~~
 - Create Python Virtual Environment, and activate it:
 
-```cmd
+```python
 python -m venv .venv
 .venv\Scripts\Activate
 ```
 
 - Install _Python Dependencies_:
 
-```cmd
+```python
 pip install -r requirements.txt
 ```
 
 - Install _TailwindCSS_ & other _JS Dependencies_ (use separate/independent terminal window):
 
-```cmd
+```js
 npm install
 ```
 
@@ -71,3 +77,16 @@ npx @tailwindcss/cli -i ./static/css/custom.css -o ./static/css/output.css --wat
 - Add a dedicated page for jobs, projects, gigs \& contests.
 - While posting selecting a category of post, that will display relevant posts to TARGET or ACTIVE audience as well as profile visitors. Also adding options like formatted/HTML like text uploading in post and prohibiting the video uploads.
 - A Network page for showcasing all users with whom the user has collaborated
+
+## Preview
+
+![Homepage](./static/images/unauthorized.png/ "Unauthorized User Homepage view")
+![Homepage](./static/images/homepage.png/ "Authorized User Homepage view")
+![Homepage](./static/images/devs-directory.png/ "Developers Leaderboard view")
+![Homepage](./static/images/messages.png/ "Inbox/Messenger view")
+![Homepage](./static/images/notifications.png/ "Notifications view")
+![Homepage](./static/images/profile.png/ "User Profile view")
+![Homepage](./static/images/workspace.png/ "Clients view")
+![Homepage](./static/images/dashboard.png/ "Dashboard view")
+![Homepage](./static/images/subscriptions.png/ "Store/Subscriptions page view")
+![Homepage](./static/images/mobile.png/ "Small Screen/Mobile Phone view")

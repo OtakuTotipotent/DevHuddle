@@ -64,7 +64,6 @@ venv.bak/
 venv*/
 
 # Editor/IDE
-.vscode/
 .idea/
 *.sublime-project
 *.sublime-workspace

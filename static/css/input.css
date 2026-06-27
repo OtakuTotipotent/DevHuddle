@@ -1,21 +1,3 @@
-/* :root {
-  --color-bg-page: #111827;
-  --color-bg-card: #1f2937;
-  --color-bg-input: #374151;
-  --color-text-main: #f3f4f6;
-  --color-text-muted: #9ca3af;
-  --color-border: #374151;
-  --color-primary: #3b82f6;
-  --color-primary-hover: #1d4ed8;
-  --color-danger: #f87171;
-  --color-error: #ef4444;
-  --color-success: #10b981;
-  --color-warning: #f59e0b;
-
-  --autofill-bg: #374151;
-  --color-text-dev: #f7fafc;
-} */
-
 @import "tailwindcss";
 @source "../../templates/**/*.html";
 @source "../../**/templates/**/*.html";
