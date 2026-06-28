@@ -144,8 +144,9 @@ class Notification(models.Model):
         ("accept", "accepted your job proposal"),
         ("reject", "declined your job proposal"),
         ("visit", "visited your profile"),
-        ("profile", "checked your profile via AI Profile Checker"),
-        ("project", "interested in your projects"),
+        ("profile", "checked your profile via AI Profile Analyzer"),
+        ("post", "interested in your post"),
+        ("ai", "AI generation complete! Checkout in ai/dashboard"),
         ("delete", "deleting your data was successful"),
     )
     verb = models.CharField(max_length=26, choices=VERB_CHOICES)
@@ -210,7 +211,7 @@ class Notification(models.Model):
             # info
             "connect": "info",
             "follow": "info",
-            "project": "info",
+            "post": "info",
             "dm": "info",
             # neutral
             "like": "neutral",

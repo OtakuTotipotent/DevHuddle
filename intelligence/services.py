@@ -1,5 +1,12 @@
+import json
+from google import genai
+from config import settings
 from .models import AIReport
-from .providers.gemini import gemini_response
+from django.utils import timezone
+from feed.models import Notification
+
+# Initialize the key from configs
+client = genai.Client(api_key=settings.GEMINI_API_KEY)
 
 
 class DevHuddleAIEngine:
@@ -9,76 +16,113 @@ class DevHuddleAIEngine:
 
     @staticmethod
     def _call_llm(system_prompt, user_data):
-        return gemini_response(system_prompt, user_data)
+        try:
+            combined_prompt = f"{system_prompt}\n\nHere is the exact data:\n{json.dumps(user_data, indent=2)}"
+
+            # API Cal
+            response = client.models.generate_content(
+                model="gemini-3.5-flash",
+                contents=combined_prompt,
+            )
+            return response.text
+
+        except Exception as e:
+            print(f"GenAI Exception: {str(e)}")
+            return "⚠️ **AI Generation Failed**\n\nThe intelligence engine is currently overloaded or configuring. Please try again in a few moments."
 
     @classmethod
     def analyze_profile(cls, target_user, requester):
-        # Check Cache if report already exists
         recent_report = AIReport.objects.filter(
             report_type="profile", target_user=target_user
         ).first()
-        if recent_report:
+
+        # If a report is already generated this week
+        print(recent_report)
+        if recent_report and (timezone.now() - recent_report.created_at).days < 7:
             return recent_report
 
-        # User data
         context = {
-            "username": target_user.username,
             "role": target_user.role,
             "bio": target_user.bio,
             "skills": list(target_user.skills.values_list("name", flat=True)),
             "projects_count": target_user.projects.count(),
             "experience_count": target_user.experiences.count(),
-            "follower_count": target_user.followers.count(),
         }
 
-        # Prompt Engineering
         sys_prompt = """
-        You are an elite Technical Recruiter and Career Coach for an app called DevHuddle. 
-        Analyze the provided JSON profile of this developer.
-        Write a professional, formatted Markdown report with three sections:
-        1. 🌟 Core Strengths (Based on their skills/projects)
-        2. 📈 Areas for Growth (What are they missing?)
-        3. 💼 Market Viability (How employable are they?)
-        Keep it concise, highly technical, and use markdown bullet points. Do not wrap the response in ```markdown tags.
+        You are DevHuddle's Elite Technical Analyzer.
+        Analyze the JSON data and output a highly concise, professional Markdown report.
+        STRICT RULES:
+        - NO conversational intros (e.g., "Here is the report").
+        - MUST output exactly three sections: 🌟 Core Strengths, 📈 Areas for Growth, 💼 Market Viability.
+        - STRICT LIMIT: Maximum 2 short bullet points per section.
+        - Tone must be direct, technical, and objective.
         """
 
         raw_markdown = cls._call_llm(sys_prompt, context)
-        return AIReport.objects.create(
+        report = AIReport.objects.create(
             report_type="profile",
             requester=requester,
             target_user=target_user,
             content=raw_markdown,
         )
 
+        # DUAL NOTIFICATIONS
+        if requester != target_user:
+            Notification.objects.create(
+                recipient=target_user, actor=requester, verb="ai_profile"
+            )
+            Notification.objects.create(
+                recipient=requester, actor=target_user, verb="ai_ready"
+            )
+
+        return report
+
     @classmethod
     def analyze_post(cls, target_post, requester):
-        # Check Cache if post already exists
         recent_report = AIReport.objects.filter(
             report_type="post", target_post=target_post
         ).first()
-        if recent_report:
+        if recent_report and (timezone.now() - recent_report.created_at).days < 7:
             return recent_report
 
-        # Encapsulate
         context = {
             "post_body": target_post.body,
             "post_type": target_post.post_type,
             "author_role": target_post.author.role,
-            "likes_count": target_post.likes.count(),
         }
 
         sys_prompt = """
-        You are a Senior Software Architect reviewing a post from a developer community called DevHuddle.
-        Analyze the post content. Provide a Markdown report containing:
-        1. Technical Breakdown (What is the core subject?)
-        2. Sentiment & Tone
-        3. Potential follow-up questions to ask the author to spark discussion.
-        Keep it concise and technical.
+        You are DevHuddle's Code Review AI.
+        Analyze the post content. Provide a highly concise Markdown report.
+        STRICT RULES:
+        - NO conversational intros.
+        - MUST output exactly three sections: 🔬 Technical Breakdown, 📊 Sentiment & Tone, 🗣️ Suggested Follow-up.
+        - STRICT LIMIT: Maximum 2 short bullet points per section.
+        - Keep it strictly relevant to Software Development & Engineering.
         """
+
         raw_markdown = cls._call_llm(sys_prompt, context)
-        return AIReport.objects.create(
+        report = AIReport.objects.create(
             report_type="post",
             requester=requester,
             target_post=target_post,
             content=raw_markdown,
         )
+
+        # DUAL NOTIFICATIONS
+        if requester != target_post.author:
+            Notification.objects.create(
+                recipient=target_post.author,
+                actor=requester,
+                verb="ai_post",
+                post=target_post,
+            )
+            Notification.objects.create(
+                recipient=requester,
+                actor=target_post.author,
+                verb="ai_ready",
+                post=target_post,
+            )
+
+        return report
