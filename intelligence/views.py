@@ -1,6 +1,7 @@
 from django.shortcuts import get_object_or_404, render
-from django.contrib.auth.mixins import LoginRequiredMixin
-from django.views.generic import View, ListView
+from django.contrib.auth.mixins import LoginRequiredMixin, UserPassesTestMixin
+from django.urls import reverse_lazy
+from django.views.generic import View, ListView, DeleteView
 from users.models import CustomUser
 from feed.models import Post
 from .services import DevHuddleAIEngine
@@ -43,3 +44,12 @@ class AIDashboardView(LoginRequiredMixin, ListView):
         return AIReport.objects.filter(requester=self.request.user).order_by(
             "-created_at"
         )
+
+
+class AIDeleteReportView(LoginRequiredMixin, UserPassesTestMixin, DeleteView):
+    model = AIReport
+    success_url = reverse_lazy("ai_dashboard")
+
+    def test_func(self):
+        # Security: Only the person who generated the report can delete it
+        return self.get_object().requester == self.request.user

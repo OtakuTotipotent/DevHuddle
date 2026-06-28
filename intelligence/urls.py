@@ -1,5 +1,10 @@
 from django.urls import path
-from .views import ProfileAnalyzerView, PostAnalyzerView, AIDashboardView
+from .views import (
+    ProfileAnalyzerView,
+    PostAnalyzerView,
+    AIDashboardView,
+    AIDeleteReportView,
+)
 
 urlpatterns = [
     path(
@@ -16,5 +21,10 @@ urlpatterns = [
         "analyze/post/<int:pk>/",
         PostAnalyzerView.as_view(),
         name="ai_analyze_post",
+    ),
+    path(
+        "delete/<int:pk>/",
+        AIDeleteReportView.as_view(),
+        name="ai_delete",
     ),
 ]
