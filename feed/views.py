@@ -15,10 +15,10 @@ from django.contrib.auth.decorators import login_required
 from django.contrib import messages
 from django.views.generic.edit import FormMixin
 from django.urls import reverse, reverse_lazy
-from django.http import JsonResponse
+from django.http import JsonResponse, HttpResponseRedirect
 from django.views import View
 from users.models import CustomUser, Project
-from .models import Comment, Post, Notification, Proposal, Message
+from .models import Bookmark, Comment, Post, Notification, Proposal, Message, Report
 from .forms import PostForm, CommentForm, ProposalForm
 
 
@@ -87,6 +87,38 @@ def search_results(request):
         "jobs": jobs,
     }
     return render(request, "pages/search_results.html", context)
+
+
+@login_required
+def toggle_bookmark(request, pk):
+    if request.method == "POST":
+        post = get_object_or_404(Post, pk=pk)
+        bookmark, created = Bookmark.objects.get_or_create(user=request.user, post=post)
+
+        if not created:
+            bookmark.delete()
+            messages.info(request, "Post removed from your bookmarks.")
+        else:
+            messages.success(request, "Post saved to your bookmarks!")
+
+    return HttpResponseRedirect(request.META.get("HTTP_REFERER", "/"))
+
+
+@login_required
+def submit_report(request, pk):
+    if request.method == "POST":
+        post = get_object_or_404(Post, pk=pk)
+        # Prevent spamming the report button
+        report, created = Report.objects.get_or_create(reporter=request.user, post=post)
+
+        if created:
+            messages.success(
+                request, "Report submitted to DevHuddle moderators securely."
+            )
+        else:
+            messages.info(request, "You have already reported this post.")
+
+    return HttpResponseRedirect(request.META.get("HTTP_REFERER", "/"))
 
 
 # ==========================================
@@ -323,6 +355,13 @@ class PostCreateView(LoginRequiredMixin, CreateView):
         kwargs = super().get_form_kwargs()
         kwargs["user"] = self.request.user
         return kwargs
+
+    def get_initial(self):
+        initial = super().get_initial()
+        requested_type = self.request.GET.get("type")
+        if requested_type in ["huddle", "job", "ad"]:
+            initial["post_type"] = requested_type
+        return initial
 
     def form_valid(self, form):
         form.instance.author = self.request.user

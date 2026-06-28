@@ -19,6 +19,8 @@ from .views import (
     search_results,
     InboxView,
     ChatThreadView,
+    toggle_bookmark,
+    submit_report,
 )
 
 
@@ -107,5 +109,15 @@ urlpatterns = [
         "inbox/<str:username>/",
         ChatThreadView.as_view(),
         name="chat_thread",
+    ),
+    path(
+        "post/<int:pk>/bookmark/",
+        toggle_bookmark,
+        name="toggle_bookmark",
+    ),
+    path(
+        "post/<int:pk>/report/",
+        submit_report,
+        name="submit_report",
     ),
 ]

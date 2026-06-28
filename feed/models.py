@@ -255,3 +255,41 @@ class Message(models.Model):
 
     def __str__(self):
         return f"Message from {self.sender.username} to {self.recipient.username}"
+
+
+# ==========================================
+# POST INTERACTIONS (BOOKMARKS & MODERATION)
+# ==========================================
+
+
+class Bookmark(models.Model):
+    user = models.ForeignKey(
+        settings.AUTH_USER_MODEL, on_delete=models.CASCADE, related_name="bookmarks"
+    )
+    post = models.ForeignKey(
+        Post, on_delete=models.CASCADE, related_name="bookmarked_by"
+    )
+    created_at = models.DateTimeField(auto_now_add=True)
+
+    class Meta:
+        unique_together = ("user", "post")
+        ordering = ["-created_at"]
+
+    def __str__(self):
+        return f"{self.user.username} bookmarked {self.post.pk}"
+
+
+class Report(models.Model):
+    reporter = models.ForeignKey(
+        settings.AUTH_USER_MODEL, on_delete=models.CASCADE, related_name="reports_filed"
+    )
+    post = models.ForeignKey(Post, on_delete=models.CASCADE, related_name="reports")
+    reason = models.CharField(max_length=255, default="Inappropriate Content or Spam")
+    is_resolved = models.BooleanField(default=False)
+    created_at = models.DateTimeField(auto_now_add=True)
+
+    class Meta:
+        ordering = ["-created_at"]
+
+    def __str__(self):
+        return f"Report by {self.reporter.username} on Post {self.post.pk}"
