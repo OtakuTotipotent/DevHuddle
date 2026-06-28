@@ -145,8 +145,7 @@ class Notification(models.Model):
         ("reject", "declined your job proposal"),
         ("visit", "visited your profile"),
         ("profile", "checked your profile via AI Profile Analyzer"),
-        ("post", "interested in your post"),
-        ("ai", "AI generation complete! Checkout in ai/dashboard"),
+        ("post", "is interested in your post"),
         ("delete", "deleting your data was successful"),
     )
     verb = models.CharField(max_length=26, choices=VERB_CHOICES)
@@ -209,6 +208,7 @@ class Notification(models.Model):
             "hire": "success",
             "accept": "success",
             # info
+            "profile": "info",
             "connect": "info",
             "follow": "info",
             "post": "info",
@@ -218,7 +218,6 @@ class Notification(models.Model):
             "comment": "neutral",
             "reply": "neutral",
             "visit": "neutral",
-            "profile": "neutral",
         }
 
         # Retrieve the category, fallback to neutral, then return the palette

@@ -71,10 +71,7 @@ class DevHuddleAIEngine:
         # DUAL NOTIFICATIONS
         if requester != target_user:
             Notification.objects.create(
-                recipient=target_user, actor=requester, verb="ai_profile"
-            )
-            Notification.objects.create(
-                recipient=requester, actor=target_user, verb="ai_ready"
+                recipient=target_user, actor=requester, verb="profile"
             )
 
         return report
@@ -116,13 +113,7 @@ class DevHuddleAIEngine:
             Notification.objects.create(
                 recipient=target_post.author,
                 actor=requester,
-                verb="ai_post",
-                post=target_post,
-            )
-            Notification.objects.create(
-                recipient=requester,
-                actor=target_post.author,
-                verb="ai_ready",
+                verb="post",
                 post=target_post,
             )
 
