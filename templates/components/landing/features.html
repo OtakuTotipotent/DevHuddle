@@ -2,12 +2,12 @@
    <a href="{% url 'ai_dashboard' %}"
       class="bg-gray-800 text-purple-400 hover:bg-gray-950/50 px-2 py-1 sm:px-3 sm:py-1.5 rounded-full transition-colors">AI playground</a>
    {% if request.user.role == 'dev' %}
-      <a href="#"
+      <a href="{% url 'home' %}?feed=business"
          class="bg-gray-800 text-yellow-500 hover:bg-gray-950/50 px-2 py-1 sm:px-3 sm:py-1.5 rounded-full transition-colors">Find work</a>
    {% else %}
-      <a href="#"
+      <a href="{% url 'post_new' %}?type=ad"
          class="bg-gray-800 text-orange-600 hover:bg-gray-950/50 px-2 py-1 sm:px-3 sm:py-1.5 rounded-full transition-colors">Post offer</a>
-      <a href="#"
+      <a href="{% url 'post_new' %}?type=job"
          class="bg-gray-800 text-gray-100 hover:bg-gray-950/50 px-2 py-1 sm:px-3 sm:py-1.5 rounded-full transition-colors">Announce job</a>
    {% endif %}
    {% if not request.user.is_premium %}
