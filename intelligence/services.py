@@ -20,11 +20,11 @@ class DevHuddleAIEngine:
             combined_prompt = f"{system_prompt}\n\nHere is the exact data:\n{json.dumps(user_data, indent=2)}"
 
             # API Cal
-            response = client.models.generate_content(
-                model="gemini-3.5-flash",
-                contents=combined_prompt,
+            response = client.interactions.create(
+                model="gemini-2.5-flash",
+                input=combined_prompt,
             )
-            return response.text
+            return response.output_text
 
         except Exception as e:
             print(f"GenAI Exception: {str(e)}")
@@ -59,6 +59,7 @@ class DevHuddleAIEngine:
         - Tone must be direct, technical, and objective.
         """
 
+        # API Call
         raw_markdown = cls._call_llm(sys_prompt, context)
         report = AIReport.objects.create(
             report_type="profile",
