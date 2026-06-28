@@ -90,7 +90,7 @@
           </button>
           {% comment %} POST MENU {% endcomment %}
           <div id="post-menu-{{ post.pk }}"
-               class="hidden absolute right-0 mt-2 w-36 bg-gray-800 rounded-lg shadow-xl border border-gray-700 z-20 overflow-hidden">
+               class="hidden absolute right-0 mt-2 w-36 bg-gray-800/50 backdrop-blur-3xl rounded-lg shadow-xl border border-gray-700 z-20 overflow-hidden">
             {% if post.post_type == 'job' and post.author != user %}
               {% if post.target_url %}
                 <a href="{{ post.target_url }}"
