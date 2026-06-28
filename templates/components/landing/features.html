@@ -1,14 +1,19 @@
 <div class="flex flex-wrap justify-center gap-1 py-4 sm:gap-2 items-center text-sm">
    <a href="{% url 'ai_dashboard' %}"
       class="bg-gray-800 text-purple-400 hover:bg-gray-950/50 px-2 py-1 sm:px-3 sm:py-1.5 rounded-full transition-colors">AI playground</a>
-   <a href="#"
-      class="bg-gray-800 text-yellow-500 hover:bg-gray-950/50 px-2 py-1 sm:px-3 sm:py-1.5 rounded-full transition-colors">Find work</a>
-   <a href="{% url 'store' %}"
-      class="bg-gray-800 text-green-500 hover:bg-gray-950/50 px-2 py-1 sm:px-3 sm:py-1.5 rounded-full transition-colors">Go premium</a>
-   <a href="#"
-      class="bg-gray-800 text-orange-600 hover:bg-gray-950/50 px-2 py-1 sm:px-3 sm:py-1.5 rounded-full transition-colors">Post offer</a>
-   <a href="#"
-      class="bg-gray-800 text-gray-100 hover:bg-gray-950/50 px-2 py-1 sm:px-3 sm:py-1.5 rounded-full transition-colors">Announce job</a>
+   {% if request.user.role == 'dev' %}
+      <a href="#"
+         class="bg-gray-800 text-yellow-500 hover:bg-gray-950/50 px-2 py-1 sm:px-3 sm:py-1.5 rounded-full transition-colors">Find work</a>
+   {% else %}
+      <a href="#"
+         class="bg-gray-800 text-orange-600 hover:bg-gray-950/50 px-2 py-1 sm:px-3 sm:py-1.5 rounded-full transition-colors">Post offer</a>
+      <a href="#"
+         class="bg-gray-800 text-gray-100 hover:bg-gray-950/50 px-2 py-1 sm:px-3 sm:py-1.5 rounded-full transition-colors">Announce job</a>
+   {% endif %}
+   {% if not request.user.is_premium %}
+      <a href="{% url 'store' %}"
+         class="bg-gray-800 text-green-500 hover:bg-gray-950/50 px-2 py-1 sm:px-3 sm:py-1.5 rounded-full transition-colors">Go premium</a>
+   {% endif %}
    <a href="{% url 'post_new' %}"
       class="bg-gray-800 text-blue-600 hover:bg-gray-950/50 px-2 py-1 sm:px-3 sm:py-1.5 rounded-full transition-colors font-semibold">New Post</a>
 </div>
