@@ -65,6 +65,8 @@ npx @tailwindcss/cli -i ./static/css/custom.css -o ./static/css/output.css --wat
 - Delete profiles/user accounts only after 3 days, not immediately
 - Add Recycle bin page for recovering data within 3 days
 - Add Notifications tone/music
+- The Subscription (DevHuddle Pro) needs to be ended after certain time period (monthly)
+- Add dynamic data into profile stats
 
 ## Improvements \& Suggestions
 
