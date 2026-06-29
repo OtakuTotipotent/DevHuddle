@@ -91,7 +91,7 @@
     {% endif %}
   </div>
   <!-- Profile Stats -->
-  <div class="grid grid-cols-2 divide-x divide-gray-700/50 border-t border-gray-700/50">
+  <div class="grid grid-cols-2 divide-x divide-gray-700/50 border-t border-gray-700/50 cursor-default select-none">
     <div class="py-2 flex flex-col items-center">
       <span class="text-xs font-semibold text-blue-500">{{ user.get_role_display }}</span>
       <span class="text-[9px] text-gray-400 uppercase tracking-widest mt-0.5">Role</span>
@@ -117,7 +117,7 @@
     </div>
   </div>
   <!-- Account Settings -->
-  <div class="grid grid-cols-2 divide-x divide-y divide-gray-700/50 text-center border-t border-gray-700/50 tracking-wide">
+  <div class="grid grid-cols-2 divide-x divide-y divide-gray-700/50 text-center border-t border-gray-700/50 tracking-wide select-none">
     <a href="{% url 'notifications' %}"
        class="py-2 text-xs text-purple-400/80 hover:bg-purple-500/10 transition">Notifications</a>
     <a href="{% url 'store' %}"
