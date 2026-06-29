@@ -60,11 +60,13 @@
         "truncatechars",
         "txaio",
         "tzdata",
+        "uidb",
         "ujson",
         "Unhide",
         "uritemplate",
         "urlencode",
         "urllib",
+        "validlink",
         "zope"
     ]
 }
