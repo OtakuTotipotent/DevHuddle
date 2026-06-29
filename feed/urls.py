@@ -21,6 +21,8 @@ from .views import (
     ChatThreadView,
     toggle_bookmark,
     submit_report,
+    ModerationActionView,
+    ModerationDashboardView,
 )
 
 
@@ -119,5 +121,15 @@ urlpatterns = [
         "post/<int:pk>/report/",
         submit_report,
         name="submit_report",
+    ),
+    path(
+        "moderation/",
+        ModerationDashboardView.as_view(),
+        name="moderation_dashboard",
+    ),
+    path(
+        "moderation/<int:pk>/<str:action>/",
+        ModerationActionView.as_view(),
+        name="moderation_action",
     ),
 ]

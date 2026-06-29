@@ -575,3 +575,52 @@ class ChatThreadView(LoginRequiredMixin, View):
             )
 
         return redirect("chat_thread", username=username)
+
+
+# ==========================================
+# TRUST & SAFETY CENTER | REPORTING SYSTEM
+# ==========================================
+
+
+class ModerationDashboardView(LoginRequiredMixin, UserPassesTestMixin, ListView):
+    template_name = "pages/moderation_dashboard.html"
+    context_object_name = "flagged_posts"
+
+    def test_func(self):
+        # SECURITY: Only Staff or Superusers can access
+        return self.request.user.is_staff or self.request.user.is_superuser
+
+    def get_queryset(self):
+        return (
+            Post.objects.filter(reports__is_resolved=False)
+            .annotate(
+                active_reports=Count("reports", filter=Q(reports__is_resolved=False))
+            )
+            .distinct()
+            .prefetch_related("author")
+            .order_by("-active_reports", "-created_at")
+        )
+
+
+class ModerationActionView(LoginRequiredMixin, UserPassesTestMixin, View):
+    def test_func(self):
+        return self.request.user.is_staff or self.request.user.is_superuser
+
+    def post(self, request, pk, action):
+        post_obj = get_object_or_404(Post, pk=pk)
+
+        if action == "dismiss":
+            # Bulk update all reports for this specific post to 'resolved'
+            post_obj.reports.filter(is_resolved=False).update(is_resolved=True)
+            messages.success(
+                request, f"Cleared all reports for post by @{post_obj.author.username}."
+            )
+        elif action == "delete":
+            # Nuke the post overall
+            post_obj.delete()
+            messages.success(
+                request,
+                "Violating post has been permanently deleted from the ecosystem.",
+            )
+
+        return redirect("moderation_dashboard")
