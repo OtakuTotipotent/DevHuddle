@@ -1,38 +1,164 @@
 {% extends "base.html" %}
 {% load static %}
-{% block title %}
-  Edit Profile
-{% endblock title %}
+{% block title %} Profile Editor {% endblock title %}
 {% block content %}
-  <div class="max-w-md mx-auto my-6">
-    <div class="bg-gray-800 p-4 rounded-lg shadow-lg border border-gray-700">
-      <h2 class="text-2xl font-semibold mb-6 text-blue-500 text-center">Edit Profile</h2>
-      <form method="post" enctype="multipart/form-data">
-        {% csrf_token %}
-        <div class="space-y-3">
-          {% for field in form %}
-            <div>
-              <label class="block text-sm text-blue-500 font-semibold mb-1">{{ field.label }}</label>
-              {{ field }}
-              {% if field.errors %}<p class="text-red-400 text-xs">{{ field.errors.0 }}</p>{% endif %}
-            </div>
-          {% endfor %}
-          <a href=""
-             class="text-sm text-blue-500 hover:text-blue-600 hover:underline">Click here to change your password?</a>
-        </div>
-        <!-- SUBMIT / CANCEL BUTTONS -->
-        <div class="grid grid-cols-2 gap-4 items-center mt-5 mb-3">
-          <button type="submit"
-                  class="cursor-pointer text-center hover:opacity-70 py-2 text-sm font-semibold rounded-full bg-blue-600">
-            Save Changes
-          </button>
-          <a href="{% url 'home' %}"
-             class="cursor-pointer text-center hover:opacity-70 py-2 text-sm font-semibold rounded-full border border-gray-500">Cancel</a>
-        </div>
-      </form>
+  <div class="max-w-5xl md:mx-auto mx-2 my-8">
+    {% comment %} Header {% endcomment %}
+    <div class="mb-8 border-b border-gray-700/50 pb-4 px-2 flex md:justify-between justify-end items-end flex-wrap gap-2">
+      <div>
+        <h1 class="text-3xl font-bold text-blue-500">Profile Settings</h1>
+        <p class="text-gray-500 text-sm mt-1">Manage your professional identity and public presence.</p>
+      </div>
+      <a href="{% url 'user_profile' request.user.username %}"
+         class="text-sm font-semibold text-blue-500 hover:text-blue-600">View Public Profile →</a>
     </div>
+    {% comment %} Body {% endcomment %}
+    <form method="post"
+          enctype="multipart/form-data"
+          class="grid grid-cols-1 lg:grid-cols-3 gap-3">
+      {% csrf_token %}
+      {% comment %} Avatar & Actions {% endcomment %}
+      <div class="space-y-3">
+        {% comment %} Avatar {% endcomment %}
+        <div class="rounded-2xl border border-gray-700/50 p-4 lg:p-6 text-center">
+          {% comment %} Profile Photo {% endcomment %}
+          <div class="relative inline-block mb-4">
+            {% if request.user.avatar %}
+              <img src="{{ request.user.avatar.url }}"
+                   class="w-32 h-32 rounded-full object-cover border-2 border-gray-700"
+                   alt="Avatar"
+                   width="128"
+                   height="128">
+            {% else %}
+              <div class="w-32 h-32 rounded-full flex items-center justify-center font-bold text-blue-500 text-4xl border-2 border-blue-500">
+                {{ request.user.username|slice:':1'|upper }}
+              </div>
+            {% endif %}
+          </div>
+          {% comment %} Photo Change {% endcomment %}
+          <div class="text-left mt-2 cursor-default select-none">
+            <label class="block text-sm font-semibold text-gray-400 uppercase tracking-wide mb-2 text-center">Update Avatar</label>
+            <div class="relative w-full">{{ form.avatar }}</div>
+            {% if form.avatar.errors %}<p class="text-red-400 text-xs mt-1">{{ form.avatar.errors.0 }}</p>{% endif %}
+          </div>
+        </div>
+        {% comment %} Security {% endcomment %}
+        <div class="rounded-2xl border border-gray-700/50 p-4 lg:p-6 space-y-4">
+          <h3 class="text-sm font-bold text-gray-400 uppercase tracking-wide border-b border-gray-700/50 pb-2">Security</h3>
+          <a href="{% url 'password_reset' %}"
+             class="flex items-center justify-between text-sm font-semibold text-yellow-500 bg-yellow-500/10 hover:bg-yellow-500/30 transition p-3 rounded-lg border border-yellow-500/30">
+            <span>Change Password</span>
+            <span>🔑</span>
+          </a>
+          <a href="{% url 'profile_delete' %}"
+             class="flex items-center justify-between text-sm font-semibold text-red-500 bg-red-500/10 hover:bg-red-500/30 transition p-3 rounded-lg border border-red-500/30">
+            <span>Delete Account</span>
+            <span>⚠️</span>
+          </a>
+        </div>
+      </div>
+      {% comment %} Details & Information {% endcomment %}
+      <div class="lg:col-span-2 space-y-3">
+        {% comment %} Personal Details {% endcomment %}
+        <div class="rounded-2xl border border-gray-700/50 p-4 lg:p-6">
+          <h3 class="text-sm font-bold text-gray-400 uppercase mb-4 border-b border-gray-700/50 pb-2">Personal Details</h3>
+          <div class="grid grid-cols-1 md:grid-cols-2 gap-3">
+            {% comment %} First name {% endcomment %}
+            <div>
+              <label class="block text-sm font-semibold text-blue-500 mb-2">First Name</label>
+              {{ form.first_name }}
+              {% if form.first_name.errors %}<p class="text-red-400 text-xs mt-1">{{ form.first_name.errors.0 }}</p>{% endif %}
+            </div>
+            {% comment %} Last name {% endcomment %}
+            <div>
+              <label class="block text-sm font-semibold text-blue-500 mb-2">Last Name</label>
+              {{ form.last_name }}
+              {% if form.last_name.errors %}<p class="text-red-400 text-xs mt-1">{{ form.last_name.errors.0 }}</p>{% endif %}
+            </div>
+            {% comment %} Email {% endcomment %}
+            <div class="md:col-span-2">
+              <label class="block text-sm font-semibold text-blue-500 mb-2">Email Address</label>
+              {{ form.email }}
+              {% if form.email.errors %}<p class="text-red-400 text-xs mt-1">{{ form.email.errors.0 }}</p>{% endif %}
+            </div>
+          </div>
+        </div>
+        {% comment %} Professional Identity {% endcomment %}
+        <div class="rounded-2xl border border-gray-700/50 p-4 lg:p-6">
+          <h3 class="text-sm font-bold text-gray-400 uppercase mb-4 border-b border-gray-700 pb-2">Professional Identity</h3>
+          <div class="space-y-3">
+            {% comment %} Platform Role {% endcomment %}
+            <div>
+              <label class="block text-sm font-semibold text-blue-500 mb-2">Platform Role</label>
+              {{ form.role }}
+              <p class="text-xs text-gray-500 mt-1">This determines the features and jobs you see in the ecosystem.</p>
+              {% if form.role.errors %}<p class="text-red-400 text-xs mt-1">{{ form.role.errors.0 }}</p>{% endif %}
+            </div>
+            {% comment %} Dev Bio {% endcomment %}
+            <div>
+              <label class="block text-sm font-semibold text-blue-500 mb-2">Developer Bio</label>
+              {{ form.bio }}
+              {% if form.bio.errors %}<p class="text-red-400 text-xs mt-1">{{ form.bio.errors.0 }}</p>{% endif %}
+            </div>
+            {% comment %} Stack & Skills {% endcomment %}
+            <div class="bg-blue-900/20 border border-blue-800/50 p-3 rounded-lg flex justify-between items-center flex-wrap gap-3">
+              <div>
+                <p class="text-sm font-bold text-blue-500">Tech Stack & Skills</p>
+                <p class="text-xs text-gray-400">Skills are managed in a dedicated space.</p>
+              </div>
+              <a href="{% url 'skill_edit' %}"
+                 class="border border-blue-800/50 hover:bg-blue-700/30 text-blue-500 text-xs font-bold px-4 py-2 rounded-lg transition">Edit Tech Stack & Skills</a>
+            </div>
+          </div>
+        </div>
+        {% comment %} Digital Footprint {% endcomment %}
+        <div class="rounded-2xl border border-gray-700/50 p-4 lg:p-6">
+          <h3 class="text-sm font-bold text-gray-400 uppercase mb-4 border-b border-gray-700/50 pb-2">Digital Footprint</h3>
+          <div class="grid grid-cols-1 md:grid-cols-2 gap-3">
+            <div>
+              <label class="block text-sm font-semibold text-blue-500 mb-2">GitHub URL</label>
+              {{ form.github_url }}
+              {% if form.github_url.errors %}<p class="text-red-400 text-xs mt-1">{{ form.github_url.errors.0 }}</p>{% endif %}
+            </div>
+            <div>
+              <label class="block text-sm font-semibold text-blue-500 mb-2">LinkedIn URL</label>
+              {{ form.linkedin_url }}
+              {% if form.linkedin_url.errors %}<p class="text-red-400 text-xs mt-1">{{ form.linkedin_url.errors.0 }}</p>{% endif %}
+            </div>
+            <div>
+              <label class="block text-sm font-semibold text-blue-500 mb-2">Twitter/X URL</label>
+              {{ form.twitter_url }}
+              {% if form.twitter_url.errors %}<p class="text-red-400 text-xs mt-1">{{ form.twitter_url.errors.0 }}</p>{% endif %}
+            </div>
+            <div>
+              <label class="block text-sm font-semibold text-blue-500 mb-2">StackOverflow URL</label>
+              {{ form.stackoverflow_url }}
+              {% if form.stackoverflow_url.errors %}
+                <p class="text-red-400 text-xs mt-1">{{ form.stackoverflow_url.errors.0 }}</p>
+              {% endif %}
+            </div>
+            <div>
+              <label class="block text-sm font-semibold text-blue-500 mb-2">Portfolio Website</label>
+              {{ form.portfolio_url }}
+              {% if form.portfolio_url.errors %}
+                <p class="text-red-400 text-xs mt-1">{{ form.portfolio_url.errors.0 }}</p>
+              {% endif %}
+            </div>
+            <div>
+              <label class="block text-sm font-semibold text-blue-500 mb-2">Upwork / Fiverr URL</label>
+              {{ form.upwork_url }}
+              {% if form.upwork_url.errors %}<p class="text-red-400 text-xs mt-1">{{ form.upwork_url.errors.0 }}</p>{% endif %}
+            </div>
+          </div>
+        </div>
+        {% comment %} Form Submission | Action Buttons {% endcomment %}
+        <div class="sticky bottom-4 z-40 bg-gray-950/50 backdrop-blur-lg p-3 border border-gray-500/40 rounded-xl flex justify-end gap-2">
+          <a href="{% url 'home' %}"
+             class="bg-blue-700 hover:bg-blue-800 text-gray-300 px-4 py-2 rounded-lg text-sm font-semibold transition cursor-pointer select-none">Cancel</a>
+          <button type="submit"
+                  class="bg-blue-700 hover:bg-blue-800 text-gray-300 px-4 py-2 rounded-lg text-sm font-semibold transition cursor-pointer select-none">Save Configuration</button>
+        </div>
+      </div>
+    </form>
   </div>
 {% endblock content %}
-{% block scripts %}
-  <script src="{% static 'js/post_upload_validator.js' %}"></script>
-{% endblock scripts %}

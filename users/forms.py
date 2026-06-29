@@ -13,7 +13,6 @@ class CustomUserChangeForm(UserChangeForm):
             "bio",
             "avatar",
             "role",
-            "tech_stack",
             "github_url",
             "linkedin_url",
             "twitter_url",
@@ -203,6 +202,7 @@ class ExperienceForm(forms.ModelForm):
 
 
 class SkillUpdateForm(forms.Form):
+    # forgot to use Skill model (currently Skill is unused import)
     skills = forms.CharField(
         widget=forms.TextInput(
             attrs={
