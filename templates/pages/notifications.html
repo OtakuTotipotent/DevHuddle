@@ -33,7 +33,7 @@
                     <div class="grow">
                         <p class="{{ notification.theme.text }} text-sm">
                             Hello <span class="font-semibold">{{ request.user.username }}</span>,
-                            {% if notification.verb == 'welcome' or notification.verb == 'premium' %}
+                            {% if notification.verb in 'welcome,premium,report_submitted,post_reported' %}
                                 <span class="{{ notification.theme.text }} font-semibold">{{ notification.get_verb_display }}</span>
                             {% else %}
                                 <a href="{% url 'user_profile' notification.actor.username %}"
@@ -54,6 +54,12 @@
                         {% elif notification.verb == 'profile' %}
                             <a href="{% url 'user_profile' notification.actor.username %}"
                                class="text-xs px-4 py-2 rounded-full transition border {{ notification.theme.border }} {{ notification.theme.text }} hover:opacity-80">Visit Profile</a>
+                        {% elif notification.verb == 'dm' %}
+                            <a href="{% url 'inbox' %}"
+                               class="text-xs px-4 py-2 rounded-full transition border {{ notification.theme.border }} {{ notification.theme.text }} hover:opacity-80">Read Message</a>
+                        {% elif notification.verb == 'boost' %}
+                            <a href="{% url 'user_profile' user.username %}"
+                               class="text-xs px-4 py-2 rounded-full transition border {{ notification.theme.border }} {{ notification.theme.text }} hover:opacity-80">See Boosts</a>
                         {% elif notification.post %}
                             {% if notification.post.image %}
                                 <a href="{% url 'post_detail' notification.post.pk %}">

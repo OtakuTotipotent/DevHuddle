@@ -147,6 +147,14 @@ class Notification(models.Model):
         ("profile", "checked your profile via AI Profile Analyzer"),
         ("post", "is interested in your post"),
         ("delete", "deleting your data was successful"),
+        (
+            "report_submitted",
+            "We received your report. Thank you for keeping DevHuddle safe!",
+        ),
+        (
+            "post_reported",
+            "One of your posts has been flagged by the community.",
+        ),
     )
     verb = models.CharField(max_length=26, choices=VERB_CHOICES)
     post = models.ForeignKey(Post, on_delete=models.CASCADE, null=True, blank=True)
@@ -199,6 +207,7 @@ class Notification(models.Model):
             "unfollow": "danger",
             "delete": "danger",
             "reject": "danger",
+            "post_reported": "danger",
             # brand
             "boost": "brand",
             "welcome": "brand",
@@ -207,6 +216,7 @@ class Notification(models.Model):
             "congrats": "success",
             "hire": "success",
             "accept": "success",
+            "report_submitted": "success",
             # info
             "profile": "info",
             "connect": "info",
@@ -233,6 +243,8 @@ class Notification(models.Model):
             "congrats": "🎉",
             "alert": "⚠️",
             "beware": "📉",
+            "post_reported": "🚨",
+            "report_submitted": "🛡️",
         }
         return icons.get(self.verb, None)
 

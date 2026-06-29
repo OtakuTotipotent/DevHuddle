@@ -108,13 +108,29 @@ def toggle_bookmark(request, pk):
 def submit_report(request, pk):
     if request.method == "POST":
         post = get_object_or_404(Post, pk=pk)
-        # Prevent spamming the report button
+
         report, created = Report.objects.get_or_create(reporter=request.user, post=post)
 
         if created:
             messages.success(
                 request, "Report submitted to DevHuddle moderators securely."
             )
+
+            Notification.objects.create(
+                recipient=request.user,
+                actor=request.user,
+                verb="report_submitted",
+                post=post,
+            )
+
+            # set actor=post.author so the reporter's identity remains absolutely private.
+            Notification.objects.create(
+                recipient=post.author,
+                actor=post.author,
+                verb="post_reported",
+                post=post,
+            )
+
         else:
             messages.info(request, "You have already reported this post.")
 
