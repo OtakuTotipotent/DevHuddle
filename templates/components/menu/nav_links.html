@@ -6,7 +6,12 @@
       <a href="{% url 'developer_directory' %}"
          class="font-medium transition {% if request.resolver_match.url_name == 'developer_directory' %}text-blue-500{% else %}text-gray-400 hover:text-blue-500 {% endif %}">Devs</a>
       <a href="{% url 'inbox' %}"
-         class="font-medium transition {% if request.resolver_match.url_name == 'inbox' %}text-blue-500{% else %}text-gray-400 hover:text-blue-500 {% endif %}">Inbox</a>
+         class="font-medium transition {% if request.resolver_match.url_name == 'inbox' %}text-blue-500{% else %}text-gray-400 hover:text-blue-500 {% endif %}">
+         <span class="relative inline-block">
+            Inbox
+            <span class="inbox-dot {% if unread_dms_count == 0 %}hidden{% endif %} absolute -top-1 -right-1 w-2 h-2 bg-blue-600 rounded-full"></span>
+         </span>
+      </a>
    {% else %}
       <a href="{% url 'about' %}"
          class="font-medium transition {% if request.resolver_match.url_name == 'about' %}text-blue-500{% else %}text-gray-400 hover:text-blue-500 {% endif %}">About</a>

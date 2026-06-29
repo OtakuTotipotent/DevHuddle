@@ -40,8 +40,11 @@
          class="block px-4 py-2 {% if request.resolver_match.url_name == 'home' %} text-blue-500 bg-gray-900 {% else %} text-gray-100 hover:bg-gray-900 hover:text-blue-500 {% endif %} rounded-lg transition"
          onclick="toggleMobileMenu()">Home</a>
       <a href="{% url 'inbox' %}"
-         class="block px-4 py-2 {% if request.resolver_match.url_name == 'inbox' %} text-blue-500 bg-gray-900 {% else %} text-gray-100 hover:bg-gray-900 hover:text-blue-500 {% endif %} rounded-lg transition"
-         onclick="toggleMobileMenu()">Inbox</a>
+         class="flex px-4 py-2 {% if request.resolver_match.url_name == 'inbox' %} text-blue-500 bg-gray-900 {% else %} text-gray-100 hover:bg-gray-900 hover:text-blue-500 {% endif %} rounded-lg transition items-center justify-between"
+         onclick="toggleMobileMenu()">
+         <span>Inbox</span>
+         <span class="inbox-dot {% if unread_dms_count == 0 %}hidden{% endif %} block w-2 h-2 bg-blue-600 rounded-full"></span>
+      </a>
       <a href="{% url 'developer_directory' %}"
          class="block px-4 py-2 {% if request.resolver_match.url_name == 'developer_directory' %} text-blue-500 bg-gray-900 {% else %} text-gray-100 hover:bg-gray-900 hover:text-blue-500 {% endif %} rounded-lg transition"
          onclick="toggleMobileMenu()">Developers</a>

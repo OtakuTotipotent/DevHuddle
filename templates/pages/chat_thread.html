@@ -3,39 +3,43 @@
     Chat with {{ contact.username }}
 {% endblock title %}
 {% block content %}
-    <div class="max-w-3xl mx-auto mt-6">
-        <div class="bg-gray-800 rounded-xl border border-gray-700 shadow-xl flex flex-col h-[75vh]">
-            <div class="p-4 border-b border-gray-700 bg-gray-900/50 rounded-t-xl flex items-center gap-3">
-                <a href="{% url 'inbox' %}" class="text-gray-400 hover:text-white mr-2">← Back</a>
+    <div class="max-w-3xl mx-2 md:mx-auto my-4">
+        <div class="rounded-xl border border-gray-700/50 shadow-xl flex flex-col h-[80vh]">
+            {% comment %} Header {% endcomment %}
+            <div class="p-4 border-b border-gray-700/50 rounded-t-xl flex items-center gap-3">
+                <a href="{% url 'inbox' %}"
+                   class="text-gray-400 hover:text-gray-200 mr-2">← Back</a>
                 <a href="{% url 'user_profile' contact.username %}"
-                   class="font-bold text-lg text-white hover:text-blue-400 transition">{{ contact.first_name }} {{ contact.last_name }} (@{{ contact.username }})</a>
+                   class="font-semibold text-lg text-blue-500 hover:text-blue-600 transition">{{ contact.first_name }} {{ contact.last_name }} (@{{ contact.username }})</a>
                 {% if contact.is_premium %}
-                    <span class="text-[10px] bg-yellow-500/20 text-yellow-500 px-2 py-0.5 rounded border border-yellow-500/50">PRO</span>
+                    <span class="text-[10px] bg-green-500/20 text-green-500 px-3 py-0.5 rounded-full border border-green-500/50">PRO</span>
                 {% endif %}
             </div>
-            <div class="grow p-4 overflow-y-auto space-y-4" id="chat-box">
+            {% comment %} Messages {% endcomment %}
+            <div id="chat-box" class="grow p-4 overflow-y-auto space-y-4">
                 {% for msg in messages %}
                     <div class="flex {% if msg.sender == request.user %}justify-end{% else %}justify-start{% endif %}">
-                        <div class="max-w-[70%] rounded-2xl p-3 {% if msg.sender == request.user %}bg-blue-600 text-white rounded-br-none{% else %}bg-gray-700 text-gray-100 rounded-bl-none border border-gray-600{% endif %} shadow-sm">
+                        <div class="max-w-[90%] rounded-2xl p-3 {% if msg.sender == request.user %}bg-blue-900/20 text-gray-400 rounded-br-none border border-blue-800/30 {% else %}bg-gray-700/20 text-gray-400 rounded-bl-none border border-gray-600/30 {% endif %} shadow-lg">
                             <p class="text-sm whitespace-pre-wrap">{{ msg.body }}</p>
-                            <span class="text-[9px] mt-1 block {% if msg.sender == request.user %}text-blue-200 text-right{% else %}text-gray-400 text-left{% endif %}">{{ msg.created_at|date:"h:i A" }}</span>
+                            <span class="text-[10px] mt-1 block {% if msg.sender == request.user %} text-blue-400 text-right {% else %} text-blue-500 text-left {% endif %}">{{ msg.created_at|date:"h:i A" }}</span>
                         </div>
                     </div>
                 {% empty %}
-                    <div class="text-center text-gray-500 text-sm mt-10">Start the conversation with @{{ contact.username }}.</div>
+                    <div class="text-center text-blue-500 text-sm mt-20">Start your conversation with @{{ contact.username }}.</div>
                 {% endfor %}
             </div>
-            <div class="p-4 border-t border-gray-700 bg-gray-900/50 rounded-b-xl">
-                <form method="post" class="flex gap-3">
+            {% comment %} Buttons & Inputs {% endcomment %}
+            <div class="p-4 border-t border-gray-700/50 rounded-b-xl">
+                <form id="chat-form" method="post" class="flex gap-3">
                     {% csrf_token %}
                     <textarea name="body"
                               id="chat-input"
                               rows="2"
-                              class="w-full bg-gray-900 text-white border border-gray-600 rounded-xl p-3 focus:outline-none focus:border-blue-500 resize-none text-sm"
+                              class="w-full text-gray-400 border border-gray-600/50 rounded-lg p-2 focus:outline-none focus:border-blue-500/50 resize-none text-sm"
                               placeholder="Type a message..."
                               required></textarea>
                     <button type="submit"
-                            class="bg-blue-600 hover:bg-blue-700 text-white px-6 font-bold rounded-xl transition shadow-lg shrink-0">
+                            class="bg-blue-700 hover:bg-blue-800 text-gray-300 px-6 font-semibold rounded-lg transition shadow-lg shrink-0 cursor-pointer">
                         Send
                     </button>
                 </form>
@@ -49,6 +53,35 @@
     const chatBox = document.getElementById('chat-box');
     chatBox.scrollTop = chatBox.scrollHeight;
 
+    const contactUsername = "{{ contact.username }}";
+    const currentUser = "{{ request.user.username }}";
+
+    // Connect to WebSocket
+    const wsScheme = window.location.protocol === "https:" ? "wss" : "ws";
+    const chatSocket = new WebSocket(
+        wsScheme + '://' + window.location.host + '/ws/chat/' + contactUsername + '/'
+    );
+
+    // Receive Message
+    chatSocket.onmessage = function(e) {
+        const data = JSON.parse(e.data);
+        const isMe = data.sender === currentUser;
+        
+        // Build the HTML for the new chat bubble
+        const bubble = `
+            <div class="flex ${isMe ? 'justify-end' : 'justify-start'} mb-4">
+                <div class="max-w-[70%] rounded-2xl p-3 shadow-sm ${ isMe ? 'bg-blue-600 text-white rounded-br-none' : 'bg-gray-700 text-gray-100 rounded-bl-none border border-gray-600' }">
+                    <p class="text-sm whitespace-pre-wrap">${data.message}</p>
+                    <span class="text-[9px] mt-1 block ${isMe ? 'text-blue-200 text-right' : 'text-gray-400 text-left'}">${data.time}</span>
+                </div>
+            </div>
+        `;
+        
+        // Append and scroll
+        chatBox.insertAdjacentHTML('beforeend', bubble);
+        chatBox.scrollTop = chatBox.scrollHeight;
+    };
+
     // Intents handling for drafting messages
     const urlParams = new URLSearchParams(window.location.search);
     if(urlParams.get('intent') === 'hire') {
@@ -58,5 +91,17 @@
     } else {
         document.getElementById('chat-input').value = "Hello @{{ contact.username }},\n"
     }
+
+    // Send Message (Hijack the form)
+    document.querySelector('chat-form').addEventListener('submit', function(e) {
+        e.preventDefault();
+        const input = document.getElementById('chat-input');
+        const message = input.value.trim();
+        
+        if (message) {
+            chatSocket.send(JSON.stringify({ 'message': message }));
+            input.value = '';
+        }
+    });
     </script>
 {% endblock scripts %}

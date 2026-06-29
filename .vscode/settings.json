@@ -1,7 +1,10 @@
 {
     "cSpell.words": [
         "anyio",
+        "ASGI",
         "asgiref",
+        "beforeend",
+        "cbor",
         "celerybeat",
         "certifi",
         "cffi",
@@ -44,6 +47,7 @@
         "pytest",
         "pytokens",
         "REFERER",
+        "rgba",
         "runserver",
         "sdist",
         "searchbar",
@@ -54,9 +58,13 @@
         "timesince",
         "tqdm",
         "truncatechars",
+        "txaio",
         "tzdata",
+        "ujson",
+        "Unhide",
         "uritemplate",
         "urlencode",
-        "urllib"
+        "urllib",
+        "zope"
     ]
 }

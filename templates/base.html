@@ -45,6 +45,7 @@
       </h2>
       <p class="text-blue-500 mt-2 font-mono text-sm tracking-widest">ANALYZING DATAPOINTS</p>
     </div>
+    {% comment %} AI Links Handler {% endcomment %}
     <script>
       // Intercept any link that goes to the AI analyzer routes
       document.addEventListener('DOMContentLoaded', () => {
@@ -60,5 +61,65 @@
           });
       });
     </script>
+    {% comment %} Global Live Notifications {% endcomment %}
+    {% if user.is_authenticated %}
+      <div id="toast-container"
+           class="fixed bottom-5 right-5 z-100 flex flex-col gap-3"></div>
+      <script>
+        const notifScheme = window.location.protocol === "https:" ? "wss" : "ws";
+        const notifSocket = new WebSocket(
+            notifScheme + '://' + window.location.host + '/ws/notifications/'
+        );
+
+        notifSocket.onmessage = function(e) {
+            const data = JSON.parse(e.data);
+            
+            if (data.is_dm) {
+                // 1. Unhide all Purple Inbox Dots globally
+                document.querySelectorAll('.inbox-dot').forEach(dot => dot.classList.remove('hidden'));
+                
+                // 2. Specialized DM Toast (Clickable to open chat)
+                const toast = document.createElement('div');
+                toast.className = "bg-gray-800 border border-purple-500/50 shadow-2xl shadow-purple-900/20 p-4 rounded-xl flex items-center gap-3 transform transition-all translate-y-10 opacity-0 cursor-pointer hover:bg-gray-700/80";
+                toast.onclick = () => window.location.href = `/inbox/${data.actor}/`;
+                toast.innerHTML = `
+                    <div class="w-10 h-10 bg-purple-900/30 rounded-full flex items-center justify-center text-xl shrink-0 text-purple-400">💬</div>
+                    <div class="overflow-hidden">
+                        <p class="text-sm text-gray-200 truncate">New message from <span class="font-bold text-purple-400">@${data.actor}</span></p>
+                        <p class="text-xs text-gray-500 mt-0.5 truncate">${data.message_preview}</p>
+                    </div>
+                `;
+                showToast(toast);
+
+            } else {
+                // 1. Instantly Increment the Dropdown Alerts Counters
+                document.querySelectorAll('.alerts-counter').forEach(badge => {
+                    badge.innerText = parseInt(badge.innerText || '0') + 1;
+                });
+                
+                // 2. Standard System Toast
+                const toast = document.createElement('div');
+                toast.className = "bg-gray-800 border border-blue-500/50 shadow-2xl shadow-blue-900/20 p-4 rounded-xl flex items-center gap-3 transform transition-all translate-y-10 opacity-0";
+                toast.innerHTML = `
+                    <div class="w-10 h-10 bg-blue-900/30 rounded-full flex items-center justify-center text-xl shrink-0">${data.icon || '🔔'}</div>
+                    <div>
+                        <p class="text-sm text-gray-200">New activity from <span class="font-bold text-blue-400">@${data.actor}</span></p>
+                        <p class="text-xs text-gray-500 mt-0.5">${data.verb}</p>
+                    </div>
+                `;
+                showToast(toast);
+            }
+        };
+
+        function showToast(toast) {
+            document.getElementById('toast-container').appendChild(toast);
+            setTimeout(() => toast.classList.remove('translate-y-10', 'opacity-0'), 100);
+            setTimeout(() => {
+                toast.classList.add('translate-y-10', 'opacity-0');
+                setTimeout(() => toast.remove(), 300);
+            }, 5000);
+        }
+      </script>
+    {% endif %}
   </body>
 </html>

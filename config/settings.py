@@ -10,8 +10,9 @@ ALLOWED_HOSTS = []
 env = environ.Env()
 environ.Env.read_env(os.path.join(BASE_DIR, ".env"))
 
-
+# Apps / Parent Modules
 INSTALLED_APPS = [
+    "daphne",  # absolute top
     "django.contrib.admin",
     "django.contrib.auth",
     "django.contrib.contenttypes",
@@ -22,6 +23,7 @@ INSTALLED_APPS = [
     "users",
     "feed",
     "intelligence",
+    "communication",
 ]
 
 MIDDLEWARE = [
@@ -36,6 +38,7 @@ MIDDLEWARE = [
 
 ROOT_URLCONF = "config.urls"
 
+#  HTML & UI Layer
 TEMPLATES = [
     {
         "BACKEND": "django.template.backends.django.DjangoTemplates",
@@ -56,6 +59,8 @@ TEMPLATES = [
 
 WSGI_APPLICATION = "config.wsgi.application"
 
+
+# Database Layer
 DATABASES = {
     "default": {
         "ENGINE": "django.db.backends.sqlite3",
@@ -78,11 +83,15 @@ AUTH_PASSWORD_VALIDATORS = [
     },
 ]
 
+
+# Timezone
 LANGUAGE_CODE = "en-us"
 TIME_ZONE = "Asia/Karachi"
 USE_I18N = True
 USE_TZ = True
 
+
+# Static Files & Users Data
 STATIC_URL = "static/"
 STATICFILES_DIRS = [BASE_DIR / "static"]
 MEDIA_URL = "/media/"  # HTML side rendering
@@ -97,7 +106,7 @@ LOGIN_REDIRECT_URL = "home"
 LOGOUT_REDIRECT_URL = "home"
 
 
-# DEV MODE: Prints email to terminal
+# Prints email to terminal for/in DEV MODE
 EMAIL_BACKEND = "django.core.mail.backends.console.EmailBackend"
 # PRODUCTION MODE
 # EMAIL_BACKEND = 'django.core.mail.backends.smtp.EmailBackend'
@@ -106,3 +115,9 @@ EMAIL_BACKEND = "django.core.mail.backends.console.EmailBackend"
 
 # EXTERNAL APIs from ENVIRONMENT VARIABLES
 GEMINI_API_KEY = env("GEMINI_API_KEY")
+
+
+# Communication / Realtime Layer
+ASGI_APPLICATION = "config.asgi.application"
+# Zero-friction in-memory layer for development (Use Redis in Production)
+CHANNEL_LAYERS = {"default": {"BACKEND": "channels.layers.InMemoryChannelLayer"}}
