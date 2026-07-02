@@ -20,6 +20,7 @@ from .views import (
     MockCheckoutView,
     BoostUserView,
 )
+from .forms import CustomPasswordResetForm, CustomSetPasswordForm
 
 
 urlpatterns = [
@@ -43,7 +44,8 @@ urlpatterns = [
     path(
         "password-reset/",
         auth_views.PasswordResetView.as_view(
-            template_name="users/auth/password_reset_form.html"
+            template_name="users/auth/password_reset_form.html",
+            form_class=CustomPasswordResetForm,
         ),
         name="password_reset",
     ),
@@ -57,7 +59,8 @@ urlpatterns = [
     path(
         "password-reset-confirm/<uidb64>/<token>/",
         auth_views.PasswordResetConfirmView.as_view(
-            template_name="users/auth/password_reset_confirm.html"
+            template_name="users/auth/password_reset_confirm.html",
+            form_class=CustomSetPasswordForm,
         ),
         name="password_reset_confirm",
     ),

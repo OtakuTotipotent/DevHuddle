@@ -64,6 +64,7 @@ npx @tailwindcss/cli -i ./static/css/custom.css -o ./static/css/output.css --wat
 - Add dynamic stats data into profile stats section
 - Implement user profile buttons: Clients, Projects, Block
 - Prepare documentation for this project
+- Inside the Inbox, during chat with other users, the messages must appear instantly without reloading the window
 
 ## Improvements \& Suggestions
 

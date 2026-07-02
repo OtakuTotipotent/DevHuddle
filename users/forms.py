@@ -1,5 +1,10 @@
 # /users/forms.py
-from django.contrib.auth.forms import UserCreationForm, UserChangeForm
+from django.contrib.auth.forms import (
+    UserCreationForm,
+    UserChangeForm,
+    PasswordResetForm,
+    SetPasswordForm,
+)
 from .models import CustomUser, Skill, Project, Experience
 from django import forms
 
@@ -213,3 +218,29 @@ class SkillUpdateForm(forms.Form):
         help_text="Separate skills with commas. We will format them for you.",
         required=False,
     )
+
+
+class CustomPasswordResetForm(PasswordResetForm):
+    """Overrides Django's default reset form to add Tailwind styling"""
+
+    def __init__(self, *args, **kwargs):
+        super().__init__(*args, **kwargs)
+        self.fields["email"].widget.attrs.update(
+            {
+                "class": "w-full bg-gray-900 text-gray-200 rounded-full p-3 border border-gray-700/70 focus:border-blue-500/70 outline-none transition shadow-inner",
+                "placeholder": "name@example.com",
+            }
+        )
+
+
+class CustomSetPasswordForm(SetPasswordForm):
+    """Overrides Django's default new password form to add Tailwind styling"""
+
+    def __init__(self, *args, **kwargs):
+        super().__init__(*args, **kwargs)
+        for field in self.fields.values():
+            field.widget.attrs.update(
+                {
+                    "class": "w-full bg-gray-900 text-gray-200 rounded-full p-3 border border-gray-700/70 focus:border-blue-500/70 outline-none transition shadow-inner",
+                }
+            )
