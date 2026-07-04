@@ -657,3 +657,17 @@ class EcosystemDiscoveryView(LoginRequiredMixin, TemplateView):
         )[:12]
 
         return context
+
+
+# ==========================================
+# SYSTEM & SUPPORT (KNOWLEDGE BASE)
+# ==========================================
+
+
+class HelpSupportView(TemplateView):
+    template_name = "pages/support.html"
+
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        # Pass dynamic system stats here later if desired
+        return context
