@@ -4,9 +4,11 @@
   </div>
   <div class="items-center gap-2 md:gap-4 font-semibold hidden md:flex">
     <a href="{% url 'jobs_clients' %}"
-       class="hover:text-blue-500 transition">Jobs & Clients</a>
-    <a href="{% url 'about' %}" class="hover:text-blue-500 transition">About Us</a>
-    <a href="{% url 'support' %}" class="hover:text-blue-500 transition">Help & Support</a>
+       class="hover:text-blue-500 transition {% if request.resolver_match.url_name == 'jobs_clients' %}text-blue-500{% endif %}">Jobs & Clients</a>
+    <a href="{% url 'about' %}"
+       class="hover:text-blue-500 transition {% if request.resolver_match.url_name == 'about' %}text-blue-500{% endif %}">About Us</a>
+    <a href="{% url 'support' %}"
+       class="hover:text-blue-500 transition {% if request.resolver_match.url_name == 'support' %}text-blue-500{% endif %}">Help & Support</a>
     <a href="https://github.com/OtakuTotipotent/DevHuddle"
        target="_blank"
        class="hover:text-yellow-500 text-yellow-400/70 transition">Sourcecode 📂</a>

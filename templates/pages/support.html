@@ -104,20 +104,19 @@
             </div>
         </div>
     </div>
-{% endblock content %}
-{% block script %}
+    {% comment %} Script {% endcomment %}
     <script>
-    function toggleFAQ(id, iconId) {
-        const element = document.getElementById(id);
-        const icon = document.getElementById(iconId);
-        
-        if (element.classList.contains('hidden')) {
-            element.classList.remove('hidden');
-            icon.style.transform = 'rotate(180deg)';
-        } else {
-            element.classList.add('hidden');
-            icon.style.transform = 'rotate(0deg)';
+        function toggleFAQ(id, iconId) {
+            const element = document.getElementById(id);
+            const icon = document.getElementById(iconId);
+            
+            if (element.classList.contains('hidden')) {
+                element.classList.remove('hidden');
+                icon.style.transform = 'rotate(180deg)';
+            } else {
+                element.classList.add('hidden');
+                icon.style.transform = 'rotate(0deg)';
+            }
         }
-    }
     </script>
-{% endblock script %}
+{% endblock content %}
