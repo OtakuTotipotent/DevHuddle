@@ -62,7 +62,6 @@ npx @tailwindcss/cli -i ./static/css/custom.css -o ./static/css/output.css --wat
 - Implement Stripe or other free alternative payment gateway.
 - Add fallback AI api & enhance it.
 - Prepare documentation for this project
-- Inside the Inbox, during chat with other users, the messages must appear instantly without reloading the window
 
 ## Improvements \& Suggestions
 
