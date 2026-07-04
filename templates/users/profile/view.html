@@ -112,10 +112,15 @@
                class="border border-yellow-400 hover:opacity-80 cursor-pointer text-yellow-400 text-sm px-2 py-0.5 rounded-full transition">
               Boost
             </a>
-            {% if not profile_user.is_premium %}
+            {% if profile_user.is_premium %}
               <a href="{% url 'store' %}"
                  class="border border-green-400 hover:opacity-80 cursor-pointer text-green-400 text-sm px-2 py-0.5 rounded-full transition">
-                Go Premium
+                Premium Plus
+              </a>
+            {% else %}
+              <a href="{% url 'store' %}"
+                 class="border border-green-400 hover:opacity-80 cursor-pointer text-green-400 text-sm px-2 py-0.5 rounded-full transition">
+                Get Premium
               </a>
             {% endif %}
             <a href="{% url 'ai_analyze_profile' profile_user.username %}"
