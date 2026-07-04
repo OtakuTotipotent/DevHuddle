@@ -3,6 +3,7 @@
 from django.urls import path
 from django.contrib.auth import views as auth_views
 from .views import (
+    NetworkView,
     SignUpView,
     ProfileUpdateView,
     UserProfileView,
@@ -19,6 +20,7 @@ from .views import (
     StoreView,
     MockCheckoutView,
     BoostUserView,
+    toggle_block,
 )
 from .forms import CustomPasswordResetForm, CustomSetPasswordForm
 
@@ -108,6 +110,16 @@ urlpatterns = [
         "follow/<str:username>/",
         follow_user,
         name="follow_user",
+    ),
+    path(
+        "profile/<str:username>/block/",
+        toggle_block,
+        name="toggle_block",
+    ),
+    path(
+        "profile/<str:username>/network/",
+        NetworkView.as_view(),
+        name="user_network",
     ),
     #
     # Portfolio Workspaces

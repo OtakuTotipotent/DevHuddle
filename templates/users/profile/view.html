@@ -153,10 +153,18 @@
                 Follow
               {% endif %}
             </button>
-            <a href=""
-               class="text-red-400 border border-red-400 text-sm px-2 py-0.5 rounded-full hover:opacity-80 cursor-pointer transition">
-              Block
-            </a>
+            {% comment %} Block/Unblock {% endcomment %}
+            <form action="{% url 'toggle_block' profile_user.username %}" method="post">
+              {% csrf_token %}
+              <button type="submit"
+                      class="text-red-400 border border-red-400 text-sm px-2 py-0.5 rounded-full hover:text-red-500 hover:border-red-500 cursor-pointer transition">
+                {% if profile_user in request.user.blocked_users.all %}
+                  Unblock
+                {% else %}
+                  Block
+                {% endif %}
+              </button>
+            </form>
             <form action="{% url 'boost_user' profile_user.username %}" method="post">
               {% csrf_token %}
               <button type="submit"
@@ -179,15 +187,17 @@
             <span class="text-xs tracking-wide">POSTS</span>
           </div>
           <!-- Followers: one sided connection -->
-          <div class="text-center">
+          <a href="{% url 'user_network' profile_user.username %}#followers"
+             class="text-center cursor-pointer group hover:text-gray-300">
             <span class="block text-lg font-semibold" id="followers-count">{{ profile_user.followers.count }}</span>
             <span class="text-xs tracking-wide">FOLLOWERS</span>
-          </div>
+          </a>
           <!-- Following: one sided connection -->
-          <div class="text-center">
+          <a href="{% url 'user_network' profile_user.username %}#following"
+             class="text-center cursor-pointer group hover:text-gray-300">
             <span class="block text-lg font-semibold" id="following-count">{{ profile_user.following.count }}</span>
             <span class="text-xs tracking-wide">FOLLOWING</span>
-          </div>
+          </a>
           <!-- Boosts -->
           <div class="text-center">
             <span class="block text-lg font-semibold">

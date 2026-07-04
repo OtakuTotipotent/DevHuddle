@@ -82,14 +82,16 @@
         chatBox.scrollTop = chatBox.scrollHeight;
     };
 
-    // Intents handling for drafting messages
+    // Intents handling in URL for drafting messages
     const urlParams = new URLSearchParams(window.location.search);
     if(urlParams.get('intent') === 'hire') {
-        document.getElementById('chat-input').value = "Hello @{{ contact.username }},\nI reviewed your profile and projects. I'd like to discuss a potential opportunity with you.";
+        const hireMsg = `Hello @{{ contact.username }},\n\nI reviewed your profile and projects. I'd like to discuss a potential opportunity with you.`;
+        document.getElementById('chat-input').value = hireMsg;
     } if (urlParams.get('intent') === 'getHired') {
-        document.getElementById('chat-input').value = "Hello @{{ contact.username }},\nI just saw your profile and work. I'm available as a skilled professional for hiring. If possible, I would like to avail any opportunities.";
+        const hireMsg = `Hello @{{ contact.username }},\n\nI just saw your profile and work. I'm available as a skilled professional for hiring. If possible, I would like to avail any opportunities.`;
+        document.getElementById('chat-input').value = hireMsg;
     } else {
-        document.getElementById('chat-input').value = "Hello @{{ contact.username }},\n"
+        document.getElementById('chat-input').value = "";
     }
 
     // Send Message (Hijack the form)

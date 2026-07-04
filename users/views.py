@@ -123,9 +123,7 @@ class UserProfileView(LoginRequiredMixin, DetailView):
             except ValueError:
                 context["stat_rank"] = "N/A"
         else:
-            context["stat_rank"] = (
-                "Org"
-            )
+            context["stat_rank"] = "Org"
 
         # Profile Strength Index (%)
         strength = 0
@@ -166,6 +164,27 @@ def follow_user(request, username):
             "following_count": target_user.following.count(),
         }
     )
+
+
+@login_required
+def toggle_block(request, username):
+    target_user = get_object_or_404(CustomUser, username=username)
+
+    if target_user != request.user:
+        if request.user.blocked_users.filter(pk=target_user.pk).exists():
+            request.user.blocked_users.remove(target_user)
+            messages.success(request, f"You unblocked @{target_user.username}.")
+        else:
+            request.user.blocked_users.add(target_user)
+            # 🛡️ Force mutual unfollow
+            request.user.following.remove(target_user)
+            target_user.following.remove(request.user)
+            messages.warning(
+                request,
+                f"You blocked @{target_user.username}. Their content is now hidden.",
+            )
+
+    return redirect(request.META.get("HTTP_REFERER", "home"))
 
 
 # ==========================================
@@ -332,6 +351,27 @@ class DeveloperDirectoryView(LoginRequiredMixin, ListView):
 
         # Pass the current filter to highlight the active tab
         context["current_skill"] = self.request.GET.get("skill", "")
+        return context
+
+
+class NetworkView(LoginRequiredMixin, DetailView):
+    model = CustomUser
+    template_name = "users/profile/network.html"
+    context_object_name = "profile_user"
+    slug_field = "username"
+    slug_url_kwarg = "username"
+
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        user = self.get_object()
+
+        context["followers"] = user.followers.all()
+        context["following"] = user.following.all()
+
+        # Security: Only allow the owner to see their blocked list
+        if self.request.user == user:
+            context["blocked_users"] = user.blocked_users.all()
+
         return context
 
 

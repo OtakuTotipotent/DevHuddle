@@ -153,8 +153,17 @@ class HomePageView(ListView):
         if not self.request.user.is_authenticated:
             return Post.objects.all().order_by("-created_at")
 
+        # Build exclusion list (People I blocked + People who blocked me)
+        blocked_ids = self.request.user.blocked_users.values_list("id", flat=True)
+        blocked_by_ids = self.request.user.blocked_by.values_list("id", flat=True)
+        exclude_list = list(blocked_ids) + list(blocked_by_ids)
+
         feed_type = self.request.GET.get("feed", "fellows")
-        queryset = Post.objects.annotate(
+        queryset = (
+            Post.objects.exclude(author__id__in=exclude_list)
+            .select_related("author")
+            .prefetch_related("likes", "comments")
+        ).annotate(
             like_count=Count("likes", distinct=True),
             comment_count=Count("comments", distinct=True),
         )
