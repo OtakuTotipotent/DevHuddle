@@ -58,11 +58,9 @@ npx @tailwindcss/cli -i ./static/css/custom.css -o ./static/css/output.css --wat
 ## Major Fixes
 
 - On same web browser, logging in/out should not interfere with each other for multiple tabs.
-- Add help & support page (containing user guides, about developer and external links or resources)
 - Add Recycle bin page for recovering data within 3 days
-- The Subscription (DevHuddle Pro) needs to be ended after certain time period (monthly)
 - Add dynamic stats data into profile stats section
-- Implement user profile buttons: Clients, Projects, Block
+- Implement user profile buttons: Followers, Following, Block
 - Prepare documentation for this project
 - Inside the Inbox, during chat with other users, the messages must appear instantly without reloading the window
 
