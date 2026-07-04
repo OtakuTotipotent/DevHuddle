@@ -624,3 +624,36 @@ class ModerationActionView(LoginRequiredMixin, UserPassesTestMixin, View):
             )
 
         return redirect("moderation_dashboard")
+
+
+# ==========================================
+# ECOSYSTEM DISCOVERY (JOBS, CLIENTS, PROJECTS)
+# ==========================================
+
+
+class EcosystemDiscoveryView(LoginRequiredMixin, TemplateView):
+    template_name = "pages/jobs_clients.html"
+
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+
+        # Fetch Active Jobs (Latest 12)
+        context["jobs"] = (
+            Post.objects.filter(post_type="job")
+            .select_related("author")
+            .order_by("-created_at")[:12]
+        )
+
+        # Fetch Top Clients & Orgs (Ranked by number of jobs posted)
+        context["clients"] = (
+            CustomUser.objects.filter(role__in=["client", "org"])
+            .annotate(job_count=Count("post", filter=Q(post__post_type="job")))
+            .order_by("-job_count", "-date_joined")[:12]
+        )
+
+        # Fetch Featured Projects (Latest 12 with images preferred)
+        context["projects"] = Project.objects.select_related("user").order_by(
+            F("image").desc(nulls_last=True), "-created_at"
+        )[:12]
+
+        return context

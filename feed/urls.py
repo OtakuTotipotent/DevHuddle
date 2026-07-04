@@ -23,6 +23,7 @@ from .views import (
     submit_report,
     ModerationActionView,
     ModerationDashboardView,
+    EcosystemDiscoveryView,
 )
 
 
@@ -81,6 +82,11 @@ urlpatterns = [
         "notifications/",
         NotificationListView.as_view(),
         name="notifications",
+    ),
+    path(
+        "explore/",
+        EcosystemDiscoveryView.as_view(),
+        name="jobs_clients",
     ),
     path(
         "job/<int:pk>/apply/",
