@@ -2,6 +2,7 @@
 
 import os
 from django.db import models
+from django.utils.timezone import now
 from django.core.validators import MinLengthValidator
 from django.contrib.auth.models import AbstractUser
 
@@ -28,6 +29,12 @@ class CustomUser(AbstractUser):
     email = models.EmailField(unique=True)
     bio = models.TextField(
         blank=True, null=True, help_text="Tell the world about your stack."
+    )
+    avatar = models.ImageField(
+        blank=True,
+        null=True,
+        upload_to=rename_avatar,
+        validators=[validate_file_size, validate_image_extension],
     )
 
     # URL Fields
@@ -60,33 +67,36 @@ class CustomUser(AbstractUser):
         related_name="followers",
         blank=True,
     )
-    is_premium = models.BooleanField(
-        default=False,
-        help_text="Active Premium Subscription",
-    )
-    profile_boosts = models.IntegerField(
-        default=0,
-        help_text="Number of profile boosts purchased",
-    )
-    avatar = models.ImageField(
-        blank=True,
-        null=True,
-        upload_to=rename_avatar,
-        validators=[validate_file_size, validate_image_extension],
-    )
 
+    # Role
     ROLE_CHOICES = (
         ("dev", "Developer"),
         ("client", "Client / Hirer"),
         ("org", "Organization"),
     )
     role = models.CharField(max_length=10, choices=ROLE_CHOICES, default="dev")
-
     tech_stack = models.CharField(
         max_length=255,
         blank=True,
         help_text="e.g. Python, Java, CI/CD, Unity... (Comma separated)",
     )
+
+    # Monetization | Pricing
+    premium_expires_at = models.DateTimeField(
+        blank=True, null=True, help_text="When the Pro subscription ends"
+    )
+    profile_boosts = models.IntegerField(
+        default=0,
+        help_text="Number of profile boosts purchased",
+    )
+
+    # methods & properties
+    @property
+    def is_premium(self):
+        """Dynamically calculates premium status without needing background cron jobs"""
+        if self.premium_expires_at:
+            return self.premium_expires_at > now()
+        return False
 
     def is_following(self, target_user):
         return self.following.filter(pk=target_user.pk).exists()

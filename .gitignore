@@ -52,10 +52,10 @@ db.sqlite3-journal
 media/
 staticfiles/        # collected static files
 static_root/
+sent_emails
 
 # Environments
 .env
-.env.*
 .venv/
 venv/
 ENV/

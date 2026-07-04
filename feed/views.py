@@ -15,6 +15,7 @@ from django.contrib.auth.decorators import login_required
 from django.contrib import messages
 from django.views.generic.edit import FormMixin
 from django.urls import reverse, reverse_lazy
+from django.utils.timezone import now
 from django.http import JsonResponse, HttpResponseRedirect
 from django.views import View
 from users.models import CustomUser, Project
@@ -213,7 +214,7 @@ class HomePageView(ListView):
                     follower_count=Count("followers", distinct=True),
                     project_count=Count("projects", distinct=True),
                     premium_bonus=Case(
-                        When(is_premium=True, then=50),
+                        When(premium_expires_at__gt=now(), then=50),
                         default=0,
                         output_field=IntegerField(),
                     ),

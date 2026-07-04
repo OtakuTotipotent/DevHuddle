@@ -1,8 +1,10 @@
 # /users/views.py
 
+from datetime import timedelta
 from django.views import View
 from django.contrib import messages
 from django.http import JsonResponse
+from django.utils.timezone import now
 from django.urls import reverse_lazy, reverse
 from django.shortcuts import get_object_or_404, redirect
 from django.contrib.auth.decorators import login_required
@@ -39,11 +41,10 @@ from .forms import (
     SkillUpdateForm,
 )
 
+
 # ==========================================
 # ACCOUNTS HANDLING
 # ==========================================
-
-
 class SignUpView(CreateView):
     form_class = CustomUserCreationForm
     success_url = reverse_lazy("login")
@@ -236,7 +237,7 @@ class DeveloperDirectoryView(LoginRequiredMixin, ListView):
             )
             .annotate(
                 premium_bonus=Case(
-                    When(is_premium=True, then=20),
+                    When(premium_expires_at__gt=now(), then=20),
                     default=0,
                     output_field=IntegerField(),
                 )
@@ -286,14 +287,18 @@ class MockCheckoutView(LoginRequiredMixin, View):
         # Premium Subscription
         if item == "premium":
             if user.is_premium:
-                messages.warning(
-                    request, "You already have an active Premium subscription."
-                )
-            else:
-                user.is_premium = True
+                user.premium_expires_at += timedelta(days=30)
                 user.save()
                 messages.success(
-                    request, "Welcome to DevHuddle Pro! Your crown has been equipped."
+                    request,
+                    f"Your Pro subscription has been extended! It now expires on {user.premium_expires_at.strftime('%B %d, %Y')}.",
+                )
+            else:
+                user.premium_expires_at = now() + timedelta(days=30)
+                user.save()
+                messages.success(
+                    request,
+                    "Welcome to DevHuddle Pro! Your crown has been equipped for 30 days.",
                 )
                 Notification.objects.create(recipient=user, actor=user, verb="premium")
 

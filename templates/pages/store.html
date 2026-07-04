@@ -13,6 +13,7 @@
             </p>
         </div>
         <div class="grid grid-cols-1 md:grid-cols-2 gap-8 max-w-4xl mx-auto cursor-default select-none">
+            {% comment %} BOOST CARD {% endcomment %}
             <div class="bg-blue-800/10 rounded-2xl border border-blue-800 hover:border-blue-700 transition-colors p-5 md:p-8 shadow-xl shadow-blue-900/20 flex flex-col justify-between relative overflow-hidden">
                 <div>
                     <div class="absolute top-0 right-0 w-32 h-32 bg-blue-600 rounded-full blur-3xl"></div>
@@ -51,6 +52,7 @@
                     </form>
                 </div>
             </div>
+            {% comment %} SUBSCRIPTION CARD {% endcomment %}
             <div class="bg-green-800/10 rounded-2xl border border-green-800 hover:border-green-700 transition-colors p-5 md:p-8 shadow-xl shadow-green-900/20 flex flex-col justify-between relative overflow-hidden">
                 <div class="absolute top-0 right-0 w-32 h-32 bg-green-600 rounded-full blur-3xl"></div>
                 <div class="relative z-10">
@@ -73,15 +75,23 @@
                 </div>
                 <div class="relative z-10">
                     {% if user.is_premium %}
-                        <div class="w-full text-center py-2 rounded-lg text-green-500 border border-green-700 cursor-not-allowed">
-                            Subscribed already!
-                        </div>
+                        <p class="text-xs text-green-500 mb-2 text-center font-mono font-bold">
+                            Active until {{ user.premium_expires_at|date:"M d, Y" }}
+                        </p>
+                        <form method="post" action="{% url 'checkout' %}">
+                            {% csrf_token %}
+                            <input type="hidden" name="item" value="premium">
+                            <button type="submit"
+                                    class="w-full py-2 rounded-lg text-green-500 border border-green-700 cursor-pointer hover:bg-green-900/30 transition">
+                                Extend Pro (+30 Days) - $15
+                            </button>
+                        </form>
                     {% else %}
                         <form method="post" action="{% url 'checkout' %}">
                             {% csrf_token %}
                             <input type="hidden" name="item" value="premium">
                             <button type="submit"
-                                    class="w-full py-2 rounded-lg text-green-500 border border-green-700 cursor-pointer hover:opacity-70 transition-opacity">
+                                    class="w-full py-2 rounded-lg text-green-500 border border-green-700 cursor-pointer hover:bg-green-900/30 transition">
                                 Upgrade to Pro - $15/mo
                             </button>
                         </form>
