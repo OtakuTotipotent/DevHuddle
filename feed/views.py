@@ -236,6 +236,20 @@ class HomePageView(ListView):
 class AboutPageView(TemplateView):
     template_name = "pages/about.html"
 
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+
+        # Fetch the Admin/Staff team directly from the database
+        context["staff_members"] = CustomUser.objects.filter(is_staff=True).order_by(
+            "date_joined"
+        )
+
+        # Fetch live platform telemetry for the Hero section
+        context["total_devs"] = CustomUser.objects.filter(role="dev").count()
+        context["total_jobs"] = Post.objects.filter(post_type="job").count()
+
+        return context
+
 
 # ==========================================
 # DASHBOARDS
