@@ -26,7 +26,7 @@ from django.views.generic import (
     ListView,
     TemplateView,
 )
-from feed.models import Notification
+from feed.models import Notification, Post
 from .models import (
     CustomUser,
     Project,
@@ -79,6 +79,69 @@ class UserProfileView(LoginRequiredMixin, DetailView):
     context_object_name = "profile_user"
     slug_field = "username"
     slug_url_kwarg = "username"
+
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        user = self.get_object()
+
+        context["stat_posts"] = Post.objects.filter(author=user).count()
+        context["stat_projects"] = user.projects.count()
+        impact_agg = Post.objects.filter(author=user).aggregate(
+            total_likes=Count("likes")
+        )
+        context["stat_impact"] = impact_agg["total_likes"] or 0
+
+        # Global Leaderboard Rank
+        if user.role == "dev":
+            # Execute the same Dev Score algorithm used in the Directory/Developers
+            ranked_devs = (
+                CustomUser.objects.filter(role="dev")
+                .annotate(
+                    follower_count=Count("followers", distinct=True),
+                    project_count=Count("projects", distinct=True),
+                    premium_bonus=Case(
+                        When(premium_expires_at__gt=now(), then=50),
+                        default=0,
+                        output_field=IntegerField(),
+                    ),
+                )
+                .annotate(
+                    dev_score=ExpressionWrapper(
+                        (F("follower_count") * 2)
+                        + (F("project_count") * 3)
+                        + (F("profile_boosts") * 7)
+                        + F("premium_bonus"),
+                        output_field=IntegerField(),
+                    )
+                )
+                .order_by("-dev_score", "-date_joined")
+            )
+
+            dev_list = list(ranked_devs.values_list("id", flat=True))
+            try:
+                context["stat_rank"] = f"{dev_list.index(user.id) + 1}"
+            except ValueError:
+                context["stat_rank"] = "N/A"
+        else:
+            context["stat_rank"] = (
+                "Org"
+            )
+
+        # Profile Strength Index (%)
+        strength = 0
+        if user.avatar:
+            strength += 20
+        if user.bio:
+            strength += 20
+        if user.skills.exists():
+            strength += 20
+        if user.projects.exists():
+            strength += 20
+        if user.github_url or user.linkedin_url or user.portfolio_url:
+            strength += 20
+        context["stat_active"] = strength
+
+        return context
 
 
 @login_required

@@ -59,7 +59,6 @@ npx @tailwindcss/cli -i ./static/css/custom.css -o ./static/css/output.css --wat
 
 - On same web browser, logging in/out should not interfere with each other for multiple tabs.
 - Add Recycle bin page for recovering data within 3 days
-- Add dynamic stats data into profile stats section
 - Implement user profile buttons: Followers, Following, Block
 - Prepare documentation for this project
 - Inside the Inbox, during chat with other users, the messages must appear instantly without reloading the window

@@ -175,7 +175,7 @@
         <div class="flex flex-wrap md:flex-nowrap gap-6 md:gap-0 md:justify-between py-4 border-y border-gray-700 text-gray-400">
           <!-- Posts: Total posts count -->
           <div class="text-center">
-            <span class="block text-lg font-semibold">{{ profile_user.post_set.count }}</span>
+            <span class="block text-lg font-semibold">{{ stat_posts }}</span>
             <span class="text-xs tracking-wide">POSTS</span>
           </div>
           <!-- Followers: one sided connection -->
@@ -188,7 +188,7 @@
             <span class="block text-lg font-semibold" id="following-count">{{ profile_user.following.count }}</span>
             <span class="text-xs tracking-wide">FOLLOWING</span>
           </div>
-          <!-- Connections: two sided mutual connection (both follow each other) -->
+          <!-- Boosts -->
           <div class="text-center">
             <span class="block text-lg font-semibold">
               {% if profile_user.profile_boosts > 0 %}
@@ -197,27 +197,28 @@
                 0
               {% endif %}
             </span>
-            <span class="text-xs tracking-wide">Boosts</span>
+            <span class="text-xs tracking-wide">BOOSTS</span>
           </div>
           <!-- Ranking: on basis of likes + comments + boosts + expertise level got -->
-          <div class="text-center">
-            <span class="block text-lg font-semibold">786</span>
+          <div class="text-center"
+               title="Depends on community engagement, subscription & expertise">
+            <span class="block text-lg font-semibold">{{ stat_rank }}</span>
             <span class="text-xs tracking-wide">RANK</span>
           </div>
           <!-- Projects: if any | Open source or finished projects -->
           <div class="text-center">
-            <span class="block text-lg font-semibold">0</span>
+            <span class="block text-lg font-semibold">{{ stat_projects }}</span>
             <span class="text-xs tracking-wide">PROJECTS</span>
           </div>
-          <!-- Active: average time spent on DevHuddle_ -->
-          <div class="text-center">
-            <span class="block text-lg font-semibold">47%</span>
-            <span class="text-xs tracking-wide">ACTIVE</span>
+          <!-- Strength: average time spent on DevHuddle_ -->
+          <div class="text-center" title="Depends on profile completion & activity">
+            <span class="block text-lg font-semibold">{{ stat_active }}%</span>
+            <span class="text-xs tracking-wide">STRENGTH</span>
           </div>
           <!-- Availability: YES/NO (Can someone hire them or not?) -->
-          <div class="text-center">
-            <span class="block text-lg font-semibold">Yes</span>
-            <span class="text-xs tracking-wide">AVAILABLE</span>
+          <div class="text-center" title="Depends on community interactions">
+            <span class="block text-lg font-semibold">{{ stat_impact }}</span>
+            <span class="text-xs tracking-wide">Impact</span>
           </div>
         </div>
         <!-- Experiences -->
