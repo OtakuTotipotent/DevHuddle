@@ -4,6 +4,7 @@
         "ASGI",
         "asgiref",
         "beforeend",
+        "BSIT",
         "cbor",
         "celerybeat",
         "certifi",

@@ -48,12 +48,16 @@
       <a href="{% url 'developer_directory' %}"
          class="block px-4 py-2 {% if request.resolver_match.url_name == 'developer_directory' %} text-blue-500 bg-gray-900 {% else %} text-gray-100 hover:bg-gray-900 hover:text-blue-500 {% endif %} rounded-lg transition"
          onclick="toggleMobileMenu()">Developers</a>
-      <a href=""
-         class="block px-4 py-2 {% if request.resolver_match.url_name == '' %} text-blue-500 bg-gray-900 {% else %} text-gray-100 hover:bg-gray-900 hover:text-blue-500 {% endif %} rounded-lg transition"
+      <a href="{% url 'jobs_clients' %}"
+         class="block px-4 py-2 {% if request.resolver_match.url_name == 'jobs_clients' %} text-blue-500 bg-gray-900 {% else %} text-gray-100 hover:bg-gray-900 hover:text-blue-500 {% endif %} rounded-lg transition"
          onclick="toggleMobileMenu()">Jobs & Clients</a>
-      <div class="h-px bg-gray-700 my-1 mx-2"></div>
-      <a href=""
-         class="block px-4 py-2 {% if request.resolver_match.url_name == '' %} text-blue-500 bg-gray-900 {% else %} text-gray-100 hover:bg-gray-900 hover:text-blue-500 {% endif %} rounded-lg transition"
+      <a href="{% url 'support' %}"
+         class="block px-4 py-2 {% if request.resolver_match.url_name == 'support' %} text-blue-500 bg-gray-900 {% else %} text-gray-100 hover:bg-gray-900 hover:text-blue-500 {% endif %} rounded-lg transition"
          onclick="toggleMobileMenu()">Help & Support</a>
+      {% comment %} Separate Section {% endcomment %}
+      <div class="h-px bg-gray-700 my-1 mx-2"></div>
+      <a href="{% url 'about' %}"
+         class="block px-4 py-2 {% if request.resolver_match.url_name == '' %} text-blue-500 bg-gray-900 {% else %} text-gray-100 hover:bg-gray-900 hover:text-blue-500 {% endif %} rounded-lg transition"
+         onclick="toggleMobileMenu()">About DevHuddle</a>
    </div>
 </div>

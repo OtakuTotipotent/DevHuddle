@@ -1,14 +1,148 @@
 {% extends "base.html" %}
 {% block title %}
-  About
+  About DevHuddle
 {% endblock title %}
 {% block content %}
-  <div class="text-xs text-gray-400 text-center m-4">
-    <p>© 2025 DevHuddle_</p>
-    <div class="flex flex-wrap justify-center gap-2 mt-2">
-      <a href="#" class="hover:underline">Privacy</a>
-      <a href="#" class="hover:underline">Terms</a>
-      <a href="#" class="hover:underline">Cookies</a>
-    </div>
+  <div class="max-w-6xl mx-auto mt-8 px-4 sm:px-0 space-y-16 mb-20">
+    <section class="text-center relative">
+      <div class="absolute top-0 left-1/2 transform -translate-x-1/2 w-full max-w-3xl h-100 bg-blue-600/10 rounded-full blur-[100px] pointer-events-none">
+      </div>
+      <div class="relative z-10 pt-10 pb-6">
+        <span class="text-blue-500 font-mono font-bold tracking-widest uppercase text-sm mb-4 block">BSIT Final Year Project</span>
+        <h1 class="text-5xl md:text-7xl font-extrabold text-white mb-6 tracking-tight">Welcome to <span class="text-transparent bg-clip-text bg-linear-to-r from-blue-400 to-purple-500">DevHuddle_</span></h1>
+        <p class="text-lg text-gray-400 max-w-2xl mx-auto leading-relaxed">
+          A dual-sided, algorithmic marketplace engineered to bridge the gap between creative engineers and top-tier organizations. Built from the ground up with real-time WebSockets, normalized vector skills, and Generative AI.
+        </p>
+      </div>
+      <div class="flex flex-wrap justify-center gap-4 mt-8 relative z-10">
+        <div class="bg-gray-800 border border-gray-700 px-6 py-3 rounded-2xl shadow-lg">
+          <span class="block text-2xl font-black text-blue-400">{{ total_devs }}+</span>
+          <span class="text-xs text-gray-500 uppercase tracking-widest font-bold">Engineers</span>
+        </div>
+        <div class="bg-gray-800 border border-gray-700 px-6 py-3 rounded-2xl shadow-lg">
+          <span class="block text-2xl font-black text-green-400">{{ total_jobs }}+</span>
+          <span class="text-xs text-gray-500 uppercase tracking-widest font-bold">Live Jobs</span>
+        </div>
+        <div class="bg-gray-800 border border-gray-700 px-6 py-3 rounded-2xl shadow-lg">
+          <span class="block text-2xl font-black text-purple-400">GenAI</span>
+          <span class="text-xs text-gray-500 uppercase tracking-widest font-bold">Integrated</span>
+        </div>
+      </div>
+    </section>
+    <section>
+      <div class="flex items-center gap-3 mb-6">
+        <span class="text-2xl">⚙️</span>
+        <h2 class="text-2xl font-bold text-gray-200">System Architecture</h2>
+      </div>
+      <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
+        <div class="bg-gray-800 rounded-3xl p-8 border border-gray-700 shadow-xl hover:border-blue-500/50 transition col-span-1 md:col-span-2 relative overflow-hidden">
+          <div class="absolute -right-10 -top-10 text-9xl opacity-5">📈</div>
+          <h3 class="text-xl font-bold text-white mb-3">Algorithmic Dev Score</h3>
+          <p class="text-gray-400 text-sm leading-relaxed">
+            Gone are the days of blind searching. The DevHuddle discovery engine ranks developers in real-time based on their portfolio density, community engagement, and premium status, allowing clients to find the exact talent they need instantly.
+          </p>
+        </div>
+        <div class="bg-gray-800 rounded-3xl p-8 border border-gray-700 shadow-xl hover:border-purple-500/50 transition relative overflow-hidden">
+          <div class="absolute -right-4 -bottom-4 text-7xl opacity-5">🤖</div>
+          <h3 class="text-xl font-bold text-white mb-3">AI Enthusiasm</h3>
+          <p class="text-gray-400 text-sm leading-relaxed">
+            Powered by Google Gemini, our native Intelligence Engine provides instantaneous code reviews, harsh-but-fair profile analyses, and automated technical insights without ever leaving the ecosystem.
+          </p>
+        </div>
+        <div class="bg-gray-800 rounded-3xl p-8 border border-gray-700 shadow-xl hover:border-green-500/50 transition">
+          <h3 class="text-xl font-bold text-white mb-3">Real-Time Networking</h3>
+          <p class="text-gray-400 text-sm leading-relaxed">
+            Running on Django Channels and ASGI WebSockets, direct messages and platform notifications are broadcasted in milliseconds, establishing a seamless negotiation pipeline between organizations and engineers.
+          </p>
+        </div>
+        <div class="bg-gray-800 rounded-3xl p-8 border border-gray-700 shadow-xl hover:border-red-500/50 transition col-span-1 md:col-span-2">
+          <h3 class="text-xl font-bold text-white mb-3">Trust & Safety Command Center</h3>
+          <p class="text-gray-400 text-sm leading-relaxed">
+            An enterprise-grade moderation queue allowing staff to monitor flagged content, clear false reports, and permanently delete violating posts to maintain a professional and secure digital environment.
+          </p>
+        </div>
+      </div>
+    </section>
+    <section>
+      <div class="flex items-center justify-between mb-6">
+        <div class="flex items-center gap-3">
+          <span class="text-2xl">👨‍💻</span>
+          <h2 class="text-2xl font-bold text-gray-200">Administration & Staff</h2>
+        </div>
+      </div>
+      <div class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-6">
+        {% for staff in staff_members %}
+          <div class="bg-gray-900/50 rounded-2xl border border-blue-900/50 p-6 flex flex-col items-center text-center shadow-lg hover:border-blue-500 transition relative overflow-hidden group">
+            <div class="absolute top-0 right-0 bg-blue-600 text-white text-[9px] font-black px-3 py-1 rounded-bl-lg uppercase tracking-widest shadow-md">
+              Admin
+            </div>
+            <a href="{% url 'user_profile' staff.username %}"
+               class="relative mb-4 mt-2 block">
+              {% if staff.avatar %}
+                <img src="{{ staff.avatar.url }}"
+                     width="80"
+                     height="80"
+                     alt="avatar"
+                     class="w-20 h-20 rounded-full object-cover border-4 border-gray-700 group-hover:border-blue-500 transition">
+              {% else %}
+                <div class="w-20 h-20 rounded-full bg-blue-600 flex items-center justify-center font-bold text-white text-2xl border-4 border-gray-700 group-hover:border-blue-500 transition">
+                  {{ staff.username|slice:":1"|upper }}
+                </div>
+              {% endif %}
+              {% if staff.is_superuser %}
+                <div class="absolute -bottom-2 -right-2 text-xl filter drop-shadow-lg">👑</div>
+              {% endif %}
+            </a>
+            <h3 class="text-lg font-bold text-gray-200">
+              <a href="{% url 'user_profile' staff.username %}">{{ staff.first_name }} {{ staff.last_name|default:staff.username }}</a>
+            </h3>
+            <p class="text-xs text-blue-400 mb-3">@{{ staff.username }}</p>
+            <a href="mailto:{{ staff.email }}"
+               class="mt-auto w-full bg-gray-800 hover:bg-gray-700 text-gray-300 border border-gray-600 font-bold py-2 rounded-lg text-xs transition shadow-sm">
+              Contact via Email
+            </a>
+          </div>
+        {% empty %}
+          <p class="text-gray-500 italic text-sm">No administrators found in the database.</p>
+        {% endfor %}
+      </div>
+    </section>
+    <section>
+      <div class="flex items-center gap-3 mb-6">
+        <span class="text-2xl">🗺️</span>
+        <h2 class="text-2xl font-bold text-gray-200">Future Milestones</h2>
+      </div>
+      <div class="bg-gray-800 rounded-3xl p-8 border border-gray-700 shadow-xl">
+        <div class="space-y-8 relative before:absolute before:inset-0 before:ml-5 before:-translate-x-px md:before:mx-auto md:before:translate-x-0 before:h-full before:w-0.5 before:bg-linear-to-b before:from-transparent before:via-blue-500 before:to-transparent">
+          <div class="relative flex items-center justify-between md:justify-normal md:odd:flex-row-reverse group is-active">
+            <div class="flex items-center justify-center w-10 h-10 rounded-full border-4 border-gray-900 bg-blue-500 text-white shadow shrink-0 md:order-1 md:group-odd:-translate-x-1/2 md:group-even:translate-x-1/2">
+              ✓
+            </div>
+            <div class="w-[calc(100%-4rem)] md:w-[calc(50%-2.5rem)] bg-gray-900/50 p-5 rounded-xl border border-blue-500/30 shadow-md">
+              <h4 class="font-bold text-blue-400 mb-1">Architecture & Normalization</h4>
+              <p class="text-xs text-gray-400">Deployed the core database schema, real-time WebSockets, normalized Skills/Projects, and the Gemini AI Intelligence engine.</p>
+            </div>
+          </div>
+          <div class="relative flex items-center justify-between md:justify-normal md:odd:flex-row-reverse group">
+            <div class="flex items-center justify-center w-10 h-10 rounded-full border-4 border-gray-900 bg-gray-700 text-gray-400 shadow shrink-0 md:order-1 md:group-odd:-translate-x-1/2 md:group-even:translate-x-1/2">
+              ⏳
+            </div>
+            <div class="w-[calc(100%-4rem)] md:w-[calc(50%-2.5rem)] bg-gray-900/30 p-5 rounded-xl border border-gray-700 shadow-md">
+              <h4 class="font-bold text-gray-300 mb-1">Enterprise Post Formatter</h4>
+              <p class="text-xs text-gray-500">Integrating HTML/Markup text uploads for highly formatted discussions and tutorials, while implementing strict media validation protocols.</p>
+            </div>
+          </div>
+          <div class="relative flex items-center justify-between md:justify-normal md:odd:flex-row-reverse group">
+            <div class="flex items-center justify-center w-10 h-10 rounded-full border-4 border-gray-900 bg-gray-700 text-gray-400 shadow shrink-0 md:order-1 md:group-odd:-translate-x-1/2 md:group-even:translate-x-1/2">
+              ⏳
+            </div>
+            <div class="w-[calc(100%-4rem)] md:w-[calc(50%-2.5rem)] bg-gray-900/30 p-5 rounded-xl border border-gray-700 shadow-md">
+              <h4 class="font-bold text-gray-300 mb-1">The Global Network Hub</h4>
+              <p class="text-xs text-gray-500">A dedicated page for showcasing collaborators, tracing follower lineages, and performing advanced filtered searches across content types and dates.</p>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
   </div>
 {% endblock content %}

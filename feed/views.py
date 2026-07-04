@@ -15,6 +15,7 @@ from django.contrib.auth.decorators import login_required
 from django.contrib import messages
 from django.views.generic.edit import FormMixin
 from django.urls import reverse, reverse_lazy
+from django.utils.timezone import now
 from django.http import JsonResponse, HttpResponseRedirect
 from django.views import View
 from users.models import CustomUser, Project
@@ -213,7 +214,7 @@ class HomePageView(ListView):
                     follower_count=Count("followers", distinct=True),
                     project_count=Count("projects", distinct=True),
                     premium_bonus=Case(
-                        When(is_premium=True, then=50),
+                        When(premium_expires_at__gt=now(), then=50),
                         default=0,
                         output_field=IntegerField(),
                     ),
@@ -235,6 +236,20 @@ class HomePageView(ListView):
 
 class AboutPageView(TemplateView):
     template_name = "pages/about.html"
+
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+
+        # Fetch the Admin/Staff team directly from the database
+        context["staff_members"] = CustomUser.objects.filter(is_staff=True).order_by(
+            "date_joined"
+        )
+
+        # Fetch live platform telemetry for the Hero section
+        context["total_devs"] = CustomUser.objects.filter(role="dev").count()
+        context["total_jobs"] = Post.objects.filter(post_type="job").count()
+
+        return context
 
 
 # ==========================================
@@ -624,3 +639,50 @@ class ModerationActionView(LoginRequiredMixin, UserPassesTestMixin, View):
             )
 
         return redirect("moderation_dashboard")
+
+
+# ==========================================
+# ECOSYSTEM DISCOVERY (JOBS, CLIENTS, PROJECTS)
+# ==========================================
+
+
+class EcosystemDiscoveryView(LoginRequiredMixin, TemplateView):
+    template_name = "pages/jobs_clients.html"
+
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+
+        # Fetch Active Jobs (Latest 12)
+        context["jobs"] = (
+            Post.objects.filter(post_type="job")
+            .select_related("author")
+            .order_by("-created_at")[:12]
+        )
+
+        # Fetch Top Clients & Orgs (Ranked by number of jobs posted)
+        context["clients"] = (
+            CustomUser.objects.filter(role__in=["client", "org"])
+            .annotate(job_count=Count("post", filter=Q(post__post_type="job")))
+            .order_by("-job_count", "-date_joined")[:12]
+        )
+
+        # Fetch Featured Projects (Latest 12 with images preferred)
+        context["projects"] = Project.objects.select_related("user").order_by(
+            F("image").desc(nulls_last=True), "-created_at"
+        )[:12]
+
+        return context
+
+
+# ==========================================
+# SYSTEM & SUPPORT (KNOWLEDGE BASE)
+# ==========================================
+
+
+class HelpSupportView(TemplateView):
+    template_name = "pages/support.html"
+
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        # Pass dynamic system stats here later if desired
+        return context

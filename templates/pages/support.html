@@ -1,0 +1,122 @@
+{% extends "base.html" %}
+{% block title %}Help & Support | DevHuddle{% endblock title %}
+{% block content %}
+    <div class="max-w-5xl mx-auto mt-8 px-4 sm:px-0 space-y-12 mb-16">
+        <div class="text-center py-12 bg-gray-800/50 rounded-3xl border border-gray-700 shadow-inner relative overflow-hidden">
+            <div class="absolute top-0 left-1/2 transform -translate-x-1/2 w-200 h-100 bg-blue-600/10 rounded-full blur-3xl pointer-events-none">
+            </div>
+            <h1 class="text-4xl md:text-5xl font-extrabold text-white relative z-10">How can we help you?</h1>
+            <p class="text-gray-400 mt-4 max-w-xl mx-auto relative z-10">Search our knowledge base or browse categories below to learn about DevHuddle's ecosystem, algorithms, and policies.</p>
+            <div class="mt-8 max-w-md mx-auto relative z-10">
+                <input type="text"
+                       placeholder="Search guides, FAQs, or legal..."
+                       class="w-full bg-gray-900 border border-gray-600 text-white rounded-xl py-3 px-5 pl-12 focus:border-blue-500 outline-none transition shadow-xl">
+                <span class="absolute left-4 top-3 text-gray-500 text-lg">🔍</span>
+            </div>
+        </div>
+        <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
+            <div class="bg-gray-800 rounded-2xl p-6 border border-gray-700 hover:border-blue-500 transition shadow-lg">
+                <div class="w-12 h-12 bg-blue-900/30 text-blue-500 rounded-xl flex items-center justify-center text-2xl mb-4 border border-blue-700/50">🚀</div>
+                <h3 class="text-lg font-bold text-gray-200 mb-2">Getting Started</h3>
+                <p class="text-sm text-gray-400 mb-4">Learn how to set up your profile, normalize your tech stack, and navigate the dual-sided feed.</p>
+                <a href="#" class="text-xs font-bold text-blue-400 hover:text-blue-300">Read Guide →</a>
+            </div>
+            <div class="bg-gray-800 rounded-2xl p-6 border border-gray-700 hover:border-yellow-500 transition shadow-lg">
+                <div class="w-12 h-12 bg-yellow-900/30 text-yellow-500 rounded-xl flex items-center justify-center text-2xl mb-4 border border-yellow-700/50">💎</div>
+                <h3 class="text-lg font-bold text-gray-200 mb-2">Monetization & Ranks</h3>
+                <p class="text-sm text-gray-400 mb-4">Understand the Dev Score algorithm, how to use Profile Boosts, and the benefits of DevHuddle Pro.</p>
+                <a href="#"
+                   class="text-xs font-bold text-yellow-400 hover:text-yellow-300">Learn about Premium →</a>
+            </div>
+            <div class="bg-gray-800 rounded-2xl p-6 border border-gray-700 hover:border-purple-500 transition shadow-lg">
+                <div class="w-12 h-12 bg-purple-900/30 text-purple-500 rounded-xl flex items-center justify-center text-2xl mb-4 border border-purple-700/50">🤖</div>
+                <h3 class="text-lg font-bold text-gray-200 mb-2">AI Intelligence</h3>
+                <p class="text-sm text-gray-400 mb-4">Discover how our Gemini-powered engine generates profile analytics and code reviews.</p>
+                <a href="{% url 'ai_dashboard' %}"
+                   class="text-xs font-bold text-purple-400 hover:text-purple-300">Open Dashboard →</a>
+            </div>
+        </div>
+        <div class="grid grid-cols-1 lg:grid-cols-3 gap-8">
+            <div class="lg:col-span-2 space-y-4">
+                <h2 class="text-2xl font-bold text-white mb-6 border-b border-gray-700 pb-2">Frequently Asked Questions</h2>
+                <div class="bg-gray-800 rounded-xl border border-gray-700 overflow-hidden">
+                    <button onclick="toggleFAQ('faq1', 'icon1')"
+                            class="w-full text-left px-6 py-4 font-bold text-gray-200 flex justify-between items-center focus:outline-none hover:bg-gray-700/50 transition">
+                        How is the Developer Score calculated?
+                        <span id="icon1" class="text-gray-500 transition-transform duration-200">▼</span>
+                    </button>
+                    <div id="faq1"
+                         class="hidden px-6 pb-4 text-sm text-gray-400 leading-relaxed border-t border-gray-700 pt-3">
+                        The Dev Score is dynamically calculated at the database level. It multiplies your followers by 5, your uploaded projects by 10, and adds massive bonuses for Profile Boosts (⚡+15) and Premium Subscriptions (👑+50).
+                    </div>
+                </div>
+                <div class="bg-gray-800 rounded-xl border border-gray-700 overflow-hidden">
+                    <button onclick="toggleFAQ('faq2', 'icon2')"
+                            class="w-full text-left px-6 py-4 font-bold text-gray-200 flex justify-between items-center focus:outline-none hover:bg-gray-700/50 transition">
+                        Are my direct messages private?
+                        <span id="icon2" class="text-gray-500 transition-transform duration-200">▼</span>
+                    </button>
+                    <div id="faq2"
+                         class="hidden px-6 pb-4 text-sm text-gray-400 leading-relaxed border-t border-gray-700 pt-3">
+                        Yes. Direct Messages run through an isolated WebSocket channel. Only you and the recipient have access to the chat room data.
+                    </div>
+                </div>
+                <div class="bg-gray-800 rounded-xl border border-gray-700 overflow-hidden">
+                    <button onclick="toggleFAQ('faq3', 'icon3')"
+                            class="w-full text-left px-6 py-4 font-bold text-gray-200 flex justify-between items-center focus:outline-none hover:bg-gray-700/50 transition">
+                        How does the Trust & Safety system work?
+                        <span id="icon3" class="text-gray-500 transition-transform duration-200">▼</span>
+                    </button>
+                    <div id="faq3"
+                         class="hidden px-6 pb-4 text-sm text-gray-400 leading-relaxed border-t border-gray-700 pt-3">
+                        Users can report posts for inappropriate content. This flags the post in the Moderator Command Center. Multiple flags increase the severity tier, allowing admins to permanently nuke violating content from the ecosystem.
+                    </div>
+                </div>
+            </div>
+            <div class="space-y-6">
+                <div class="bg-linear-to-br from-blue-900/40 to-gray-900 rounded-2xl p-6 border border-blue-700/50 shadow-xl relative overflow-hidden">
+                    <div class="absolute -right-4 -top-4 text-6xl opacity-10">🎓</div>
+                    <h3 class="text-lg font-bold text-blue-400 mb-1">About the Developer</h3>
+                    <p class="text-xs text-blue-300/70 font-mono uppercase tracking-widest mb-4">BSIT Final Year Project</p>
+                    <p class="text-sm text-gray-300 mb-4 leading-relaxed">
+                        DevHuddle is engineered by <strong class="text-white">Afnan Muhammad</strong>. It is a full-stack, real-time developer ecosystem featuring algorithmic feeds, vector-like skill normalization, and integrated generative AI.
+                    </p>
+                    <div class="border-t border-blue-800/50 pt-4 flex gap-3">
+                        <a href="mailto:contact@afnan.dev"
+                           class="text-xs font-bold bg-blue-600 hover:bg-blue-500 text-white px-4 py-2 rounded-lg transition">Contact Dev</a>
+                        <a href="#"
+                           class="text-xs font-bold border border-blue-600 text-blue-400 hover:bg-blue-900/50 px-4 py-2 rounded-lg transition">GitHub</a>
+                    </div>
+                </div>
+                <div class="bg-gray-800 rounded-2xl p-6 border border-gray-700 shadow-xl">
+                    <h3 class="text-lg font-bold text-gray-200 mb-4">System Legal & Rights</h3>
+                    <ul class="space-y-3 text-sm text-gray-400">
+                        <li><a href="#"
+   class="hover:text-blue-400 transition flex items-center gap-2">📄 Terms of Service</a></li>
+                        <li><a href="#"
+   class="hover:text-blue-400 transition flex items-center gap-2">🔒 Privacy Policy</a></li>
+                        <li><a href="#"
+   class="hover:text-blue-400 transition flex items-center gap-2">⚖️ Community Guidelines</a></li>
+                        <li><a href="#"
+   class="hover:text-blue-400 transition flex items-center gap-2">🍪 Cookie Policy</a></li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+    </div>
+    {% comment %} Script {% endcomment %}
+    <script>
+        function toggleFAQ(id, iconId) {
+            const element = document.getElementById(id);
+            const icon = document.getElementById(iconId);
+            
+            if (element.classList.contains('hidden')) {
+                element.classList.remove('hidden');
+                icon.style.transform = 'rotate(180deg)';
+            } else {
+                element.classList.add('hidden');
+                icon.style.transform = 'rotate(0deg)';
+            }
+        }
+    </script>
+{% endblock content %}

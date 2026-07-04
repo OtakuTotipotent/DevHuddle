@@ -1,0 +1,127 @@
+{% extends "base.html" %}
+{% block title %} Jobs & Clients Ecosystem {% endblock title %}
+{% block content %}
+    <div class="max-w-7xl mx-auto mt-8 px-4 sm:px-0 space-y-16 mb-16">
+        <div class="border-b border-gray-700 pb-6 text-center md:text-left flex flex-col md:flex-row justify-between items-center gap-4">
+            <div>
+                <h1 class="text-3xl font-extrabold text-white">Ecosystem Discovery</h1>
+                <p class="text-gray-400 mt-2">Find work, explore organizations, and discover top-tier projects.</p>
+            </div>
+            <a href="{% url 'developer_directory' %}"
+               class="bg-gray-800 hover:bg-gray-700 text-gray-300 border border-gray-600 px-6 py-2.5 rounded-xl text-sm font-bold transition">
+                View Developer Directory →
+            </a>
+        </div>
+        <section>
+            <div class="flex items-center gap-3 mb-6">
+                <span class="text-2xl">🏢</span>
+                <h2 class="text-2xl font-bold text-gray-200">Top Organizations</h2>
+            </div>
+            <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6">
+                {% for client in clients %}
+                    <div class="bg-gray-800 rounded-xl border border-gray-700 p-6 flex flex-col items-center text-center shadow-lg hover:border-green-500/50 transition group">
+                        <a href="{% url 'user_profile' client.username %}" class="mb-4">
+                            {% if client.avatar %}
+                                <img src="{{ client.avatar.url }}"
+                                     height="64"
+                                     width="64"
+                                     alt="avatar"
+                                     class="w-16 h-16 rounded-full object-cover border-2 border-gray-600 group-hover:border-green-500 transition">
+                            {% else %}
+                                <div class="w-16 h-16 rounded-full bg-green-600 flex items-center justify-center font-bold text-white text-xl border-2 border-gray-600 group-hover:border-green-500 transition">
+                                    {{ client.username|slice:":1"|upper }}
+                                </div>
+                            {% endif %}
+                        </a>
+                        <h3 class="font-bold text-gray-200 line-clamp-1">
+                            <a href="{% url 'user_profile' client.username %}">{{ client.first_name }} {{ client.last_name|default:client.username }}</a>
+                        </h3>
+                        <p class="text-xs text-gray-500 uppercase tracking-widest mt-1">{{ client.get_role_display }}</p>
+                        <div class="mt-4 pt-4 border-t border-gray-700 w-full flex justify-between items-center">
+                            <span class="text-xs font-bold text-green-400 bg-green-900/20 px-2 py-1 rounded">{{ client.job_count }} Jobs Posted</span>
+                            <a href="{% url 'user_profile' client.username %}"
+                               class="text-xs font-bold text-gray-400 hover:text-white">Profile →</a>
+                        </div>
+                    </div>
+                {% empty %}
+                    <p class="text-gray-500 italic text-sm">No hiring organizations found.</p>
+                {% endfor %}
+            </div>
+        </section>
+        <section>
+            <div class="flex items-center gap-3 mb-6">
+                <span class="text-2xl">💼</span>
+                <h2 class="text-2xl font-bold text-gray-200">Latest Opportunities</h2>
+            </div>
+            <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+                {% for job in jobs %}
+                    <div class="bg-gray-800 rounded-xl border border-gray-700 p-5 shadow-lg hover:border-blue-500 transition flex flex-col h-full">
+                        <div class="flex justify-between items-start mb-3">
+                            <div class="flex items-center gap-2">
+                                <div class="w-8 h-8 rounded bg-gray-900 flex items-center justify-center text-xs font-bold text-gray-400">{{ job.author.username|slice:":1"|upper }}</div>
+                                <div>
+                                    <a href="{% url 'user_profile' job.author.username %}"
+                                       class="text-sm font-bold text-gray-300 hover:underline">@{{ job.author.username }}</a>
+                                    <p class="text-[10px] text-gray-500">{{ job.created_at|timesince }} ago</p>
+                                </div>
+                            </div>
+                            {% if job.tags %}
+                                <span class="text-[10px] text-blue-400 bg-blue-900/20 px-2 py-1 rounded border border-blue-800/50">{{ job.tags|truncatechars:15 }}</span>
+                            {% endif %}
+                        </div>
+                        <p class="text-sm text-gray-200 line-clamp-3 mb-4 grow">{{ job.body }}</p>
+                        <a href="{% url 'post_detail' job.pk %}"
+                           class="w-full text-center bg-blue-600/10 text-blue-500 hover:bg-blue-600 hover:text-white font-bold py-2 rounded-lg text-xs transition border border-blue-600/50">
+                            Apply Now
+                        </a>
+                    </div>
+                {% empty %}
+                    <p class="text-gray-500 italic text-sm">No active jobs available.</p>
+                {% endfor %}
+            </div>
+        </section>
+        <section>
+            <div class="flex items-center gap-3 mb-6">
+                <span class="text-2xl">🚀</span>
+                <h2 class="text-2xl font-bold text-gray-200">Open Source & Portfolios</h2>
+            </div>
+            <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
+                {% for project in projects %}
+                    <div class="bg-gray-900/50 rounded-xl border border-gray-700 overflow-hidden hover:border-purple-500 transition group flex flex-col h-full">
+                        {% if project.image %}
+                            <img src="{{ project.image.url }}"
+                                 height="128"
+                                 width="100"
+                                 alt="project"
+                                 class="w-full h-32 object-cover border-b border-gray-700 opacity-80 group-hover:opacity-100 transition">
+                        {% else %}
+                            <div class="w-full h-32 bg-gray-800 flex items-center justify-center border-b border-gray-700">
+                                <span class="text-gray-600 text-3xl">📁</span>
+                            </div>
+                        {% endif %}
+                        <div class="p-4 flex flex-col grow">
+                            <h4 class="font-bold text-gray-200 mb-1 truncate">{{ project.title }}</h4>
+                            <a href="{% url 'user_profile' project.user.username %}"
+                               class="text-xs text-purple-400 hover:underline mb-3">by @{{ project.user.username }}</a>
+                            <p class="text-xs text-gray-400 mb-4 line-clamp-2 grow">{{ project.description }}</p>
+                            <div class="flex gap-3 text-xs font-semibold mt-auto pt-3 border-t border-gray-800">
+                                {% if project.live_url %}
+                                    <a href="{{ project.live_url }}"
+                                       target="_blank"
+                                       class="text-purple-400 hover:text-purple-300">Live Demo ↗</a>
+                                {% endif %}
+                                {% if project.github_url %}
+                                    <a href="{{ project.github_url }}"
+                                       target="_blank"
+                                       class="text-gray-400 hover:text-white">Source Code</a>
+                                {% endif %}
+                            </div>
+                        </div>
+                    </div>
+                {% empty %}
+                    <p class="text-gray-500 italic text-sm">No projects have been uploaded yet.</p>
+                {% endfor %}
+            </div>
+        </section>
+    </div>
+{% endblock content %}

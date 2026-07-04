@@ -58,27 +58,24 @@ npx @tailwindcss/cli -i ./static/css/custom.css -o ./static/css/output.css --wat
 ## Major Fixes
 
 - On same web browser, logging in/out should not interfere with each other for multiple tabs.
-- Add favicon
-- Add user guides for DevHuddle
-- Apply SEO
-- Add 'about', 'help & support', 'Jobs & Clients' page links into footer for large screens
-- Delete profiles/user accounts only after 3 days, not immediately
 - Add Recycle bin page for recovering data within 3 days
-- Add Notifications tone/music
-- The Subscription (DevHuddle Pro) needs to be ended after certain time period (monthly)
-- Add dynamic data into profile stats
+- Implement Stripe or other free alternative payment gateway.
+- Add fallback AI api & enhance it.
+- Prepare documentation for this project
+- Inside the Inbox, during chat with other users, the messages must appear instantly without reloading the window
 
 ## Improvements \& Suggestions
 
+- Add Notifications tone/music
+- Delete profiles/user accounts only after 3 days, not immediately
 - Relevant accounts suggestions based on user activity and interests (On Right Side).
 - Relevant jobs, projects, gigs \& contests suggestions based on user activity and interests (On Left side).
 - Relevant accounts and Relevant Jobs sections in the Business, Global, Advertisers sections on feed.
 - Enhanced search functionality with filters for content type, date, and popularity.
-- Add notifications
 - Implement light theme.
 - Add a dedicated page for jobs, projects, gigs \& contests.
-- While posting selecting a category of post, that will display relevant posts to TARGET or ACTIVE audience as well as profile visitors. Also adding options like formatted/HTML like text uploading in post and prohibiting the video uploads.
-- A Network page for showcasing all users with whom the user has collaborated
+- While posting selecting a category of post, that will display relevant posts to TARGET or ACTIVE audience as well as profile visitors. Also add options for formatted/HTML/markup/markdown like text uploading in post and prohibiting the video uploads.
+- A Network page for showcasing all users with whom the user has collaborated, followers list, following list
 
 ## Preview
 

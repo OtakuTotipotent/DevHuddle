@@ -10,9 +10,12 @@
       <a href="{% url 'post_new' %}?type=job"
          class="bg-gray-800 text-gray-100 hover:bg-gray-950/50 px-2 py-1 sm:px-3 sm:py-1.5 rounded-full transition-colors">Announce job</a>
    {% endif %}
-   {% if not request.user.is_premium %}
+   {% if request.user.is_premium %}
       <a href="{% url 'store' %}"
-         class="bg-gray-800 text-green-500 hover:bg-gray-950/50 px-2 py-1 sm:px-3 sm:py-1.5 rounded-full transition-colors">Go premium</a>
+         class="bg-gray-800 text-green-500 hover:bg-gray-950/50 px-2 py-1 sm:px-3 sm:py-1.5 rounded-full transition-colors">Upgrade Premium</a>
+   {% else %}
+      <a href="{% url 'store' %}"
+         class="bg-gray-800 text-green-500 hover:bg-gray-950/50 px-2 py-1 sm:px-3 sm:py-1.5 rounded-full transition-colors">Get Premium</a>
    {% endif %}
    <a href="{% url 'post_new' %}"
       class="bg-gray-800 text-blue-600 hover:bg-gray-950/50 px-2 py-1 sm:px-3 sm:py-1.5 rounded-full transition-colors font-semibold">New Post</a>
