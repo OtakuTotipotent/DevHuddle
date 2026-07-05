@@ -58,14 +58,13 @@ npx @tailwindcss/cli -i ./static/css/custom.css -o ./static/css/output.css --wat
 ## Major Fixes
 
 - On same web browser, logging in/out should not interfere with each other for multiple tabs.
-- Add Recycle bin page for recovering data within 3 days
-- Implement Stripe or other free alternative payment gateway.
 - Add fallback AI api & enhance it.
 - Prepare documentation for this project
 
 ## Improvements \& Suggestions
 
 - Add Notifications tone/music
+- Add Recycle bin page for recovering data within 3 days
 - Delete profiles/user accounts only after 3 days, not immediately
 - Relevant accounts suggestions based on user activity and interests (On Right Side).
 - Relevant jobs, projects, gigs \& contests suggestions based on user activity and interests (On Left side).

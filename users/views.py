@@ -1,7 +1,9 @@
 # /users/views.py
 
+import stripe
 from datetime import timedelta
 from django.views import View
+from django.conf import settings
 from django.contrib import messages
 from django.http import JsonResponse
 from django.utils.timezone import now
@@ -382,48 +384,105 @@ class StoreView(LoginRequiredMixin, TemplateView):
     template_name = "pages/store.html"
 
 
-class MockCheckoutView(LoginRequiredMixin, View):
+# Configuring the Stripe library with secret key
+stripe.api_key = settings.STRIPE_SECRET_KEY
+
+
+class CreateStripeCheckoutSessionView(LoginRequiredMixin, View):
     def post(self, request, *args, **kwargs):
         item = request.POST.get("item")
-        user = request.user
+        domain = request.build_absolute_uri("/")[
+            :-1
+        ]  # Gets local or production domain dynamically
 
-        # Premium Subscription
+        # Define the dynamic pricing based on what the user clicked
         if item == "premium":
-            if user.is_premium:
-                user.premium_expires_at += timedelta(days=30)
-                user.save()
-                messages.success(
-                    request,
-                    f"Your Pro subscription has been extended! It now expires on {user.premium_expires_at.strftime('%B %d, %Y')}.",
-                )
-            else:
-                user.premium_expires_at = now() + timedelta(days=30)
-                user.save()
-                messages.success(
-                    request,
-                    "Welcome to DevHuddle Pro! Your crown has been equipped for 30 days.",
-                )
-                Notification.objects.create(recipient=user, actor=user, verb="premium")
-
-        # Single Profile Boost
+            name = "DevHuddle Pro (30 Days)"
+            price = 1500  # Stripe calculates in cents ($15.00)
         elif item == "boost_1":
-            user.profile_boosts += 1
-            user.save()
-            messages.success(request, "One boost added overall.")
-            Notification.objects.create(recipient=user, actor=user, verb="boost")
-
-        # Five Profile Boosts (Bundle)
+            name = "1x Profile Boost"
+            price = 200  # $2.00
         elif item == "boost_5":
-            user.profile_boosts += 5
-            user.save()
-            messages.success(
-                request,
-                "Five boosts added overall.",
-            )
-            Notification.objects.create(recipient=user, actor=user, verb="boost")
-
+            name = "5x Profile Boosts"
+            price = 800  # $8.00
         else:
             messages.error(request, "Invalid item selected.")
+            return redirect("store")
+
+        # Create the Stripe Checkout Session
+        try:
+            session = stripe.checkout.Session.create(
+                payment_method_types=["card"],
+                line_items=[
+                    {
+                        "price_data": {
+                            "currency": "usd",
+                            "product_data": {"name": name},
+                            "unit_amount": price,
+                        },
+                        "quantity": 1,
+                    }
+                ],
+                mode="payment",
+                # Pass the session_id back to success view to verify the payment
+                success_url=domain
+                + reverse("checkout_success")
+                + f"?session_id={{CHECKOUT_SESSION_ID}}&item={item}",
+                cancel_url=domain + reverse("store"),
+            )
+            # Redirect the user to the secure Stripe-hosted payment page
+            return redirect(session.url)
+
+        except Exception as e:
+            messages.error(request, f"Stripe Gateway Error: {str(e)}")
+            return redirect("store")
+
+
+class PaymentSuccessView(LoginRequiredMixin, View):
+    def get(self, request, *args, **kwargs):
+        session_id = request.GET.get("session_id")
+        item = request.GET.get("item")
+        user = request.user
+
+        if not session_id or not item:
+            return redirect("store")
+
+        try:
+            # Verify the payment with Stripe's servers to prevent users from faking the URL
+            session = stripe.checkout.Session.retrieve(session_id)
+
+            if session.payment_status == "paid":
+                # Fulfill the Order!
+                if item == "premium":
+                    if user.is_premium:
+                        user.premium_expires_at += timedelta(days=30)
+                        messages.success(
+                            request,
+                            f"Payment successful! Pro extended to {user.premium_expires_at.strftime('%b %d, %Y')}.",
+                        )
+                    else:
+                        user.premium_expires_at = now() + timedelta(days=30)
+                        messages.success(
+                            request, "Payment successful! DevHuddle Pro activated."
+                        )
+                        Notification.objects.create(
+                            recipient=user, actor=user, verb="premium"
+                        )
+
+                elif item == "boost_1":
+                    user.profile_boosts += 1
+                    messages.success(request, "Payment successful! 1 Boost added.")
+
+                elif item == "boost_5":
+                    user.profile_boosts += 5
+                    messages.success(request, "Payment successful! 5 Boosts added.")
+
+                user.save()
+            else:
+                messages.warning(request, "Payment has not been completed.")
+
+        except stripe.error.StripeError:
+            messages.error(request, "Could not verify payment with Stripe.")
 
         return redirect("user_profile", username=user.username)
 

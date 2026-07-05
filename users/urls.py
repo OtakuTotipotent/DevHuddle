@@ -18,7 +18,8 @@ from .views import (
     SkillUpdateView,
     DeveloperDirectoryView,
     StoreView,
-    MockCheckoutView,
+    CreateStripeCheckoutSessionView,
+    PaymentSuccessView,
     BoostUserView,
     toggle_block,
 )
@@ -164,8 +165,13 @@ urlpatterns = [
     ),
     path(
         "store/checkout/",
-        MockCheckoutView.as_view(),
+        CreateStripeCheckoutSessionView.as_view(),
         name="checkout",
+    ),
+    path(
+        "store/checkout/success/",
+        PaymentSuccessView.as_view(),
+        name="checkout_success",
     ),
     path(
         "profile/<str:username>/boost/",

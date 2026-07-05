@@ -130,3 +130,8 @@ GEMINI_API_KEY = env("GEMINI_API_KEY")
 ASGI_APPLICATION = "config.asgi.application"
 # Zero-friction in-memory layer for development (Use Redis in Production)
 CHANNEL_LAYERS = {"default": {"BACKEND": "channels.layers.InMemoryChannelLayer"}}
+
+
+# STRIPE PAYMENT GATEWAY
+STRIPE_PUBLIC_KEY = env("STRIPE_PUBLIC_KEY", default="")
+STRIPE_SECRET_KEY = env("STRIPE_SECRET_KEY", default="")
