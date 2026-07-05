@@ -1,4 +1,4 @@
-<div class="bg-gray-800/50 p-3 rounded-lg mb-4 border border-gray-700 transition shadow-lg cursor-default">
+<div class="bg-gray-800/50 p-3 rounded-lg mb-4 border border-gray-700/50 transition shadow-lg cursor-default">
   <div class="flex items-center justify-between mb-2">
     <!-- AUTHOR'S INFO & LOGO -->
     <div class="flex items-center gap-3">
@@ -140,7 +140,7 @@
   <!-- POST BODY -->
   <p class="text-gray-400 leading-relaxed mt-1">{{ post.body }}</p>
   {% if post.image %}
-    <div class="mt-3 rounded-lg overflow-hidden border border-gray-700">
+    <div class="mt-3 rounded-lg overflow-hidden border border-gray-700/20">
       <img src="{{ post.image.url }}"
            width="600"
            height="400"
