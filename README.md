@@ -58,22 +58,15 @@ npx @tailwindcss/cli -i ./static/css/custom.css -o ./static/css/output.css --wat
 ## Major Fixes
 
 - On same web browser, logging in/out should not interfere with each other for multiple tabs.
-- Add fallback AI api & enhance it.
 - Prepare documentation for this project
+- Add loading states & loaders wherever needed
 
 ## Improvements \& Suggestions
 
 - Add Notifications tone/music
 - Add Recycle bin page for recovering data within 3 days
-- Delete profiles/user accounts only after 3 days, not immediately
-- Relevant accounts suggestions based on user activity and interests (On Right Side).
-- Relevant jobs, projects, gigs \& contests suggestions based on user activity and interests (On Left side).
-- Relevant accounts and Relevant Jobs sections in the Business, Global, Advertisers sections on feed.
-- Enhanced search functionality with filters for content type, date, and popularity.
 - Implement light theme.
-- Add a dedicated page for jobs, projects, gigs \& contests.
-- While posting selecting a category of post, that will display relevant posts to TARGET or ACTIVE audience as well as profile visitors. Also add options for formatted/HTML/markup/markdown like text uploading in post and prohibiting the video uploads.
-- A Network page for showcasing all users with whom the user has collaborated, followers list, following list
+- While posting, selecting a category of post, that will display relevant posts to TARGET or ACTIVE audience as well as profile visitors. Also add options for formatted/HTML/markup/markdown like text uploading in post and prohibiting the video uploads.
 
 ## Preview
 
