@@ -14,7 +14,10 @@ class ProfileAnalyzerView(LoginRequiredMixin, View):
         target_user = get_object_or_404(CustomUser, username=username)
         report = DevHuddleAIEngine.analyze_profile(target_user, request.user)
 
-        html_content = markdown.markdown(report.content)
+        html_content = markdown.markdown(
+            report.content,
+            extensions=["extra", "nl2br", "sane_lists"],
+        )
         return render(
             request,
             "intelligence/report.html",
@@ -27,7 +30,10 @@ class PostAnalyzerView(LoginRequiredMixin, View):
         target_post = get_object_or_404(Post, pk=pk)
         report = DevHuddleAIEngine.analyze_post(target_post, request.user)
 
-        html_content = markdown.markdown(report.content)
+        html_content = markdown.markdown(
+            report.content,
+            extensions=["extra", "nl2br", "sane_lists"],
+        )
         return render(
             request,
             "intelligence/report.html",
