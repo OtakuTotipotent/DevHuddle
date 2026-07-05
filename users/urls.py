@@ -49,6 +49,8 @@ urlpatterns = [
         auth_views.PasswordResetView.as_view(
             template_name="users/auth/password_reset_form.html",
             form_class=CustomPasswordResetForm,
+            html_email_template_name="users/auth/password_reset_email.html",
+            subject_template_name="users/auth/password_reset_subject.txt",
         ),
         name="password_reset",
     ),
