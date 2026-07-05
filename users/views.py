@@ -9,6 +9,7 @@ from django.http import JsonResponse
 from django.utils.timezone import now
 from django.urls import reverse_lazy, reverse
 from django.shortcuts import get_object_or_404, redirect
+from django.contrib.auth import logout
 from django.contrib.auth.decorators import login_required
 from django.contrib.auth.mixins import LoginRequiredMixin, UserPassesTestMixin
 from django.db.models import (
@@ -69,10 +70,27 @@ class ProfileUpdateView(LoginRequiredMixin, UpdateView):
 class ProfileDeleteView(LoginRequiredMixin, DeleteView):
     model = CustomUser
     template_name = "users/profile/delete.html"
-    success_url = reverse_lazy("signup")
+    success_url = reverse_lazy("home")
 
     def get_object(self):
         return self.request.user
+
+    def post(self, request, *args, **kwargs):
+        user = self.get_object()
+
+        # Schedule the deletion for 3 days from exactly now
+        user.deletion_scheduled_at = now() + settings.ACCOUNT_DELETION_DELAY
+        user.save()
+
+        # Force logout
+        logout(request)
+
+        # Inform the user
+        messages.info(
+            request,
+            "Your account has been deactivated and is scheduled for permanent deletion in 3 days. Log back in at any time to cancel this process.",
+        )
+        return redirect(self.success_url)
 
 
 class UserProfileView(LoginRequiredMixin, DetailView):

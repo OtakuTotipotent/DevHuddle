@@ -1,3 +1,4 @@
+from datetime import timedelta
 import os
 import environ
 from pathlib import Path
@@ -104,6 +105,9 @@ AUTH_USER_MODEL = "users.CustomUser"
 LOGIN_URL = "login"
 LOGIN_REDIRECT_URL = "home"
 LOGOUT_REDIRECT_URL = "home"
+
+# ACCOUNT DELETION
+ACCOUNT_DELETION_DELAY = timedelta(days=3)
 
 
 # Prints email to terminal for/in DEV MODE

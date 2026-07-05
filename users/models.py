@@ -93,6 +93,11 @@ class CustomUser(AbstractUser):
         help_text="Number of profile boosts purchased",
     )
 
+    # Account Deletion
+    deletion_scheduled_at = models.DateTimeField(
+        blank=True, null=True, help_text="When the account will be permanently deleted"
+    )
+
     # methods & properties
     @property
     def is_premium(self):
