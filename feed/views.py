@@ -16,7 +16,7 @@ from django.contrib import messages
 from django.views.generic.edit import FormMixin
 from django.urls import reverse, reverse_lazy
 from django.utils.timezone import now
-from django.http import JsonResponse, HttpResponseRedirect
+from django.http import JsonResponse
 from django.views import View
 from users.models import CustomUser, Project
 from .models import Bookmark, Comment, Post, Notification, Proposal, Message, Report
@@ -30,20 +30,22 @@ from .forms import PostForm, CommentForm, ProposalForm
 
 @login_required
 def like_post(request, pk):
-    post = get_object_or_404(Post, pk=pk)
+    if request.method == "POST":
+        post = get_object_or_404(Post, pk=pk)
 
-    if request.user in post.likes.all():
-        post.likes.remove(request.user)
-        liked = False
-    else:
-        post.likes.add(request.user)
-        if request.user != post.author:  # Don't notify if I like my own post
-            Notification.objects.create(
-                recipient=post.author, actor=request.user, verb="like", post=post
-            )
-        liked = True
+        if request.user in post.likes.all():
+            post.likes.remove(request.user)
+            liked = False
+        else:
+            post.likes.add(request.user)
+            liked = True
+            if request.user != post.author:
+                Notification.objects.create(
+                    recipient=post.author, actor=request.user, verb="like", post=post
+                )
 
-    return JsonResponse({"liked": liked, "count": post.likes.count()})
+        return JsonResponse({"liked": liked, "like_count": post.likes.count()})
+    return JsonResponse({"error": "Invalid request"}, status=400)
 
 
 @login_required
@@ -98,44 +100,47 @@ def toggle_bookmark(request, pk):
 
         if not created:
             bookmark.delete()
-            messages.info(request, "Post removed from your bookmarks.")
+            return JsonResponse(
+                {"saved": False, "message": "Post removed from your private vault."}
+            )
         else:
-            messages.success(request, "Post saved to your bookmarks!")
-
-    return HttpResponseRedirect(request.META.get("HTTP_REFERER", "/"))
+            return JsonResponse(
+                {"saved": True, "message": "Post securely saved to your bookmarks."}
+            )
 
 
 @login_required
 def submit_report(request, pk):
     if request.method == "POST":
         post = get_object_or_404(Post, pk=pk)
-
         report, created = Report.objects.get_or_create(reporter=request.user, post=post)
 
         if created:
-            messages.success(
-                request, "Report submitted to DevHuddle moderators securely."
-            )
-
             Notification.objects.create(
                 recipient=request.user,
                 actor=request.user,
                 verb="report_submitted",
                 post=post,
             )
-
-            # set actor=post.author so the reporter's identity remains absolutely private.
             Notification.objects.create(
                 recipient=post.author,
                 actor=post.author,
                 verb="post_reported",
                 post=post,
             )
-
+            return JsonResponse(
+                {
+                    "reported": True,
+                    "message": "Report successfully transmitted to DevHuddle Community Management.",
+                }
+            )
         else:
-            messages.info(request, "You have already reported this post.")
-
-    return HttpResponseRedirect(request.META.get("HTTP_REFERER", "/"))
+            return JsonResponse(
+                {
+                    "reported": False,
+                    "message": "You have already filed a report for this post.",
+                }
+            )
 
 
 # ==========================================

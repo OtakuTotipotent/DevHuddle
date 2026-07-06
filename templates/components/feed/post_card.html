@@ -39,20 +39,13 @@
           <a href="{% url 'apply_job' post.pk %}"
              class="text-xs text-green-400 hover:text-white font-bold border border-green-500/50 hover:bg-green-600 px-3 py-1 rounded transition">Apply</a>
         {% endif %}
-        <form action="{% url 'toggle_bookmark' post.pk %}"
-              method="post"
-              class="m-0">
-          {% csrf_token %}
-          <button type="submit"
-                  class="text-gray-400 hover:text-blue-400 transition"
-                  title="Save Post">🔖</button>
-        </form>
-        <form action="{% url 'submit_report' post.pk %}" method="post" class="m-0">
-          {% csrf_token %}
-          <button type="submit"
-                  class="text-gray-400 hover:text-red-500 transition"
-                  title="Report Post">🚩</button>
-        </form>
+        <button onclick="toggleBookmark({{ post.pk }})"
+                id="bookmark-btn-{{ post.pk }}"
+                class="text-gray-400 hover:text-blue-500 transition cursor-pointer text-base"
+                title="Save Post">🔖</button>
+        <button onclick="submitReport({{ post.pk }})"
+                class="text-gray-400 hover:text-red-500 transition cursor-pointer text-base"
+                title="Report Post">🚩</button>
       {% endif %}
     </div>
   </div>

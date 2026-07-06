@@ -8,6 +8,11 @@
           content="DevHuddle is a developer community platform for sharing ideas, networking, and collaborating on projects." />
     <meta name="keywords"
           content="developer community, coding, collaboration, networking, DevHuddle" />
+    <meta name="csrf-token" content="{{ csrf_token }}">
+    <meta name="csrf-token" content="{{ csrf_token }}">
+    {% if user.is_authenticated %}
+      <meta name="current-user" content="{{ request.user.username }}">
+    {% endif %}
     <title>
       DevHuddle |
       {% block title %}
@@ -28,24 +33,26 @@
     <footer class="shrink-0 h-14 border-t border-gray-700 flex items-center justify-center">
       {% include "sections/footer.html" %}
     </footer>
-    <script src="{% static 'js/menu_toggle.js' %}"></script>
-    {% block scripts %}
-    {% endblock scripts %}
-    {% comment %}  {% endcomment %}
     {% comment %} Loader {% endcomment %}
     <div id="ai-loading-overlay"
          class="hidden fixed inset-0 z-100 bg-gray-900/90 backdrop-blur-md flex-col items-center justify-center transition-all duration-300 select-none cursor-default">
-      <div class="relative flex items-center justify-center w-24 h-24 mb-6">
-        <div class="absolute inset-0 border-t-4 border-purple-500 border-solid rounded-full animate-spin"></div>
-        <div class="absolute inset-0 border-b-4 border-blue-500 border-solid rounded-full animate-spin reverse-spin"></div>
-        <span class="text-4xl animate-pulse">🤖</span>
+      <div class="relative flex items-center justify-center w-20 h-20 mb-6">
+        <div class="absolute inset-0 border-t-2 border-purple-500 border-solid rounded-full animate-spin"></div>
+        <div class="absolute inset-0 border-b-2 border-blue-500 border-solid rounded-full animate-spin reverse-spin"></div>
+        <span class="text-3xl animate-pulse">🤖</span>
       </div>
-      <h2 class="text-2xl font-extrabold text-transparent bg-clip-text bg-linear-to-r from-purple-400 to-blue-500 animate-pulse">
+      <h2 class="text-xl font-extrabold text-transparent bg-clip-text bg-linear-to-r from-purple-400 to-blue-500 animate-pulse">
         Intelligence Engine Computing...
       </h2>
       <p class="text-blue-500 mt-2 font-mono text-sm tracking-widest">ANALYZING DATAPOINTS</p>
     </div>
-    {% comment %} AI Links Handler {% endcomment %}
+    {% comment %} Realtime Notifications {% endcomment %}
+    <div id="toast-container"
+         class="fixed bottom-5 right-5 z-100 flex flex-col gap-2"></div>
+    {% comment %} SCRIPTS {% endcomment %}
+    <script src="{% static 'js/menu_toggle.js' %}"></script>
+    {% block scripts %}
+    {% endblock scripts %}
     <script>
       // Intercept any link that goes to the AI analyzer routes
       document.addEventListener('DOMContentLoaded', () => {
@@ -61,65 +68,7 @@
           });
       });
     </script>
-    {% comment %} Global Live Notifications {% endcomment %}
-    {% if user.is_authenticated %}
-      <div id="toast-container"
-           class="fixed bottom-5 right-5 z-100 flex flex-col gap-3"></div>
-      <script>
-        const notifScheme = window.location.protocol === "https:" ? "wss" : "ws";
-        const notifSocket = new WebSocket(
-            notifScheme + '://' + window.location.host + '/ws/notifications/'
-        );
-
-        notifSocket.onmessage = function(e) {
-            const data = JSON.parse(e.data);
-            
-            if (data.is_dm) {
-                // 1. Unhide all Purple Inbox Dots globally
-                document.querySelectorAll('.inbox-dot').forEach(dot => dot.classList.remove('hidden'));
-                
-                // 2. Specialized DM Toast (Clickable to open chat)
-                const toast = document.createElement('div');
-                toast.className = "bg-gray-800 border border-purple-500/50 shadow-2xl shadow-purple-900/20 p-4 rounded-xl flex items-center gap-3 transform transition-all translate-y-10 opacity-0 cursor-pointer hover:bg-gray-700/80";
-                toast.onclick = () => window.location.href = `/inbox/${data.actor}/`;
-                toast.innerHTML = `
-                    <div class="w-10 h-10 bg-purple-900/30 rounded-full flex items-center justify-center text-xl shrink-0 text-purple-400">💬</div>
-                    <div class="overflow-hidden">
-                        <p class="text-sm text-gray-200 truncate">New message from <span class="font-bold text-purple-400">@${data.actor}</span></p>
-                        <p class="text-xs text-gray-500 mt-0.5 truncate">${data.message_preview}</p>
-                    </div>
-                `;
-                showToast(toast);
-
-            } else {
-                // 1. Instantly Increment the Dropdown Alerts Counters
-                document.querySelectorAll('.alerts-counter').forEach(badge => {
-                    badge.innerText = parseInt(badge.innerText || '0') + 1;
-                });
-                
-                // 2. Standard System Toast
-                const toast = document.createElement('div');
-                toast.className = "bg-gray-800 border border-blue-500/50 shadow-2xl shadow-blue-900/20 p-4 rounded-xl flex items-center gap-3 transform transition-all translate-y-10 opacity-0";
-                toast.innerHTML = `
-                    <div class="w-10 h-10 bg-blue-900/30 rounded-full flex items-center justify-center text-xl shrink-0">${data.icon || '🔔'}</div>
-                    <div>
-                        <p class="text-sm text-gray-200">New activity from <span class="font-bold text-blue-400">@${data.actor}</span></p>
-                        <p class="text-xs text-gray-500 mt-0.5">${data.verb}</p>
-                    </div>
-                `;
-                showToast(toast);
-            }
-        };
-
-        function showToast(toast) {
-            document.getElementById('toast-container').appendChild(toast);
-            setTimeout(() => toast.classList.remove('translate-y-10', 'opacity-0'), 100);
-            setTimeout(() => {
-                toast.classList.add('translate-y-10', 'opacity-0');
-                setTimeout(() => toast.remove(), 300);
-            }, 5000);
-        }
-      </script>
-    {% endif %}
+    <script src="{% static 'js/interactions.js' %}"></script>
+    <script src="{% static 'js/websockets.js' %}"></script>
   </body>
 </html>

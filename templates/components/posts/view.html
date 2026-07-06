@@ -11,6 +11,9 @@
         <div class="flex items-center gap-4">
           {% if post.author.avatar %}
             <img src="{{ post.author.avatar.url }}"
+                 width="48"
+                 height="48"
+                 alt="Avatar"
                  class="w-12 h-12 rounded-full object-cover border-2 border-gray-600">
           {% else %}
             <div class="w-12 h-12 rounded-full bg-blue-600 flex items-center justify-center font-bold text-white text-xl">{{ post.author.username|slice:':1'|upper }}</div>
@@ -21,7 +24,7 @@
             <span class="text-xs text-gray-500 font-mono">{{ post.created_at|date:'d M Y • h:i A' }}</span>
           </div>
         </div>
-        <div class="flex items-center gap-3">
+        <div class="flex items-center gap-4">
           {% if request.user == post.author %}
             <a href="{% url 'post_edit' post.pk %}"
                class="text-xs text-yellow-500 hover:text-yellow-400 font-bold bg-yellow-500/10 px-3 py-1.5 rounded-lg border border-yellow-500/20">Edit</a>
@@ -32,12 +35,13 @@
               <a href="{% url 'apply_job' post.pk %}"
                  class="text-sm text-green-400 hover:text-white font-bold border border-green-500/50 hover:bg-green-600 px-4 py-1.5 rounded-lg transition">Apply Now</a>
             {% endif %}
-            <form action="{% url 'submit_report' post.pk %}" method="post" class="m-0">
-              {% csrf_token %}
-              <button type="submit"
-                      class="text-gray-400 hover:text-red-500 transition text-xl"
-                      title="Report Post">🚩</button>
-            </form>
+            <button onclick="toggleBookmark({{ post.pk }})"
+                    id="bookmark-btn-{{ post.pk }}"
+                    class="text-gray-400 hover:text-blue-500 transition cursor-pointer text-xl"
+                    title="Save Post">🔖</button>
+            <button onclick="submitReport({{ post.pk }})"
+                    class="text-gray-400 hover:text-red-500 transition cursor-pointer text-xl"
+                    title="Report Post">🚩</button>
           {% endif %}
         </div>
       </div>
@@ -49,6 +53,9 @@
       {% if post.image %}
         <div class="mt-6 bg-gray-900/50 rounded-xl border border-gray-700/50 p-2">
           <img src="{{ post.image.url }}"
+               width="100"
+               height="100"
+               alt="Post Image"
                class="w-full max-h-175 object-contain rounded-lg shadow-inner"
                alt="Post image" />
         </div>
@@ -211,17 +218,3 @@
     </div>
   </div>
 {% endblock content %}
-{% block scripts %}
-  <script>
-  function toggleReplyForm(commentId) {
-    const formDiv = document.getElementById(`reply-form-${commentId}`);
-    if (formDiv.classList.contains('hidden')) {
-      formDiv.classList.remove('hidden');
-      // Auto-focus the input field for better UX
-      formDiv.querySelector('input[name="body"]').focus();
-    } else {
-      formDiv.classList.add('hidden');
-    }
-  }
-  </script>
-{% endblock scripts %}
