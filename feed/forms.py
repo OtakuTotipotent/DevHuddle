@@ -14,9 +14,9 @@ class PostForm(forms.ModelForm):
         widgets = {
             "body": forms.Textarea(
                 attrs={
-                    "class": "w-full bg-gray-700 text-white rounded-lg p-2 my-2 border border-gray-600 focus:border-blue-500 outline-none",
-                    "placeholder": "What's on your mind, developer?",
-                    "rows": 4,
+                    "class": "w-full bg-gray-900 text-gray-300 rounded-xl p-4 my-2 border border-gray-700 focus:border-blue-500 outline-none font-mono text-sm shadow-inner transition",
+                    "placeholder": "What's on your mind? \n(Markdown supported: **bold**, *italic*, `code`, - lists)",
+                    "rows": 7,
                 }
             ),
             "image": forms.FileInput(

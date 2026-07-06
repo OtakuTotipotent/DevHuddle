@@ -50,8 +50,22 @@
     </div>
   </div>
 {% endblock content %}
+{% comment %} Script {% endcomment %}
 {% block scripts %}
   <script>
+    // Prohibited Content Guard
+    const imageInput = document.getElementById('id_image');
+    if (imageInput) {
+        imageInput.addEventListener('change', function(e) {
+            const file = e.target.files[0];
+            if (file && !file.type.startsWith('image/')) {
+                alert('⚠️ Prohibited Content: You can only upload image files (JPG, PNG, GIF). Videos, audios, and documents are not allowed.');
+                e.target.value = '';
+            }
+        });
+    }
+    
+    // Post Type Selection
     const typeSelect = document.getElementById('id_post_type')
     const adFields = document.getElementById('ad-fields')
     

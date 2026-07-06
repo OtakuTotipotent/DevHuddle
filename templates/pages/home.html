@@ -20,4 +20,40 @@
 <!-- SCRIPTS -->
 {% block scripts %}
   <script src="{% static 'js/feed_controller.js' %}"></script>
+  <script>
+    document.addEventListener("DOMContentLoaded", () => {
+        const wrappers = document.querySelectorAll('.post-content-wrapper');
+        
+        wrappers.forEach(wrapper => {
+            const container = wrapper.querySelector('.post-text-container');
+            const prose = wrapper.querySelector('.prose');
+            const btn = wrapper.querySelector('.toggle-text-btn');
+            const overlay = wrapper.querySelector('.fade-overlay');
+            
+            // If the actual markdown content is taller than our 3-line crop box (72px)
+            if (prose.scrollHeight > 72) {
+                btn.classList.remove('hidden'); // Show the button
+                
+                btn.addEventListener('click', () => {
+                    if (container.classList.contains('max-h-[4.5rem]')) {
+                        // Expand
+                        container.classList.remove('max-h-[4.5rem]');
+                        container.style.maxHeight = prose.scrollHeight + "px";
+                        overlay.classList.add('hidden');
+                        btn.innerText = 'Show less';
+                    } else {
+                        // Collapse
+                        container.classList.add('max-h-[4.5rem]');
+                        container.style.maxHeight = null;
+                        overlay.classList.remove('hidden');
+                        btn.innerText = 'Show all';
+                    }
+                });
+            } else {
+                // If it's a short post, hide the fade gradient
+                overlay.classList.add('hidden');
+            }
+        });
+    });
+  </script>
 {% endblock scripts %}

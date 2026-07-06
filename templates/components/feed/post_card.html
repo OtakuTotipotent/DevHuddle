@@ -1,151 +1,113 @@
-<div class="bg-gray-800/50 p-3 rounded-lg mb-4 border border-gray-700/50 transition shadow-lg cursor-default">
-  <div class="flex items-center justify-between mb-2">
-    <!-- AUTHOR'S INFO & LOGO -->
+{% load markdown_extras %}
+<div class="bg-gray-800 p-5 rounded-2xl border border-gray-700 shadow-xl mb-6">
+  <!-- UNIFIED HEADER & MENU -->
+  <div class="flex justify-between items-start mb-4">
     <div class="flex items-center gap-3">
-      {% if post.author.avatar %}
-        <a href="{% url 'user_profile' post.author.username %}"
-           class="hover:opacity-70">
+      <a href="{% url 'user_profile' post.author.username %}">
+        {% if post.author.avatar %}
           <img src="{{ post.author.avatar.url }}"
                width="40"
                height="40"
-               alt="{{ post.author.username }}'s avatar"
-               class="w-10 h-10 rounded-full object-cover border border-gray-600" />
-        </a>
-      {% else %}
-        <!-- PROFILE ICON LETTER -->
+               alt="Avatar"
+               class="w-10 h-10 rounded-full object-cover border border-gray-600 hover:border-blue-500 transition">
+        {% else %}
+          <div class="w-10 h-10 rounded-full bg-blue-600 flex items-center justify-center font-bold text-white text-lg hover:opacity-80 transition">{{ post.author.username|slice:':1'|upper }}</div>
+        {% endif %}
+      </a>
+      <div>
         <a href="{% url 'user_profile' post.author.username %}"
-           class="hover:opacity-70">
-          <div class="w-10 h-10 rounded-full bg-blue-600 flex items-center justify-center font-bold text-gray-100 text-sm">
-            {{ post.author.username|slice:':1'|upper }}
-          </div>
-        </a>
-      {% endif %}
-      <div class="leading-tight">
-        <a href="{% url 'user_profile' post.author.username %}"
-           class="block font-semibold text-gray-300 hover:text-blue-400 transition">@{{ post.author.username }}</a>
-        <span class="block text-xs text-gray-500">{{ post.created_at|date:'d M Y • h:i:s A' }}</span>
+           class="block font-bold text-gray-200 hover:text-blue-400 transition leading-tight">@{{ post.author.username }}</a>
+        <span class="text-[10px] text-gray-500 font-mono">{{ post.created_at|timesince }} ago</span>
       </div>
     </div>
-    <!-- POST MENU LIST -->
-    <!-- EDIT/DELETE MENU -->
-    {% if post.author == user %}
-      <div class="relative">
-        <button onclick="togglePostMenu('{{ post.pk }}')"
-                class="text-gray-400 hover:text-white p-2 hover:bg-gray-700/50 rounded-full transition cursor-pointer">
-          <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 12h.01M12 12h.01M19 12h.01M6 12a1 1 0 11-2 0 1 1 0 012 0zm7 0a1 1 0 11-2 0 1 1 0 012 0zm7 0a1 1 0 11-2 0 1 1 0 012 0z">
-            </path>
-          </svg>
-        </button>
-        <div id="post-menu-{{ post.pk }}"
-             class="hidden absolute right-0 mt-2 w-36 bg-gray-800/50 backdrop-blur-3xl rounded-lg shadow-xl border border-gray-700 z-20 overflow-hidden">
-          <a href="{% url 'post_edit' pk=post.pk %}"
-             class="block px-4 py-2 text-sm text-gray-100 hover:bg-gray-700 hover:text-white transition">Edit Post</a>
-          <div class="h-px bg-gray-700 mx-2 my-1"></div>
-          <a href="{% url 'post_delete' pk=post.pk %}"
-             class="block px-4 py-2 text-sm text-red-400 hover:bg-red-900/20 hover:text-red-300 transition">Delete Post</a>
-        </div>
-      </div>
-    {% else %}
-      <div class="flex gap-2 items-center">
-        <!-- LIKE BUTTON -->
-        <button onclick="toggleLike(event, '{{ post.pk }}')"
-                class="flex items-center gap-1 group transition focus:outline-none cursor-pointer">
-          <div id="like-icon-{{ post.pk }}">
-            {% if user in post.likes.all %}
-              <svg class="w-6 h-6 text-red-500 group-hover:scale-110 transition-transform"
-                   fill="currentColor"
-                   viewBox="0 0 24 24">
-                <path d="M12 21.35l-1.45-1.32C5.4 15.36 2 12.28 2 8.5 2 5.42 4.42 3 7.5 3c1.74 0 3.41.81 4.5 2.09C13.09 3.81 14.76 3 16.5 3 19.58 3 22 5.42 22 8.5c0 3.78-3.4 6.86-8.55 11.54L12 21.35z" />
-              </svg>
-            {% else %}
-              <svg class="w-6 h-6 text-gray-400 group-hover:text-red-500 group-hover:scale-110 transition-transform"
-                   fill="none"
-                   stroke="currentColor"
-                   viewBox="0 0 24 24">
-                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4.318 6.318a4.5 4.5 0 000 6.364L12 20.364l7.682-7.682a4.5 4.5 0 00-6.364-6.364L12 7.636l-1.318-1.318a4.5 4.5 0 00-6.364 0z">
-                </path>
-              </svg>
-            {% endif %}
-          </div>
-          <span id="like-count-{{ post.pk }}"
-                class="text-sm font-bold {% if user in post.likes.all %} text-red-500 {% else %} text-gray-400 {% endif %}">
-            {{ post.likes.count }}
-          </span>
-        </button>
-        <!-- COMMENT BUTTON -->
-        <a href="{% url 'post_detail' post.pk %}"
-           class="flex items-center gap-1 text-gray-400 hover:text-blue-400 transition cursor-pointer hover:pb-1">
-          <span class="text-xl">💬</span>
-          <span class="text-sm font-bold">{{ post.comments.count }}</span>
-        </a>
-        <!-- POST REACTION OPTIONS | POST CARD MENU -->
-        <div class="relative">
-          <button onclick="togglePostMenu('{{ post.pk }}')"
-                  class="text-gray-400 hover:text-white p-2 hover:bg-gray-700/50 rounded-full transition cursor-pointer">
-            <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 12h.01M12 12h.01M19 12h.01M6 12a1 1 0 11-2 0 1 1 0 012 0zm7 0a1 1 0 11-2 0 1 1 0 012 0zm7 0a1 1 0 11-2 0 1 1 0 012 0z">
-              </path>
-            </svg>
-          </button>
-          {% comment %} POST MENU {% endcomment %}
-          <div id="post-menu-{{ post.pk }}"
-               class="hidden absolute right-0 mt-2 w-44 bg-gray-800/50 backdrop-blur-3xl rounded-lg shadow-xl border border-gray-700 z-20 overflow-hidden select-none">
-            {% if post.post_type == 'job' and post.author != user %}
-              {% if post.target_url %}
-                <a href="{{ post.target_url }}"
-                   target="_blank"
-                   class="border-b border-gray-700 block px-4 py-2 text-sm text-blue-500 hover:bg-gray-700 transition">Apply Externally</a>
-              {% else %}
-                <a href="{% url 'apply_job' post.pk %}"
-                   class="border-b border-gray-700 block px-4 py-2 text-sm text-blue-500 hover:bg-gray-700 transition">Apply for Job</a>
-              {% endif %}
-            {% elif post.post_type == 'ad' and post.author != user %}
-              <a href="{% if post.target_url %}{{ post.target_url }}{% else %}{% url 'user_profile' post.author.username %}{% endif %}"
-                 {% if post.target_url %}target="_blank"{% endif %}
-                 class="border-b border-gray-700 block px-4 py-2 text-sm text-blue-500 hover:bg-gray-700 transition">View Offer</a>
-            {% endif %}
-            <form action="{% url 'boost_user' post.author.username %}"
-                  method="post"
-                  class="m-0 p-0 border-b border-gray-700">
-              {% csrf_token %}
-              <button type="submit"
-                      class="border-b border-gray-700 block w-full text-left px-4 py-2 text-sm text-gray-100 hover:bg-gray-700 transition cursor-pointer">Boost this ⚡</button>
-            </form>
-            <a href="{% url 'ai_analyze_post' post.pk %}"
-               class="border-b border-gray-700 block px-4 py-2 text-sm text-gray-100 hover:bg-gray-700 transition">Learn by AI 🤖</a>
-            <a href="{% url 'user_profile' post.author.username %}"
-               class="border-b border-gray-700 block px-4 py-2 text-sm text-gray-100 hover:bg-gray-700 transition">Check Profile 👤</a>
-            <a href="{% url 'post_detail' post.pk %}#comments"
-               class="border-b border-gray-700 block px-4 py-2 text-sm text-gray-100 hover:bg-gray-700 transition">See Comments 💬</a>
-            <form action="{% url 'toggle_bookmark' post.pk %}" method="post">
-              {% csrf_token %}
-              <button type="submit"
-                      class="border-b border-gray-700 block w-full text-left px-4 py-2 text-sm text-gray-100 hover:bg-gray-700 transition cursor-pointer">Save / Unsave 🔖</button>
-            </form>
-            <button onclick="navigator.clipboard.writeText(window.location.origin + '{% url 'post_detail' post.pk %}'); alert('Post link copied to clipboard!'); togglePostMenu('{{ post.id }}');"
-                    class="border-b border-gray-700 block w-full text-left px-4 py-2 text-sm text-gray-100 hover:bg-gray-700 transition cursor-pointer">Copy Link 🔗</button>
-            <form action="{% url 'submit_report' post.pk %}"
-                  method="post"
-                  class="m-0 p-0">
-              {% csrf_token %}
-              <button type="submit"
-                      class="border-b border-gray-700 block w-full text-left px-4 py-2 text-sm text-gray-100 hover:bg-gray-700 transition cursor-pointer">Report this 🚨</button>
-            </form>
-          </div>
-        </div>
-      </div>
-    {% endif %}
+    <!-- Unified Action Menu -->
+    <div class="flex items-center gap-3">
+      {% if post.post_type == 'job' %}
+        <span class="bg-green-900/30 text-green-400 border border-green-800/50 text-[10px] px-2 py-0.5 rounded uppercase tracking-widest font-bold">Job</span>
+      {% elif post.post_type == 'ad' %}
+        <span class="bg-purple-900/30 text-purple-400 border border-purple-800/50 text-[10px] px-2 py-0.5 rounded uppercase tracking-widest font-bold">Ad</span>
+      {% endif %}
+      {% if request.user == post.author %}
+        <!-- OWNER ACTIONS -->
+        <a href="{% url 'post_edit' post.pk %}"
+           class="text-xs text-yellow-500 hover:text-yellow-400 font-bold bg-yellow-500/10 px-2 py-1 rounded">Edit</a>
+        <a href="{% url 'post_delete' post.pk %}"
+           class="text-xs text-red-500 hover:text-red-400 font-bold bg-red-500/10 px-2 py-1 rounded">Delete</a>
+      {% else %}
+        <!-- VIEWER ACTIONS -->
+        {% if post.post_type == 'job' and request.user.role == 'dev' %}
+          <a href="{% url 'apply_job' post.pk %}"
+             class="text-xs text-green-400 hover:text-white font-bold border border-green-500/50 hover:bg-green-600 px-3 py-1 rounded transition">Apply</a>
+        {% endif %}
+        <form action="{% url 'toggle_bookmark' post.pk %}"
+              method="post"
+              class="m-0">
+          {% csrf_token %}
+          <button type="submit"
+                  class="text-gray-400 hover:text-blue-400 transition"
+                  title="Save Post">🔖</button>
+        </form>
+        <form action="{% url 'submit_report' post.pk %}" method="post" class="m-0">
+          {% csrf_token %}
+          <button type="submit"
+                  class="text-gray-400 hover:text-red-500 transition"
+                  title="Report Post">🚩</button>
+        </form>
+      {% endif %}
+    </div>
   </div>
-  <!-- POST BODY -->
-  <p class="text-gray-400 leading-relaxed mt-1">{{ post.body }}</p>
+  <!-- BODY: Markdown + Truncation Engine -->
+  <div class="post-content-wrapper">
+    <!-- max-h-24 creates the 3-line limit. Overflow hidden crops it. -->
+    <div class="post-text-container relative max-h-18 overflow-hidden transition-all duration-300 ease-in-out text-gray-300 text-sm">
+      <!-- Tailwind Typography parses the Markdown beautifully -->
+      <div class="prose prose-invert prose-sm prose-blue max-w-none prose-a:text-blue-400 prose-code:text-purple-400 prose-code:bg-purple-900/20 prose-code:px-1 prose-code:rounded">
+        {{ post.body|render_markdown|safe }}
+      </div>
+      <!-- The Fade Gradient -->
+      <div class="fade-overlay absolute bottom-0 left-0 w-full h-8 bg-linear-to-t from-gray-800 to-transparent pointer-events-none">
+      </div>
+    </div>
+    <!-- Expand Button -->
+    <button class="toggle-text-btn text-blue-500 hover:text-blue-400 text-xs font-bold mt-1 hidden">Show all</button>
+  </div>
+  <!-- OPTIMIZED IMAGE RENDERER -->
   {% if post.image %}
-    <div class="mt-3 rounded-lg overflow-hidden border border-gray-700/20">
+    <div class="mt-4 bg-gray-900/50 rounded-xl border border-gray-700/50 p-1">
+      <!-- object-contain prevents cropping. max-h-[500px] ensures it doesn't break the feed layout -->
       <img src="{{ post.image.url }}"
-           width="600"
-           height="400"
-           alt="Post image"
-           class="w-full h-auto object-cover max-h-125" />
+           width="100"
+           height="100"
+           alt="Post illustration"
+           class="w-full max-h-125 object-contain rounded-lg"
+           alt="Post attachment" />
     </div>
   {% endif %}
+  <!-- FEED INTERACTIONS -->
+  <div class="flex items-center gap-6 mt-4 pt-4 border-t border-gray-700/50">
+    <!-- Like Button (Uses JS) -->
+    <button onclick="toggleLike({{ post.pk }})"
+            class="flex items-center gap-2 text-sm text-gray-400 hover:text-blue-500 transition group">
+      <span id="like-icon-{{ post.pk }}"
+            class="group-hover:scale-110 transition-transform">
+        {% if request.user in post.likes.all %}
+          ❤️
+        {% else %}
+          🤍
+        {% endif %}
+      </span>
+      <span id="like-count-{{ post.pk }}" class="font-bold">{{ post.likes.count }}</span>
+    </button>
+    <!-- Comment Button (Links to Detail View) -->
+    <a href="{% url 'post_detail' post.pk %}#comments"
+       class="flex items-center gap-2 text-sm text-gray-400 hover:text-blue-500 transition group">
+      <span class="group-hover:scale-110 transition-transform">💬</span>
+      <span class="font-bold">{{ post.comments.count }}</span>
+    </a>
+    <!-- Learn via AI -->
+    <a href="{% url 'ai_analyze_post' post.pk %}"
+       class="ml-auto text-xs font-bold text-purple-400 hover:text-purple-300 border border-purple-500/30 bg-purple-900/10 px-3 py-1.5 rounded-lg transition flex items-center gap-2">
+      <span>🤖</span> Analyze
+    </a>
+  </div>
 </div>

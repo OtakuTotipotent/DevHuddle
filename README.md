@@ -57,16 +57,15 @@ npx @tailwindcss/cli -i ./static/css/custom.css -o ./static/css/output.css --wat
 
 ## Major Fixes
 
-- On same web browser, logging in/out should not interfere with each other for multiple tabs.
 - Prepare documentation for this project
 - Add loading states & loaders wherever needed
+- Prohibiting the video upload is present but it does not show proper warnings or error messages to the user.
 
 ## Improvements \& Suggestions
 
 - Add Notifications tone/music
 - Add Recycle bin page for recovering data within 3 days
 - Implement light theme.
-- While posting, selecting a category of post, that will display relevant posts to TARGET or ACTIVE audience as well as profile visitors. Also add options for formatted/HTML/markup/markdown like text uploading in post and prohibiting the video uploads.
 
 ## Preview
 
