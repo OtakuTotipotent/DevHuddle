@@ -58,8 +58,7 @@ npx @tailwindcss/cli -i ./static/css/custom.css -o ./static/css/output.css --wat
 ## Major Fixes
 
 - Prepare documentation for this project
-- Add loading states & loaders wherever needed
-- Prohibiting the video upload is present but it does not show proper warnings or error messages to the user.
+- Add API endpoints for developers
 
 ## Improvements \& Suggestions
 
