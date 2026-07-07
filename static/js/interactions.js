@@ -97,33 +97,65 @@ document.addEventListener("DOMContentLoaded", () => {
   };
 
   // ==========================================
-  // POST EXPANSION ENGINE
+  // POST EXPANSION ENGINE (BULLETPROOF)
   // ==========================================
-  document.querySelectorAll(".post-content-wrapper").forEach((wrapper) => {
-    const container = wrapper.querySelector(".post-text-container");
-    const prose = wrapper.querySelector(".prose");
-    const btn = wrapper.querySelector(".toggle-text-btn");
-    const overlay = wrapper.querySelector(".fade-overlay");
+  function initExpansions() {
+    document.querySelectorAll(".post-content-wrapper").forEach((wrapper) => {
+      const container = wrapper.querySelector(".post-text-container");
+      const prose = wrapper.querySelector(".prose");
+      const btn = wrapper.querySelector(".toggle-text-btn");
+      const overlay = wrapper.querySelector(".fade-overlay");
 
-    if (prose && btn && container && prose.scrollHeight > 72) {
-      btn.classList.remove("hidden");
-      btn.addEventListener("click", () => {
+      if (!container || !prose || !btn) return;
+
+      // Strip old event listeners by cloning the button (prevents double-firing)
+      const newBtn = btn.cloneNode(true);
+      btn.parentNode.replaceChild(newBtn, btn);
+
+      const checkHeight = () => {
+        if (!container.classList.contains("max-h-[4.5rem]")) return; // Already expanded
+        // 75px threshold ensures a safe buffer for line-heights
+        if (prose.scrollHeight > 75) {
+          newBtn.classList.remove("hidden");
+          overlay.classList.remove("hidden");
+        } else {
+          newBtn.classList.add("hidden");
+          overlay.classList.add("hidden");
+        }
+      };
+
+      // Check immediately, and check again after fonts/images render
+      checkHeight();
+      window.addEventListener("load", checkHeight);
+      setTimeout(checkHeight, 500);
+
+      newBtn.addEventListener("click", () => {
         if (container.classList.contains("max-h-[4.5rem]")) {
+          // EXPAND: Animate from 4.5rem to actual pixel height
           container.classList.remove("max-h-[4.5rem]");
           container.style.maxHeight = prose.scrollHeight + "px";
           overlay.classList.add("hidden");
-          btn.innerText = "Show less";
+          newBtn.innerText = "Show less";
+
+          // Remove explicit height after animation so window resizing doesn't crop text
+          setTimeout(() => {
+            container.style.maxHeight = "none";
+          }, 300);
         } else {
+          // COLLAPSE: Lock current height, force reflow, then animate to 4.5rem
+          container.style.maxHeight = prose.scrollHeight + "px";
+          void container.offsetHeight; // Force browser to register the height
+
           container.classList.add("max-h-[4.5rem]");
-          container.style.maxHeight = null;
+          container.style.maxHeight = "4.5rem"; // Animate down smoothly
           overlay.classList.remove("hidden");
-          btn.innerText = "Show all";
+          newBtn.innerText = "Show all";
         }
       });
-    } else if (overlay) {
-      overlay.classList.add("hidden");
-    }
-  });
+    });
+  }
+
+  initExpansions();
 
   // ==========================================
   // COMMENTS UI CONTROLLER
@@ -136,4 +168,30 @@ document.addEventListener("DOMContentLoaded", () => {
         formDiv.querySelector('input[name="body"]').focus();
     }
   };
+
+  // ==========================================
+  // GLOBAL FORM LOADERS & SPINNERS
+  // ==========================================
+  document.querySelectorAll("form").forEach((form) => {
+    form.addEventListener("submit", function () {
+      const submitBtn = form.querySelector('button[type="submit"]');
+
+      // Only trigger if the button isn't already disabled (prevents double-clicks)
+      if (submitBtn && !submitBtn.disabled) {
+        submitBtn.disabled = true;
+        submitBtn.classList.add("opacity-70", "cursor-not-allowed");
+
+        // Inject SVG Spinner while keeping button dimensions stable
+        submitBtn.innerHTML = `
+          <div class="flex items-center justify-center gap-2">
+            <svg class="animate-spin h-5 w-5 text-current" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24">
+              <circle class="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" stroke-width="4"></circle>
+              <path class="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"></path>
+            </svg>
+            <span>Processing...</span>
+          </div>
+        `;
+      }
+    });
+  });
 });

@@ -1,7 +1,8 @@
 {% load markdown_extras %}
-<div class="bg-gray-800 p-5 rounded-2xl border border-gray-700 shadow-xl mb-6">
-  <!-- UNIFIED HEADER & MENU -->
+<div class="bg-gray-800/30 p-3 rounded-2xl border border-gray-700/50 mb-4">
+  <!-- HEADER -->
   <div class="flex justify-between items-start mb-4">
+    {% comment %} User Info {% endcomment %}
     <div class="flex items-center gap-3">
       <a href="{% url 'user_profile' post.author.username %}">
         {% if post.author.avatar %}
@@ -16,71 +17,69 @@
       </a>
       <div>
         <a href="{% url 'user_profile' post.author.username %}"
-           class="block font-bold text-gray-200 hover:text-blue-400 transition leading-tight">@{{ post.author.username }}</a>
-        <span class="text-[10px] text-gray-500 font-mono">{{ post.created_at|timesince }} ago</span>
+           class="block font-semibold text-blue-500 hover:text-blue-600 transition leading-tight">@{{ post.author.username }}</a>
+        <span class="text-[11px] text-gray-500 font-mono">{{ post.created_at|timesince }} ago</span>
       </div>
     </div>
-    <!-- Unified Action Menu -->
+    <!-- Action Menu -->
     <div class="flex items-center gap-3">
+      {% comment %} Post Type {% endcomment %}
       {% if post.post_type == 'job' %}
-        <span class="bg-green-900/30 text-green-400 border border-green-800/50 text-[10px] px-2 py-0.5 rounded uppercase tracking-widest font-bold">Job</span>
+        <span class="bg-green-900/30 text-green-400 border border-green-800/50 text-[10px] px-3 py-0.5 rounded-full uppercase tracking-widest font-semibold cursor-default">Job</span>
       {% elif post.post_type == 'ad' %}
-        <span class="bg-purple-900/30 text-purple-400 border border-purple-800/50 text-[10px] px-2 py-0.5 rounded uppercase tracking-widest font-bold">Ad</span>
+        <span class="bg-purple-900/30 text-purple-400 border border-purple-800/50 text-[10px] px-3 py-0.5 rounded-full uppercase tracking-widest font-semibold cursor-default">Ad</span>
       {% endif %}
+      {% comment %} Post Actions {% endcomment %}
       {% if request.user == post.author %}
         <!-- OWNER ACTIONS -->
         <a href="{% url 'post_edit' post.pk %}"
-           class="text-xs text-yellow-500 hover:text-yellow-400 font-bold bg-yellow-500/10 px-2 py-1 rounded">Edit</a>
+           class="text-xs text-yellow-500 hover:text-yellow-400 font-semibold bg-yellow-500/10 px-3 py-1 rounded-full">Edit</a>
         <a href="{% url 'post_delete' post.pk %}"
-           class="text-xs text-red-500 hover:text-red-400 font-bold bg-red-500/10 px-2 py-1 rounded">Delete</a>
+           class="text-xs text-red-400 hover:text-red-500 font-semibold bg-red-500/10 px-3 py-1 rounded-full">Delete</a>
       {% else %}
         <!-- VIEWER ACTIONS -->
         {% if post.post_type == 'job' and request.user.role == 'dev' %}
           <a href="{% url 'apply_job' post.pk %}"
-             class="text-xs text-green-400 hover:text-white font-bold border border-green-500/50 hover:bg-green-600 px-3 py-1 rounded transition">Apply</a>
+             class="text-[10px] text-green-400 hover:text-gray-200 font-semibold border border-green-500/50 hover:bg-green-500/50 px-3 py-0.5 rounded-full transition"
+             title="You can apply for this Job">Apply</a>
         {% endif %}
         <button onclick="toggleBookmark({{ post.pk }})"
                 id="bookmark-btn-{{ post.pk }}"
-                class="text-gray-400 hover:text-blue-500 transition cursor-pointer text-base"
+                class="cursor-pointer text-base"
                 title="Save Post">🔖</button>
         <button onclick="submitReport({{ post.pk }})"
-                class="text-gray-400 hover:text-red-500 transition cursor-pointer text-base"
+                class="cursor-pointer text-base"
                 title="Report Post">🚩</button>
       {% endif %}
     </div>
   </div>
-  <!-- BODY: Markdown + Truncation Engine -->
+  <!-- BODY -->
   <div class="post-content-wrapper">
-    <!-- max-h-24 creates the 3-line limit. Overflow hidden crops it. -->
-    <div class="post-text-container relative max-h-18 overflow-hidden transition-all duration-300 ease-in-out text-gray-300 text-sm">
-      <!-- Tailwind Typography parses the Markdown beautifully -->
-      <div class="prose prose-invert prose-sm prose-blue max-w-none prose-a:text-blue-400 prose-code:text-purple-400 prose-code:bg-purple-900/20 prose-code:px-1 prose-code:rounded">
-        {{ post.body|render_markdown|safe }}
-      </div>
-      <!-- The Fade Gradient -->
-      <div class="fade-overlay absolute bottom-0 left-0 w-full h-8 bg-linear-to-t from-gray-800 to-transparent pointer-events-none">
-      </div>
+    {% comment %} <div class="post-text-container relative max-h-18 overflow-hidden transition-all duration-300 ease-in-out text-gray-300 text-sm"> {% endcomment %}
+    {% comment %} Text Content {% endcomment %}
+    <div class="prose prose-invert prose-sm prose-blue max-w-none prose-a:text-blue-400 prose-code:text-purple-400 prose-code:bg-purple-900/20 prose-code:px-1 prose-code:rounded">
+      {{ post.body|render_markdown|safe }}
     </div>
+    {% comment %} </div> {% endcomment %}
     <!-- Expand Button -->
-    <button class="toggle-text-btn text-blue-500 hover:text-blue-400 text-xs font-bold mt-1 hidden">Show all</button>
+    <button class="toggle-text-btn text-blue-500 hover:text-blue-600 text-xs font-semibold mt-1 cursor-pointer hidden">Show all</button>
   </div>
-  <!-- OPTIMIZED IMAGE RENDERER -->
+  <!-- IMAGE -->
   {% if post.image %}
-    <div class="mt-4 bg-gray-900/50 rounded-xl border border-gray-700/50 p-1">
-      <!-- object-contain prevents cropping. max-h-[500px] ensures it doesn't break the feed layout -->
+    <div class="mt-4 rounded-xl">
       <img src="{{ post.image.url }}"
            width="100"
            height="100"
            alt="Post illustration"
-           class="w-full max-h-125 object-contain rounded-lg"
+           class="w-full max-h-125 object-contain rounded-xl"
            alt="Post attachment" />
     </div>
   {% endif %}
   <!-- FEED INTERACTIONS -->
-  <div class="flex items-center gap-6 mt-4 pt-4 border-t border-gray-700/50">
+  <div class="flex items-center gap-4 mt-4 pt-2 border-t border-gray-700/50">
     <!-- Like Button (Uses JS) -->
     <button onclick="toggleLike({{ post.pk }})"
-            class="flex items-center gap-2 text-sm text-gray-400 hover:text-blue-500 transition group">
+            class="flex items-center gap-1 text-sm text-gray-400 hover:text-blue-500 transition group cursor-pointer">
       <span id="like-icon-{{ post.pk }}"
             class="group-hover:scale-110 transition-transform">
         {% if request.user in post.likes.all %}
@@ -93,13 +92,13 @@
     </button>
     <!-- Comment Button (Links to Detail View) -->
     <a href="{% url 'post_detail' post.pk %}#comments"
-       class="flex items-center gap-2 text-sm text-gray-400 hover:text-blue-500 transition group">
+       class="flex items-center gap-1 text-sm text-gray-400 hover:text-blue-500 transition group">
       <span class="group-hover:scale-110 transition-transform">💬</span>
       <span class="font-bold">{{ post.comments.count }}</span>
     </a>
     <!-- Learn via AI -->
     <a href="{% url 'ai_analyze_post' post.pk %}"
-       class="ml-auto text-xs font-bold text-purple-400 hover:text-purple-300 border border-purple-500/30 bg-purple-900/10 px-3 py-1.5 rounded-lg transition flex items-center gap-2">
+       class="ml-auto text-xs font-semibold text-blue-500 hover:text-blue-400 border border-blue-500/30 bg-blue-900/10 hover:bg-blue-900/40 px-3 py-1.5 rounded-full transition flex items-center gap-2">
       <span>🤖</span> Analyze
     </a>
   </div>
