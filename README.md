@@ -55,16 +55,15 @@ npx @tailwindcss/cli -i ./static/css/custom.css -o ./static/css/output.css --wat
 - [Markdownlint](https://marketplace.visualstudio.com/items?itemName=donjayamanne.python-extension-pack)
 - [TailwindCSS Intelligence](https://marketplace.visualstudio.com/items?itemName=donjayamanne.python-extension-pack)
 
-## Major Fixes
-
-- Prepare documentation for this project
-- Add API endpoints for developers
-
 ## Improvements \& Suggestions
 
 - Add Notifications tone/music
 - Add Recycle bin page for recovering data within 3 days
 - Implement light theme.
+- Prepare documentation for this project
+- Add API endpoints for developers
+- Enhance RBAC (role based access control)
+- Apply Security Patches for Password Reset Functionality
 
 ## Preview
 
