@@ -6,7 +6,10 @@ from pathlib import Path
 BASE_DIR = Path(__file__).resolve().parent.parent
 SECRET_KEY = "django-insecure-x$vg*0_ylw(w!gi7rf*$(dzw$&(m01!r5ny7(dv5_$+f-mf5s8"
 DEBUG = True
-ALLOWED_HOSTS = []
+
+# FOR DEVELOPMENT ONLY
+ALLOWED_HOSTS = ["*"]
+CSRF_TRUSTED_ORIGINS = ["https://*.ngrok-free.dev"]
 
 env = environ.Env()
 environ.Env.read_env(os.path.join(BASE_DIR, ".env"))
