@@ -266,6 +266,10 @@ class AboutPageView(TemplateView):
         return context
 
 
+class SystemDocumentationView(TemplateView):
+    template_name = "pages/documentation.html"
+
+
 # ==========================================
 # DASHBOARDS
 # ==========================================

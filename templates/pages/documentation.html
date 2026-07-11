@@ -1,0 +1,67 @@
+{% extends "base.html" %}
+{% block title %}System Documentation | DevHuddle{% endblock title %}
+{% block content %}
+    <div class="max-w-6xl mx-2 md:mx-auto my-10 px-2 sm:px-6">
+        <div class="grid grid-cols-1 lg:grid-cols-4 gap-8">
+            <!-- SIDEBAR STICKY NAVIGATION -->
+            <aside class="lg:col-span-1">
+                <div class="sticky top-6 bg-gray-800 rounded-2xl border border-gray-700 p-5 space-y-3 font-sans">
+                    <h3 class="text-xs font-bold text-gray-500 uppercase tracking-widest px-2 mb-4">Documentation</h3>
+                    <a href="#quickstart"
+                       class="block text-sm font-semibold text-gray-400 hover:text-blue-500 px-3 py-2 rounded-lg hover:bg-gray-700/30 transition">🚀 Quickstart Guide</a>
+                    <a href="#devscore"
+                       class="block text-sm font-semibold text-gray-400 hover:text-blue-500 px-3 py-2 rounded-lg hover:bg-gray-700/30 transition">📊 Rank Calculations</a>
+                    <a href="#subscriptions"
+                       class="block text-sm font-semibold text-gray-400 hover:text-blue-500 px-3 py-2 rounded-lg hover:bg-gray-700/30 transition">👑 Premium Status</a>
+                    <a href="#privacy"
+                       class="block text-sm font-semibold text-gray-400 hover:text-blue-500 px-3 py-2 rounded-lg hover:bg-gray-700/30 transition">🔒 System Legal Rights</a>
+                </div>
+            </aside>
+            <!-- LIVE SYSTEM DOCUMENTATION DOCUMENT CONTENT -->
+            <main class="lg:col-span-3 space-y-12 bg-gray-800/40 border border-gray-700 p-8 rounded-3xl shadow-xl">
+                <!-- SECTION 1: QUICKSTART -->
+                <section id="quickstart" class="scroll-mt-6 border-b border-gray-700 pb-8">
+                    <h2 class="text-2xl font-bold text-blue-500 mb-4 flex items-center gap-2"><span>🚀</span> Getting Started</h2>
+                    <div class="prose prose-invert max-w-none text-sm text-gray-400 space-y-4 leading-relaxed">
+                        <p>Welcome to DevHuddle. To fully initialize your visibility index across our dual-sided platform infrastructure, complete the following professional baseline workflow configurations:</p>
+                        <ul class="list-decimal list-inside space-y-2 text-gray-300">
+                            <li>Navigate to your <strong class="text-blue-500">Profile Settings Dashboard</strong> and complete personal record details.</li>
+                            <li>Submit your profile image. Media constraints limit uploads to 5MB (JPG, JPEG, or PNG only).</li>
+                            <li>Access your dedicated skill ledger room space and apply relevant technological tags to normalize your profile.</li>
+                        </ul>
+                    </div>
+                </section>
+                <!-- SECTION 2: DEVSCORE EXPLANATION -->
+                <section id="devscore" class="scroll-mt-6 border-b border-gray-700 pb-8">
+                    <h2 class="text-2xl font-bold text-purple-500 mb-4 flex items-center gap-2"><span>📊</span> Algorithmic Rank Evaluation</h2>
+                    <div class="prose prose-invert max-w-none text-sm text-gray-400 space-y-4">
+                        <p>The global developer visibility directory ranks entries based on a strict real-time multi-variable evaluation formula calculated programmatically within the database layer:</p>
+                        <div class="bg-gray-900 border border-gray-700 p-4 rounded-xl font-mono text-xs text-purple-400 text-center shadow-inner">
+                            $$DevScore = (Followers \times 2) + (Projects \times 3) + (ProfileBoosts \times 7) + PremiumBonus$$
+                        </div>
+                        <ul class="list-disc list-inside space-y-2 text-gray-300">
+                            <li><strong class="text-yellow-500">Profile Boosts</strong> add +7 ranking value weight units per instance.</li>
+                            <li>An active <strong class="text-green-500">DevHuddle Pro Subscription</strong> adds an instantaneous +20 ranking baseline advantage.</li>
+                        </ul>
+                    </div>
+                </section>
+                <!-- SECTION 3: PREMIUM SUBSCRIPTION -->
+                <section id="subscriptions" class="scroll-mt-6 border-b border-gray-700 pb-8">
+                    <h2 class="text-2xl font-bold text-green-400 mb-4 flex items-center gap-2"><span>👑</span> Premium Status & Billing</h2>
+                    <div class="prose prose-invert max-w-none text-sm text-gray-400 space-y-4">
+                        <p>Upgrading to DevHuddle Pro activates professional infrastructure capabilities securely processed over the encrypted Stripe checkout payment gateway network platform.</p>
+                        <p>Subscriptions remain active for exactly 30 days. Expiration thresholds are evaluated natively on-the-fly, allowing developers to stack additional billing periods symmetrically inside the storefront vault.</p>
+                    </div>
+                </section>
+                <!-- SECTION 4: SYSTEM LEGAL & RIGHTS -->
+                <section id="privacy" class="scroll-mt-6">
+                    <h2 class="text-2xl font-bold text-gray-300 mb-4 flex items-center gap-2"><span>🔒</span> System Legal & Rights</h2>
+                    <div class="prose prose-invert max-w-none text-sm text-gray-400 space-y-4">
+                        <p>DevHuddle enforces modern data security standards, access control metrics (RBAC), and clear corporate processing policies to protect our platform's open-source codebase environment.</p>
+                        <p class="text-xs text-gray-500 font-mono">Document reference hash authentication record verified for 2026 platform compliance operations. All platform metrics remain protected under current standard system governance rights.</p>
+                    </div>
+                </section>
+            </main>
+        </div>
+    </div>
+{% endblock content %}

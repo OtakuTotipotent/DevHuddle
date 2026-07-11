@@ -25,6 +25,7 @@ from .views import (
     ModerationDashboardView,
     EcosystemDiscoveryView,
     HelpSupportView,
+    SystemDocumentationView,
 )
 
 
@@ -38,6 +39,11 @@ urlpatterns = [
         "about/",
         AboutPageView.as_view(),
         name="about",
+    ),
+    path(
+        "documentation/",
+        SystemDocumentationView.as_view(),
+        name="documentation",
     ),
     path(
         "post/new/",
