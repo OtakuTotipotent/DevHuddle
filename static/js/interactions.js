@@ -97,9 +97,9 @@ document.addEventListener("DOMContentLoaded", () => {
   };
 
   // ==========================================
-  // POST EXPANSION ENGINE (BULLETPROOF)
+  // POST EXPANSION ENGINE (ENTERPRISE GRADED)
   // ==========================================
-  function initExpansions() {
+  function setupPostTruncationEngine() {
     document.querySelectorAll(".post-content-wrapper").forEach((wrapper) => {
       const container = wrapper.querySelector(".post-text-container");
       const prose = wrapper.querySelector(".prose");
@@ -108,54 +108,53 @@ document.addEventListener("DOMContentLoaded", () => {
 
       if (!container || !prose || !btn) return;
 
-      // Strip old event listeners by cloning the button (prevents double-firing)
-      const newBtn = btn.cloneNode(true);
-      btn.parentNode.replaceChild(newBtn, btn);
-
-      const checkHeight = () => {
-        if (!container.classList.contains("max-h-[4.5rem]")) return; // Already expanded
-        // 75px threshold ensures a safe buffer for line-heights
+      const evalTruncationState = () => {
+        // 72px corresponds precisely to a 3-line crop limit
         if (prose.scrollHeight > 75) {
-          newBtn.classList.remove("hidden");
-          overlay.classList.remove("hidden");
+          if (container.classList.contains("max-h-[4.5rem]")) {
+            btn.classList.remove("hidden");
+            if (overlay) overlay.classList.remove("hidden");
+          }
         } else {
-          newBtn.classList.add("hidden");
-          overlay.classList.add("hidden");
+          btn.classList.add("hidden");
+          if (overlay) overlay.classList.add("hidden");
         }
       };
 
-      // Check immediately, and check again after fonts/images render
-      checkHeight();
-      window.addEventListener("load", checkHeight);
-      setTimeout(checkHeight, 500);
+      // Evaluate states across various rendering lifecycles
+      evalTruncationState();
+      window.addEventListener("load", evalTruncationState);
+      setTimeout(evalTruncationState, 400);
 
-      newBtn.addEventListener("click", () => {
+      btn.addEventListener("click", (e) => {
+        e.preventDefault();
         if (container.classList.contains("max-h-[4.5rem]")) {
-          // EXPAND: Animate from 4.5rem to actual pixel height
+          // Expand sequence
           container.classList.remove("max-h-[4.5rem]");
           container.style.maxHeight = prose.scrollHeight + "px";
-          overlay.classList.add("hidden");
-          newBtn.innerText = "Show less";
+          if (overlay) overlay.classList.add("hidden");
+          btn.innerText = "Show less";
 
-          // Remove explicit height after animation so window resizing doesn't crop text
+          // Allow fluid rendering after the CSS transition completes
           setTimeout(() => {
-            container.style.maxHeight = "none";
+            if (!container.classList.contains("max-h-[4.5rem]"))
+              container.style.maxHeight = "none";
           }, 300);
         } else {
-          // COLLAPSE: Lock current height, force reflow, then animate to 4.5rem
+          // Collapse sequence
           container.style.maxHeight = prose.scrollHeight + "px";
-          void container.offsetHeight; // Force browser to register the height
+          void container.offsetHeight; // Force a browser repaint event
 
           container.classList.add("max-h-[4.5rem]");
-          container.style.maxHeight = "4.5rem"; // Animate down smoothly
-          overlay.classList.remove("hidden");
-          newBtn.innerText = "Show all";
+          container.style.maxHeight = "4.5rem";
+          if (overlay) overlay.classList.remove("hidden");
+          btn.innerText = "Show all";
         }
       });
     });
   }
 
-  initExpansions();
+  setupPostTruncationEngine();
 
   // ==========================================
   // COMMENTS UI CONTROLLER

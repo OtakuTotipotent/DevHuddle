@@ -1,4 +1,5 @@
 {% extends "base.html" %}
+{% load static %}
 {% block title %}Help & Support{% endblock title %}
 {% block content %}
     {% comment %} Header {% endcomment %}
@@ -10,6 +11,7 @@
             <p class="text-gray-400 mt-4 max-w-xl mx-auto relative z-10">Search our knowledge base or browse categories below to learn about DevHuddle's ecosystem, algorithms, and policies.</p>
             <div class="mt-8 max-w-md mx-2 md:mx-auto relative z-10">
                 <input type="text"
+                       id="support-search-input"
                        placeholder="Search guides, FAQs, or legal..."
                        class="w-full bg-gray-900 border border-gray-600 text-white rounded-full py-3 px-5 pl-12 focus:border-blue-500 outline-none transition shadow-xl">
                 <span class="absolute left-4 top-3 text-gray-500 text-lg">🔍</span>
@@ -130,3 +132,7 @@
         }
     </script>
 {% endblock content %}
+<!-- SCRIPTS -->
+{% block scripts %}
+    <script src="{% static 'js/searching.js' %}"></script>
+{% endblock scripts %}
