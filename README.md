@@ -4,13 +4,19 @@
 > A dual-sided, algorithmic marketplace connecting developers, clients, and organizations.
 
 | Field | Value |
-|-------|-------|
+| ------- | ------- |
 | **Project Name** | DevHuddle |
 | **Type** | Full-stack Django Web Application |
 | **Repository** | [github.com/OtakuTotipotent/DevHuddle](https://github.com/OtakuTotipotent/DevHuddle) |
 | **Version** | 1.0.0 |
 | **Timezone** | Asia/Karachi |
 | **Status** | Under maintenance / active development |
+
+---
+
+*`Note!`*
+
+> Direct to setup? Visit [SETUP Guide](./SETUP.md) for setting up this project on your system!
 
 ---
 
@@ -84,7 +90,7 @@ Software engineers lack a dedicated platform that combines professional networki
 ### Project Objectives
 
 | # | Objective | Implementation |
-|---|-----------|----------------|
+| --- | ----------- | ---------------- |
 | 1 | Build a role-based social platform for developers | Custom user model with `dev`, `client`, `org` roles |
 | 2 | Enable job posting and proposal workflow | `Post` (job type) + `Proposal` model with accept/reject flow |
 | 3 | Rank developers algorithmically | Dev Score formula with DB-level annotations |
@@ -101,7 +107,7 @@ Software engineers lack a dedicated platform that combines professional networki
 ### Backend
 
 | Technology | Version | Purpose |
-|------------|---------|---------|
+| ------------ | --------- | --------- |
 | **Python** | 3.x | Runtime |
 | **Django** | 6.0.6 | Web framework (MVT pattern) |
 | **Django Channels** | 4.3.2 | WebSocket / ASGI support |
@@ -114,7 +120,7 @@ Software engineers lack a dedicated platform that combines professional networki
 ### External Services
 
 | Service | Package | Purpose |
-|---------|---------|---------|
+| --------- | --------- | --------- |
 | **Google Gemini** | `google-genai` 2.10.0 | AI profile analysis & post review |
 | **Stripe** | `stripe` 15.3.0 | Payment processing |
 | **Gmail SMTP** | Django email backend | Password reset & account deletion emails |
@@ -122,7 +128,7 @@ Software engineers lack a dedicated platform that combines professional networki
 ### Frontend
 
 | Technology | Version | Purpose |
-|------------|---------|---------|
+| ------------ | --------- | --------- |
 | **Django Templates** | — | Server-side HTML rendering |
 | **Tailwind CSS** | 4.3.1 | Utility-first CSS framework |
 | **Vanilla JavaScript** | — | AJAX interactions, WebSockets, UI toggles |
@@ -133,7 +139,7 @@ Software engineers lack a dedicated platform that combines professional networki
 ### Development Tools
 
 | Tool | Purpose |
-|------|---------|
+| ------ | --------- |
 | **black** 26.5.1 | Python code formatting |
 | **djlint** 1.39.4 | Django template linting |
 | **VS Code extensions** | djLint, Python, Django, TailwindCSS IntelliSense |
@@ -152,7 +158,7 @@ Software engineers lack a dedicated platform that combines professional networki
 
 ### High-Level Architecture Diagram
 
-```
+```table
 ┌─────────────────────────────────────────────────────────────────────┐
 │                         CLIENT (Browser)                            │
 │  ┌──────────────┐  ┌──────────────┐  ┌──────────────────────────┐  │
@@ -190,7 +196,7 @@ Software engineers lack a dedicated platform that combines professional networki
 ### Application Modules
 
 | App | Responsibility |
-|-----|----------------|
+| ----- | ---------------- |
 | **config** | Project settings, root URL routing, ASGI/WSGI configuration |
 | **users** | Authentication, profiles, portfolio, skills, monetization, social graph |
 | **feed** | Posts, comments, jobs, proposals, notifications, DMs, bookmarks, reports |
@@ -217,7 +223,7 @@ Software engineers lack a dedicated platform that combines professional networki
 
 ## 5. Project Structure
 
-```
+```dir
 DevHuddle/
 ├── config/                         # Django project configuration
 │   ├── settings.py                 # All project settings
@@ -289,7 +295,7 @@ DevHuddle/
 ### 6.1 Authentication & Account Management
 
 | Feature | Description |
-|---------|-------------|
+| --------- | ------------- |
 | **User Registration** | Signup with username, email, password, and role selection |
 | **Login / Logout** | Django session-based authentication |
 | **Password Reset** | Full email pipeline with custom Tailwind-styled templates |
@@ -300,7 +306,7 @@ DevHuddle/
 ### 6.2 Social Networking
 
 | Feature | Description |
-|---------|-------------|
+| --------- | ------------- |
 | **Follow / Unfollow** | AJAX toggle with follower count update |
 | **Block / Unblock** | Mutual unfollow on block; content hidden from feeds |
 | **Network Page** | View followers, following, and blocked users |
@@ -310,7 +316,7 @@ DevHuddle/
 ### 6.3 Content & Feed System
 
 | Feature | Description |
-|---------|-------------|
+| --------- | ------------- |
 | **Multi-Tab Feed** | Fellows (following), Business (jobs), Ads, Global (ranked) |
 | **Huddle Posts** | Standard social posts with Markdown, images, likes, comments |
 | **Job Posts** | Clients/orgs post job offers with deadlines |
@@ -325,7 +331,7 @@ DevHuddle/
 ### 6.4 Job Marketplace
 
 | Feature | Description |
-|---------|-------------|
+| --------- | ------------- |
 | **Job Posting** | Clients/orgs create job-type posts |
 | **Job Applications** | Developers submit proposals with cover letter and optional bid |
 | **Proposal Management** | Clients accept or reject proposals from dashboard |
@@ -335,7 +341,7 @@ DevHuddle/
 ### 6.5 Dashboards
 
 | Dashboard | Access | Content |
-|-----------|--------|---------|
+| ----------- | -------- | --------- |
 | **Developer Dashboard** | `dev` role | Submitted proposals, application status |
 | **Client Dashboard** | `client` / `org` role | Posted jobs, received proposals |
 | **Moderation Dashboard** | Staff / superuser | Pending content reports, dismiss/delete actions |
@@ -344,7 +350,7 @@ DevHuddle/
 ### 6.6 Messaging & Notifications
 
 | Feature | Description |
-|---------|-------------|
+| --------- | ------------- |
 | **Direct Messages** | HTTP form submission + WebSocket live delivery |
 | **Inbox** | Conversation list with unread indicators |
 | **Notifications** | 20+ notification types with themed UI (color palettes + emojis) |
@@ -354,7 +360,7 @@ DevHuddle/
 ### 6.7 AI Intelligence
 
 | Feature | Description |
-|---------|-------------|
+| --------- | ------------- |
 | **Profile Analysis** | Gemini-powered recruiter-style Markdown report |
 | **Post Review** | Technical breakdown, engagement analysis, follow-up suggestions |
 | **7-Day Cache** | Reduces API quota by reusing recent reports |
@@ -364,7 +370,7 @@ DevHuddle/
 ### 6.8 Monetization
 
 | Feature | Description |
-|---------|-------------|
+| --------- | ------------- |
 | **DevHuddle Pro** | $15/month premium subscription (30-day expiry) |
 | **Profile Boosts** | Purchasable boosts that increase Dev Score ranking |
 | **Boost Transfer** | Gift boosts to other users from profile page |
@@ -373,7 +379,7 @@ DevHuddle/
 ### 6.9 Moderation & Safety
 
 | Feature | Description |
-|---------|-------------|
+| --------- | ------------- |
 | **User Reports** | Community-driven content flagging |
 | **Staff Dashboard** | Review reports, dismiss false positives, delete violating posts |
 | **Block System** | Users can block others to prevent interaction |
@@ -386,7 +392,7 @@ DevHuddle/
 ### Role Definitions
 
 | Role | Code | Capabilities |
-|------|------|-------------|
+| ------ | ------ | ------------- |
 | **Developer** | `dev` | Post huddles, apply to jobs, dev dashboard, AI analysis |
 | **Client** | `client` | Post huddles + jobs + ads, client dashboard, manage proposals |
 | **Organization** | `org` | Same as client |
@@ -396,7 +402,7 @@ DevHuddle/
 ### Access Control Matrix
 
 | Action | dev | client | org | staff | anonymous |
-|--------|-----|--------|-----|-------|-----------|
+| -------- | ----- | -------- | ----- | ------- | ----------- |
 | View home (limited) | ✅ | ✅ | ✅ | ✅ | ✅ (public feed) |
 | Post huddle | ✅ | ✅ | ✅ | ✅ | ❌ |
 | Post job/ad | ❌ | ✅ | ✅ | ✅ | ❌ |
@@ -421,7 +427,7 @@ DevHuddle/
 
 ### Entity-Relationship Overview
 
-```
+```ERD
 ┌─────────────┐       M2M        ┌─────────────┐
 │  CustomUser │◄────────────────►│  CustomUser │  (following/followers)
 │             │◄────────────────►│  CustomUser │  (blocked_users)
@@ -448,7 +454,7 @@ DevHuddle/
 ### 8.1 `users.CustomUser` (extends `AbstractUser`)
 
 | Field | Type | Constraints | Description |
-|-------|------|-------------|-------------|
+| ------- | ------ | ------------- | ------------- |
 | `username` | CharField(20) | unique, min 3 chars, custom validator | Display name |
 | `email` | EmailField | unique | Login identifier |
 | `bio` | TextField | nullable | User biography |
@@ -480,7 +486,7 @@ DevHuddle/
 ### 8.3 `users.Project`
 
 | Field | Type | Constraints |
-|-------|------|-------------|
+| ------- | ------ | ------------- |
 | `user` | FK(CustomUser) | CASCADE, related_name="projects" |
 | `title` | CharField(100) | — |
 | `description` | TextField(1000) | — |
@@ -492,7 +498,7 @@ DevHuddle/
 ### 8.4 `users.Experience`
 
 | Field | Type | Constraints |
-|-------|------|-------------|
+| ------- | ------ | ------------- |
 | `user` | FK(CustomUser) | CASCADE, related_name="experiences" |
 | `company` | CharField(100) | — |
 | `role` | CharField(100) | — |
@@ -504,7 +510,7 @@ DevHuddle/
 ### 8.5 `feed.Post`
 
 | Field | Type | Constraints |
-|-------|------|-------------|
+| ------- | ------ | ------------- |
 | `author` | FK(CustomUser) | CASCADE |
 | `body` | TextField(500) | Markdown content |
 | `image` | ImageField | nullable, auto-renamed |
@@ -519,7 +525,7 @@ DevHuddle/
 ### 8.6 `feed.Comment`
 
 | Field | Type | Constraints |
-|-------|------|-------------|
+| ------- | ------ | ------------- |
 | `post` | FK(Post) | CASCADE, related_name="comments" |
 | `author` | FK(CustomUser) | CASCADE |
 | `body` | TextField(200) | — |
@@ -530,7 +536,7 @@ DevHuddle/
 ### 8.7 `feed.Proposal`
 
 | Field | Type | Constraints |
-|-------|------|-------------|
+| ------- | ------ | ------------- |
 | `job` | FK(Post) | CASCADE, limit_choices_to post_type="job" |
 | `applicant` | FK(CustomUser) | CASCADE |
 | `cover_letter` | TextField(1500) | — |
@@ -542,7 +548,7 @@ DevHuddle/
 ### 8.8 `feed.Notification`
 
 | Field | Type | Constraints |
-|-------|------|-------------|
+| ------- | ------ | ------------- |
 | `recipient` | FK(CustomUser) | CASCADE |
 | `actor` | FK(CustomUser) | CASCADE |
 | `verb` | CharField(26) | 20+ predefined verbs |
@@ -555,7 +561,7 @@ DevHuddle/
 ### 8.9 `feed.Message`
 
 | Field | Type | Constraints |
-|-------|------|-------------|
+| ------- | ------ | ------------- |
 | `sender` | FK(CustomUser) | CASCADE |
 | `recipient` | FK(CustomUser) | CASCADE |
 | `body` | TextField(2000) | — |
@@ -565,7 +571,7 @@ DevHuddle/
 ### 8.10 `feed.Bookmark`
 
 | Field | Type | Constraints |
-|-------|------|-------------|
+| ------- | ------ | ------------- |
 | `user` | FK(CustomUser) | CASCADE |
 | `post` | FK(Post) | CASCADE |
 | `created_at` | DateTimeField | auto_now_add |
@@ -574,7 +580,7 @@ DevHuddle/
 ### 8.11 `feed.Report`
 
 | Field | Type | Constraints |
-|-------|------|-------------|
+| ------- | ------ | ------------- |
 | `reporter` | FK(CustomUser) | CASCADE |
 | `post` | FK(Post) | CASCADE |
 | `reason` | CharField(255) | default="Inappropriate Content or Spam" |
@@ -584,7 +590,7 @@ DevHuddle/
 ### 8.12 `intelligence.AIReport`
 
 | Field | Type | Constraints |
-|-------|------|-------------|
+| ------- | ------ | ------------- |
 | `report_type` | CharField(10) | profile / post |
 | `requester` | FK(CustomUser) | CASCADE |
 | `target_user` | FK(CustomUser) | nullable |
@@ -595,7 +601,7 @@ DevHuddle/
 ### Database Migrations
 
 | App | Migrations |
-|-----|------------|
+| ----- | ------------ |
 | users | `0001_initial`, `0002_customuser_blocked_users`, `0003_customuser_deletion_scheduled_at` |
 | feed | `0001_initial`, `0002_initial` |
 | intelligence | `0001_initial`, `0002_initial` |
@@ -608,7 +614,7 @@ DevHuddle/
 ### 9.1 Public Pages (No Login Required)
 
 | Page | URL | Template | Description |
-|------|-----|----------|-------------|
+| ------ | ----- | ---------- | ------------- |
 | Home (Guest) | `/` | `pages/home.html` | Landing page with limited public feed |
 | About | `/about/` | `pages/about.html` | Platform overview, staff, roadmap, live stats |
 | Support | `/support/` | `pages/support.html` | Help & knowledge base |
@@ -616,7 +622,7 @@ DevHuddle/
 ### 9.2 Authenticated Pages
 
 | Page | URL | Template | Description |
-|------|-----|----------|-------------|
+| ------ | ----- | ---------- | ------------- |
 | Home (Feed) | `/?feed=fellows` | `pages/home.html` | 3-column feed with sidebars |
 | Post Detail | `/post/<pk>/` | `components/posts/view.html` | Single post with comments |
 | Post Create | `/post/new/` | `components/posts/create.html` | New post form |
@@ -637,7 +643,7 @@ DevHuddle/
 ### 9.3 Profile & Auth Pages
 
 | Page | URL | Template |
-|------|-----|----------|
+| ------ | ----- | ---------- |
 | Login | `/users/login/` | `users/auth/login.html` |
 | Signup | `/users/signup/` | `users/auth/signup.html` |
 | Password Reset | `/users/password-reset/` | `users/auth/password_reset_form.html` |
@@ -652,7 +658,7 @@ DevHuddle/
 ### 9.4 Reusable Components
 
 | Component | Path | Usage |
-|-----------|------|-------|
+| ----------- | ------ | ------- |
 | Navbar | `sections/navbar.html` | Global navigation |
 | Footer | `sections/footer.html` | Global footer |
 | Post Card | `components/feed/post_card.html` | Feed item rendering |
@@ -664,7 +670,7 @@ DevHuddle/
 
 ### 9.5 Layout Structure
 
-```
+```ERD
 ┌─────────────────────────────────────────────────────┐
 │                    NAVBAR (h-14)                     │
 ├─────────────────────────────────────────────────────┤
@@ -697,7 +703,7 @@ DevHuddle uses a **dark-only, developer-aesthetic UI** designed for extended scr
 ### Color Palette
 
 | Token | Tailwind Class | Usage |
-|-------|---------------|-------|
+| ------- | --------------- | ------- |
 | Background | `bg-gray-900` | Page background |
 | Surface | `bg-gray-800` | Cards, panels |
 | Border | `border-gray-700` | Dividers, card borders |
@@ -712,7 +718,7 @@ DevHuddle uses a **dark-only, developer-aesthetic UI** designed for extended scr
 ### Typography
 
 | Element | Style |
-|---------|-------|
+| --------- | ------- |
 | Headings | `font-extrabold`, large sizes (text-5xl to text-7xl on hero) |
 | Body | `font-sans antialiased` |
 | Code/Mono | `font-mono` for tags, timestamps, AI status |
@@ -721,7 +727,7 @@ DevHuddle uses a **dark-only, developer-aesthetic UI** designed for extended scr
 ### UI Patterns
 
 | Pattern | Implementation |
-|---------|---------------|
+| --------- | --------------- |
 | Cards | `rounded-2xl` / `rounded-3xl`, `border border-gray-700`, `shadow-xl` |
 | Inputs | `rounded-full` or `rounded-xl`, dark backgrounds, blue focus ring |
 | Buttons | `rounded-full`, solid blue primary, hover transitions |
@@ -736,7 +742,7 @@ DevHuddle uses a **dark-only, developer-aesthetic UI** designed for extended scr
 Notifications use a semantic color system mapped from verb types:
 
 | Category | Colors | Verbs |
-|----------|--------|-------|
+| ---------- | -------- | ------- |
 | Danger | Red | block, unfollow, delete, reject, post_reported |
 | Brand | Yellow | boost, welcome |
 | Success | Green | premium, congrats, hire, accept, report_submitted |
@@ -771,7 +777,7 @@ static/css/output.css  (linked in base.html)
 ### Root Router (`config/urls.py`)
 
 | Prefix | App | Description |
-|--------|-----|-------------|
+| -------- | ----- | ------------- |
 | `/admin/` | Django Admin | Staff administration |
 | `/users/` | users | Authentication & profiles |
 | `/` | feed | Home, posts, dashboards |
@@ -781,7 +787,7 @@ static/css/output.css  (linked in base.html)
 ### Feed Routes (`feed/urls.py`)
 
 | Method | URL | Name | View | Auth |
-|--------|-----|------|------|------|
+| -------- | ----- | ------ | ------ | ------ |
 | GET | `/` | home | HomePageView | Public |
 | GET | `/about/` | about | AboutPageView | Public |
 | GET/POST | `/post/new/` | post_new | PostCreateView | Login |
@@ -809,7 +815,7 @@ static/css/output.css  (linked in base.html)
 ### Users Routes (`users/urls.py`)
 
 | Method | URL | Name | View |
-|--------|-----|------|------|
+| -------- | ----- | ------ | ------ |
 | GET/POST | `/users/login/` | login | LoginView |
 | POST | `/users/logout/` | logout | LogoutView |
 | GET/POST | `/users/signup/` | signup | SignUpView |
@@ -839,7 +845,7 @@ static/css/output.css  (linked in base.html)
 ### Intelligence Routes (`intelligence/urls.py`)
 
 | Method | URL | Name | View |
-|--------|-----|------|------|
+| -------- | ----- | ------ | ------ |
 | GET | `/ai/dashboard/` | ai_dashboard | AIDashboardView |
 | GET | `/ai/analyze/profile/<username>/` | ai_analyze_profile | ProfileAnalyzerView |
 | GET | `/ai/analyze/post/<pk>/` | ai_analyze_post | PostAnalyzerView |
@@ -857,28 +863,28 @@ All require authentication and CSRF token in request headers.
 
 #### Like Post
 
-```
+```json
 POST /post/like/<pk>/
 Response: { "liked": true|false, "like_count": <int> }
 ```
 
 #### Toggle Bookmark
 
-```
+```json
 POST /post/<pk>/bookmark/
 Response: { "saved": true|false, "message": "<string>" }
 ```
 
 #### Submit Report
 
-```
+```json
 POST /post/<pk>/report/
 Response: { "reported": true|false, "message": "<string>" }
 ```
 
 #### Follow User
 
-```
+```json
 POST /users/follow/<username>/
 Response: { "is_following": true|false, "followers_count": <int>, "following_count": <int> }
 ```
@@ -887,7 +893,7 @@ Response: { "is_following": true|false, "followers_count": <int>, "following_cou
 
 #### Chat WebSocket
 
-```
+```json
 URL: ws://<host>/ws/chat/<username>/
 Auth: Session cookie (AuthMiddlewareStack)
 
@@ -897,7 +903,7 @@ Receive: { "message": "<text>", "sender": "<username>", "time": "<formatted>" }
 
 #### Notification WebSocket
 
-```
+```json
 URL: ws://<host>/ws/notifications/
 Auth: Session cookie
 
@@ -908,7 +914,7 @@ Receive: { "verb": "<display text>", "actor": "<username>", "icon": "<emoji>" }
 ### 12.3 JavaScript Modules
 
 | File | Responsibility |
-|------|---------------|
+| ------ | --------------- |
 | `interactions.js` | Likes, bookmarks, reports (fetch API), post expand/collapse |
 | `websockets.js` | Notification + chat WebSocket connections, toast UI |
 | `follow_logic.js` | Follow/unfollow AJAX |
@@ -926,7 +932,7 @@ Used in: Developer Directory, Profile sidebar, Home right sidebar, Context proce
 
 **Formula:**
 
-```
+```txt
 dev_score = (followers × 2) + (projects × 3) + (profile_boosts × 7) + premium_bonus
 ```
 
@@ -947,7 +953,7 @@ Used in: Home feed when `?feed=global`.
 
 **Formula:**
 
-```
+```txt
 engagement_score = (likes × 2) + (comments × 3)
 ```
 
@@ -956,7 +962,7 @@ engagement_score = (likes × 2) + (comments × 3)
 ### 13.3 Feed Filtering Logic
 
 | Tab | Filter |
-|-----|--------|
+| ----- | -------- |
 | `fellows` (default) | Posts from followed users, type=huddle only |
 | `business` | post_type=job |
 | `ads` | post_type=ad |
@@ -967,7 +973,7 @@ engagement_score = (likes × 2) + (comments × 3)
 ### 13.4 Search Algorithm
 
 | Entity | Fields Searched | Ordering |
-|--------|----------------|----------|
+| -------- | ---------------- | ---------- |
 | Users | username, first_name, last_name, bio, skills | `-follower_count` (limit 10) |
 | Huddles | body, tags | `-like_count`, `-created_at` (limit 15) |
 | Jobs | body, tags | `-created_at` (limit 10) |
@@ -978,7 +984,7 @@ engagement_score = (likes × 2) + (comments × 3)
 
 ### Architecture
 
-```
+```ERD
 User clicks "Analyze" → ProfileAnalyzerView / PostAnalyzerView
                               │
                               ▼
@@ -1049,7 +1055,7 @@ User clicks "Analyze" → ProfileAnalyzerView / PostAnalyzerView
 ### Products
 
 | Item Code | Name | Backend Price | Duration/Quantity |
-|-----------|------|--------------|-------------------|
+| ----------- | ------ | -------------- | ------------------- |
 | `premium` | DevHuddle Pro (30 Days) | $15.00 (1500 cents) | 30-day subscription |
 | `boost_1` | 1x Profile Boost | $2.00 (200 cents) | +1 boost |
 | `boost_5` | 5x Profile Boosts | $8.00 (800 cents) | +5 boosts |
@@ -1078,7 +1084,7 @@ User clicks "Analyze" → ProfileAnalyzerView / PostAnalyzerView
 ### Technology Stack
 
 | Component | Technology |
-|-----------|-----------|
+| ----------- | ----------- |
 | Protocol | WebSocket (via Django Channels) |
 | Server | Daphne ASGI |
 | Channel Layer | InMemoryChannelLayer (dev) / Redis (production recommended) |
@@ -1102,7 +1108,7 @@ User clicks "Analyze" → ProfileAnalyzerView / PostAnalyzerView
 ### Channel Groups
 
 | Group Name Pattern | Purpose |
-|-------------------|---------|
+| ------------------- | --------- |
 | `chat_{id1}_{id2}` | Chat room (sorted IDs) |
 | `notifications_{user_id}` | Per-user notification stream |
 
@@ -1113,7 +1119,7 @@ User clicks "Analyze" → ProfileAnalyzerView / PostAnalyzerView
 ### Implemented Security Features
 
 | Measure | Implementation | Status |
-|---------|---------------|--------|
+| --------- | --------------- | -------- |
 | **CSRF Protection** | `CsrfViewMiddleware` on all POST requests | ✅ Active |
 | **Session Authentication** | Django session middleware, cookie-based | ✅ Active |
 | **Password Validators** | All 4 Django defaults (similarity, length, common, numeric) | ✅ Active |
@@ -1132,7 +1138,7 @@ User clicks "Analyze" → ProfileAnalyzerView / PostAnalyzerView
 ### Security Configuration (Current)
 
 | Setting | Value | Production Recommendation |
-|---------|-------|------------------------|
+| --------- | ------- | ------------------------ |
 | `DEBUG` | `True` | Set to `False` |
 | `SECRET_KEY` | Hardcoded in settings.py | Move to `.env` |
 | `ALLOWED_HOSTS` | `[]` (empty) | Configure domain names |
@@ -1142,7 +1148,7 @@ User clicks "Analyze" → ProfileAnalyzerView / PostAnalyzerView
 ### Planned Security Patches (from README)
 
 | Patch | Description | Status |
-|-------|-------------|--------|
+| ------- | ------------- | -------- |
 | Password Reset Security | Enhanced token validation and rate limiting | 🔲 Planned |
 | RBAC Enhancement | Finer-grained permission system | 🔲 Planned |
 | API Authentication | Token-based auth for future REST API | 🔲 Planned |
@@ -1170,7 +1176,7 @@ MIDDLEWARE = [
 ### User Signals (`users/signals.py`)
 
 | Signal | Trigger | Action |
-|--------|---------|--------|
+| -------- | --------- | -------- |
 | `post_save(CustomUser)` | New user created | Create welcome notification |
 | `pre_save(CustomUser)` | Avatar updated | Delete old avatar file from disk |
 | `post_delete(CustomUser)` | Account deleted | Delete avatar file from disk |
@@ -1179,7 +1185,7 @@ MIDDLEWARE = [
 ### Feed Signals (`feed/signals.py`)
 
 | Signal | Trigger | Action |
-|--------|---------|--------|
+| -------- | --------- | -------- |
 | `pre_save(Post)` | Post image updated | Delete old image file |
 | `post_delete(Post)` | Post deleted | Delete image file from disk |
 | `post_save(Notification)` | New notification | Broadcast via WebSocket to recipient |
@@ -1212,7 +1218,7 @@ python manage.py sweep_accounts
 ### User Forms (`users/forms.py`)
 
 | Form | Model | Fields |
-|------|-------|--------|
+| ------ | ------- | -------- |
 | `CustomUserCreationForm` | CustomUser | username, email, role, password |
 | `CustomUserChangeForm` | CustomUser | bio, avatar, role, social URLs, email |
 | `ProjectForm` | Project | title, description, live_url, github_url, image |
@@ -1224,7 +1230,7 @@ python manage.py sweep_accounts
 ### Feed Forms (`feed/forms.py`)
 
 | Form | Model | Fields | RBAC |
-|------|-------|--------|------|
+| ------ | ------- | -------- | ------ |
 | `PostForm` | Post | post_type, body, image, deadline, target_url, tags | Devs: huddle only |
 | `ProposalForm` | Proposal | cover_letter, bid_amount | — |
 | `CommentForm` | Comment | body | — |
@@ -1232,7 +1238,7 @@ python manage.py sweep_accounts
 ### Custom Validators (`users/validators.py`)
 
 | Validator | Rule |
-|-----------|------|
+| ----------- | ------ |
 | `validate_file_size` | Maximum 5 MB |
 | `validate_image_extension` | Only `.jpg`, `.jpeg`, `.png` |
 | `validate_username` | No reserved words, alphanumeric + `.`/`_`, no consecutive dots/underscores, no "devhuddle" in name |
@@ -1261,7 +1267,7 @@ STRIPE_SECRET_KEY=sk_test_...
 ### Django Settings Summary
 
 | Setting | Value |
-|---------|-------|
+| --------- | ------- |
 | `AUTH_USER_MODEL` | `users.CustomUser` |
 | `LOGIN_URL` | `login` |
 | `LOGIN_REDIRECT_URL` | `home` |
@@ -1341,7 +1347,7 @@ python manage.py runserver
 ## 22. Testing Status
 
 | Category | Status | Details |
-|----------|--------|---------|
+| ---------- | -------- | --------- |
 | Unit Tests | ❌ Not implemented | No `tests.py` or `test_*.py` files |
 | Integration Tests | ❌ Not implemented | — |
 | E2E Tests | ❌ Not implemented | — |
@@ -1357,7 +1363,7 @@ python manage.py runserver
 ### Current Limitations
 
 | # | Limitation | Impact |
-|---|-----------|--------|
+| --- | ----------- | -------- |
 | 1 | No REST API | Third-party integrations not possible |
 | 2 | SQLite database | Not suitable for high-concurrency production |
 | 3 | In-memory channel layer | WebSockets don't scale across processes |
@@ -1370,7 +1376,7 @@ python manage.py runserver
 ### Planned Improvements (from README)
 
 | # | Feature | Priority |
-|---|---------|----------|
+| --- | --------- | ---------- |
 | 1 | Notification sound/music | Medium |
 | 2 | Recycle bin (3-day data recovery) | Medium |
 | 3 | Light theme implementation | Low |
