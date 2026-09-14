@@ -17,6 +17,8 @@
 *`Note!`*
 
 > Direct to setup? Visit [SETUP Guide](./SETUP.md) for setting up this project on your system!
+> For more comprehensive setup details, visit [Easy Setup](./EASY_SETUP.md).
+> For Professional documentation regarding DevHuddle platform, please visit [Documentation](./DOCUMENTATION.md).
 
 ---
 
